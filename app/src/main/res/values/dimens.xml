@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="song_cover_size">48dp</dimen>
+    <dimen name="song_cover_size_large">280dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="corner_radius">8dp</dimen>
+    <dimen name="corner_radius_large">16dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_size_control">48dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+    <dimen name="elevation_small">2dp</dimen>
+    <dimen name="elevation_medium">4dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="now_playing_cover_margin">32dp</dimen>
+</resources>

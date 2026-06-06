@@ -1,0 +1,23 @@
+TENTANG MINI PLAYER
+===================
+
+LISENSI
+-------
+Hak cipta dilindungi undang-undang.
+
+AUTHOR
+------
+Dikembangkan sebagai project pribadi.
+
+SUPPORT
+-------
+Untuk laporan bug, saran fitur, atau pertanyaan,
+silakan buka issue di repository project.
+
+TECH STACK
+----------
+Platform     : Android
+Bahasa       : Java
+Pemutaran    : Media3 ExoPlayer
+Database     : Room
+Arsitektur   : MVVM

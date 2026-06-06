@@ -1,0 +1,356 @@
+# AGENTS.md — Pedoman AI Project
+ 
+Dokumen ini adalah aturan kerja untuk AI agent yang memodifikasi project. 
+ 
+Gunakan bahasa Indonesia. 
+ 
+Tujuan: 
+- konsistensi versi 
+- konsistensi dokumentasi (CHANGELOG, README, STRUKTUR, PANDUAN, DEVELOPMENT, TENTANG)
+- mudah dibaca manusia 
+- mengurangi perilaku AI yang terlalu verbose atau over-engineering 
+ 
+--- 
+ 
+## 1. Versioning 
+ 
+File: 
+`app/build.gradle` 
+ 
+### versionCode         
+ 
+WAJIB: 
+- integer 
+- selalu +1 setiap update 
+- tidak pernah reset 
+ 
+### versionName 
+ 
+Format: 
+ 
+`major.removed.restored.minor.patch` 
+ 
+Contoh: 
+ 
+`1.1.1.15.4`  
+   
+### IMPORTANT  
+     
+Project ini TIDAK menggunakan semantic versioning standar.
+     
+JANGAN menerapkan aturan semantic versioning standar pada project ini.
+     
+Contoh yang VALID:
+     
+`1.1.1.15.4` → `2.1.1.16.0`
+     
+BUKAN:
+     
+`1.1.1.15.4` → `2.0.0.0.0`
+ 
+### Arti Komponen 
+ 
+major: 
+- milestone besar 
+- generasi project 
+- perubahan arsitektur besar 
+- boleh naik kapan diperlukan 
+- selalu dianggap sebagai feature release
+    
+removed: 
+ 
+Counter historis fitur yang pernah dihapus, deprecated, dinonaktifkan, atau dipensiunkan. 
+ 
+NAIK saat: 
+- fitur dihapus 
+- fitur deprecated 
+- fitur disable permanen 
+- fitur diganti total 
+ 
+TIDAK PERNAH TURUN. 
+ 
+restored: 
+ 
+Counter historis fitur yang pernah dikembalikan setelah sebelumnya dihapus atau dinonaktifkan. 
+ 
+NAIK saat: 
+- fitur lama kembali 
+- fitur deprecated diaktifkan lagi 
+- fitur retired dipulihkan 
+ 
+TIDAK PERNAH TURUN. 
+ 
+minor: 
+ 
+Counter feature release. 
+ 
+NAIK saat: 
+- fitur baru ditambahkan 
+- fitur besar ditambahkan 
+- major naik
+- removed naik
+- restored naik
+- perubahan feature-level besar
+
+patch: 
+ 
+Digunakan untuk: 
+- bugfix 
+- optimization 
+- maintenance 
+- refactor kecil 
+- dependency update 
+- UI cleanup 
+ 
+### Aturan 
+ 
+- patch reset → `0` saat minor naik 
+- minor +1 saat major naik 
+- removed TIDAK reset 
+- restored TIDAK reset 
+ 
+### Contoh 
+ 
+Awal: 
+ 
+`1.1.1.15.4` 
+ 
+arti: 
+- major 1 
+- 1 fitur pernah dihapus 
+- 1 fitur pernah dipulihkan 
+- feature release ke-15 
+- patch 4
+ 
+Tambah fitur: 
+ 
+`1.1.1.16.0` 
+ 
+minor +1
+patch reset 
+ 
+Fitur dihapus: 
+ 
+`1.2.1.17.0` 
+ 
+removed +1
+minor +1
+patch reset 
+ 
+Fitur kembali: 
+ 
+`1.2.2.18.0` 
+ 
+restored +1
+minor +1
+patch reset 
+ 
+Bugfix: 
+ 
+`1.2.2.18.1` 
+ 
+patch +1 
+ 
+Major release: 
+ 
+`3.2.2.19.0` 
+ 
+major +1
+minor +1
+patch reset
+     
+### Algoritma Increment
+
+Feature baru:
+minor+1
+patch=0
+
+Feature removed:
+removed+1
+minor+1
+patch=0
+
+Feature restored:
+restored+1
+minor+1
+patch=0
+
+Bugfix:
+patch+1
+
+Major release:
+major+1
+minor+1
+patch=0
+---
+ 
+## 2. CHANGELOG.txt 
+ 
+CHANGELOG adalah riwayat perubahan release. 
+ 
+Entry baru: 
+ 
+WAJIB ditaruh di paling atas. 
+ 
+Format: 
+ 
+```md 
+## [X.X.X.X.X] - YYYY-MM-DD 
+``` 
+ 
+Gunakan section sesuai kebutuhan: 
+ 
+```md 
+### 🔢 Version 
+### ✨ Fitur Baru 
+### 🚮️ Fitur Dihapus 
+### 📥️ Fitur Dipulihkan
+### ♻️️ Perubahan Fitur 
+### 🗒️ File Added 
+### ✏️️ File Changed 
+### 🔥️ File Removed 
+### 🔧 Optimasi & Penyesuaian 
+### 🐞 Bug Fixes 
+### 💡 Catatan 
+``` 
+ 
+### Aturan 
+ 
+WAJIB: 
+- semua file yang benar-benar diubah dicatat 
+- update versionCode dicatat 
+- update versionName dicatat 
+- khusus untuk build.gradle, changelog dan readme tidak perlu dicatat (dikecualikan)
+ 
+JANGAN: 
+- menambah changelog untuk perubahan trivial 
+- menulis penjelasan terlalu panjang 
+- membuat subsection yang tidak perlu 
+- mengulang detail implementasi kecil 
+ 
+Ringkas, faktual, langsung ke perubahan. 
+ 
+--- 
+ 
+## 3. Dokumentasi (.md root ↔ .txt assets)
+
+Dokumentasi terdiri dari 6 pasang file yang harus disinkronkan secara manual:
+
+| Root (.md)          | Assets (.txt)             | Isi                              |
+|---------------------|---------------------------|----------------------------------|
+| README.md           | README.txt                | Ringkasan fitur & referensi      |
+| STRUKTUR.md         | STRUKTUR.txt              | Struktur project & deskripsi file|
+| PANDUAN.md          | PANDUAN.txt               | Panduan penggunaan lengkap       |
+| DEVELOPMENT.md      | DEVELOPMENT.txt           | Info teknis, environment, version|
+| TENTANG.md          | TENTANG.txt               | Lisensi, author, support         |
+| CHANGELOG.md        | CHANGELOG.txt             | Riwayat perubahan release        |
+
+### README / PANDUAN (Dokumentasi pengguna akhir)
+
+JANGAN menambahkan isi: 
+- detail implementasi teknis 
+- cleanup kecil
+
+WAJIB update bila: 
+- ada fitur baru 
+- ada fitur dihapus 
+- ada fitur dipulihkan 
+- ada perubahan struktur project 
+- ada perubahan UI/UX besar 
+- Current Version berubah 
+- Last Updated berubah 
+
+Update hanya jika relevan: 
+- daftar fitur 
+- requirement 
+- permission 
+
+Detail teknis → CHANGELOG / DEVELOPMENT
+
+### STRUKTUR
+
+WAJIB update bila:
+- ada file/direktori baru
+- ada file/direktori dihapus
+- ada perubahan struktur package
+
+### DEVELOPMENT
+
+WAJIB update bila:
+- ada perubahan environment (SDK, permission, dependency)
+- ada perubahan versioning scheme
+- ada perubahan teknis signifikan
+
+### TENTANG
+
+Update hanya jika:
+- ada perubahan author/support info
+- ada perubahan lisensi
+
+### CHANGELOG
+
+Update WAJIB setiap ada perubahan kode.
+Aturan penulisan ada di **Section 2 — CHANGELOG.txt** di atas.
+ 
+--- 
+ 
+## 4. Workflow AI 
+
+Sesudah mengedit: 
+
+1. update kode 
+2. update versionCode 
+3. update versionName 
+4. update `CHANGELOG.md` (root) + `CHANGELOG.txt` (assets)
+5. update pasangan dokumentasi yang relevan (.md root + .txt assets):
+   - `README.md` + `README.txt`
+   - `STRUKTUR.md` + `STRUKTUR.txt`
+   - `PANDUAN.md` + `PANDUAN.txt`
+   - `DEVELOPMENT.md` + `DEVELOPMENT.txt`
+   - `TENTANG.md` + `TENTANG.txt`
+ 
+--- 
+ 
+## 5. Perilaku AI 
+ 
+Penerapan berlaku kepada semua Agent AI yang terlibat dalam pengerjaan Project, terutama untuk model Agent GitHub CoPilot (important) 
+Kerjakan hanya sesuai request user. 
+ 
+JANGAN: 
+- melakukan refactor tanpa diminta 
+- mengubah file di luar scope request 
+- mengaudit seluruh project tanpa diminta 
+- membuat checklist panjang maupun singkat untuk request sederhana (important) 
+- memberi penjelasan panjang bila tidak diminta 
+- melakukan over-engineering 
+ 
+Utamakan: 
+- perubahan minimal 
+- perubahan terfokus 
+- jawaban singkat 
+- edit seperlunya 
+- solusi langsung bisa dipakai 
+ 
+Default behavior: 
+ 
+jangan terlalu rajin. 
+ 
+Jika user meminta perubahan kecil, 
+kerjakan perubahan kecil. 
+ 
+JANGAN memperluas scope sendiri. 
+ 
+### Chat Response Rules 
+ 
+Default response style: 
+- singkat 
+- fokus 
+- actionable 
+ 
+JANGAN: 
+- menjelaskan langkah yang tidak dilakukan 
+- membuat audit project tanpa diminta 
+- menjelaskan teori panjang untuk perubahan sederhana 
+- menambahkan rekomendasi besar di luar request 
+ 
+Jika request sederhana = jawab sederhana.
