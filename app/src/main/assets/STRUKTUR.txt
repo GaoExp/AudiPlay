@@ -1,8 +1,8 @@
-# Struktur Projectfolder
+STRUKTUR PROJECT
+================
 26 folder
 84 file
 
-```
 AudiPlay/
 │
 ├── AGENTS.md
@@ -150,5 +150,5 @@ AudiPlay/
             │
             └── xml/
                 └── backup_rules.xml
-```
+
 ---

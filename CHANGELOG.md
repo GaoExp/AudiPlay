@@ -1,8 +1,70 @@
-## [1.0.0.1.2] - 2026-06-06
+Section yang digunakan di CHANGELOG:
+
+| Section | Deskripsi |
+|---------|-----------|
+| 🔢 Version | versionCode & versionName |
+| ✨ Fitur Baru | Fitur baru ditambahkan |
+| 🚮️ Fitur Dihapus | Fitur dihapus/dinonaktifkan |
+| 📥️ Fitur Dipulihkan | Fitur lama dikembalikan |
+| ♻️️ Perubahan Fitur | Perubahan fitur existing |
+| 🗒️ File Added | File baru |
+| ✏️️ File Changed | File diubah |
+| 🔥️ File Removed | File dihapus |
+| 🔧 Optimasi & Penyesuaian | Optimasi, refactor, maintenance |
+| 🐞 Bug Fixes | Perbaikan bug |
+| 💡 Catatan | Informasi tambahan |
+
+---
+
+## [1.0.0.4.0] - 2026-06-06
+
+### 🔢 Version
+- versionCode: 7
+- versionName: 1.0.0.4.0
+
+### ✨ Fitur Baru
+- DocumentationActivity — tampilan daftar dokumentasi, tap untuk baca isi dari assets (.txt)
+- In-app Documentation Viewer — lihat dokumentasi langsung dari dalam aplikasi via Pengaturan
+
+### ♻️ Perubahan Fitur
+- README dan DEVELOPMENT digabung menjadi satu file — mengurangi jumlah file dokumentasi
+- TENTANG diformat ulang mengikuti gaya FTxT (Lisensi & Klarifikasi, 👨‍💻 Author, 📧 Support)
+- README.txt diubah dari format markdown ke plain text (underline), sama seperti PANDUAN.txt dan STRUKTUR.txt
+- Tambah `**Current Release**` dan `**Last Updated**` di README
+- Sinkronisasi emoji di CHANGELOG.txt — semua section headers pakai emoji
+
+### 🗒️ File Added
+- `release.sh` — Script GitHub release dengan changelog otomatis
+- `TENTANG.md` — diformat ulang mengikuti gaya FTxT
+- `app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java`
+- `app/src/main/res/layout/activity_documentation.xml`
+- `app/src/main/assets/README.txt`
+- `app/src/main/assets/PANDUAN.txt`
+- `app/src/main/assets/STRUKTUR.txt`
+- `app/src/main/assets/CHANGELOG.txt`
+
+### ✏️ File Changed
+- `README.md` — digabung dengan DEVELOPMENT, tambah Current Release & Last Updated, tambah Tentang
+- `README.txt` — dari markdown ke plain text underline
+- `AGENTS.md` — hapus referensi DEVELOPMENT/TENTANG
+- `STRUKTUR.md`
+- `app/src/main/assets/CHANGELOG.txt` — tambah emoji di section headers
+- `app/src/main/assets/STRUKTUR.txt`
+- `app/src/main/res/layout/fragment_settings.xml` — tambah section Dokumentasi
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — tambah handler Lihat Dokumentasi
+- `app/src/main/AndroidManifest.xml` — daftarkan DocumentationActivity
+- `app/src/main/res/values/strings.xml` — tambah string dokumentasi
+- `app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java` — hapus TENTANG.txt dari daftar
+
+### 🔥 File Removed
+- `DEVELOPMENT.md` — konten digabung ke README
+- `app/src/main/assets/TENTANG.txt` — konten sudah di-merge ke README
+
+## [1.0.0.3.0] - 2026-06-06
 
 ### 🔢 Version
 - versionCode: 6
-- versionName: 1.0.0.1.2
+- versionName: 1.0.0.3.0
 
 ### ✨ Fitur Baru
 - Format Audio di Settings — filter file berdasarkan ekstensi format (Audio, Rekaman, MIDI, Video, Stream)
@@ -44,11 +106,11 @@
 - `app/src/main/res/drawable/ic_favorite_border.xml`
 - `app/src/main/res/values/arrays.xml`
 
-## [1.0.0.1.1] - 2026-06-06
+## [1.0.0.2.0] - 2026-06-06
 
 ### 🔢 Version
 - versionCode: 5
-- versionName: 1.0.0.1.1
+- versionName: 1.0.0.2.0
 
 ### ✨ Fitur Baru
 - implementasi Scan All Audio (trigger re-scan manual dari Settings)

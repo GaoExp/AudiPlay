@@ -31,7 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.content.Intent;
+
 import exp.miniplayer.R;
+import exp.miniplayer.ui.documentation.DocumentationActivity;
 
 public class SettingsFragment extends Fragment {
 
@@ -91,6 +94,11 @@ public class SettingsFragment extends Fragment {
         includedFolders.setOnClickListener(v -> showFolderDialog(false));
         excludedFolders.setOnClickListener(v -> showFolderDialog(true));
         audioFormats.setOnClickListener(v -> showFormatDialog());
+
+        TextView viewDocumentation = view.findViewById(R.id.view_documentation);
+        viewDocumentation.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), DocumentationActivity.class));
+        });
     }
 
     private void showFolderDialog(boolean isExcluded) {

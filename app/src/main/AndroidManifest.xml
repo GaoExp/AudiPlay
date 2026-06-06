@@ -38,6 +38,11 @@
             android:exported="false"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".ui.documentation.DocumentationActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme" />
+
         <service
             android:name=".service.MusicService"
             android:exported="false"

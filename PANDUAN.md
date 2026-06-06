@@ -75,6 +75,7 @@ Drawer terdiri dari 4 menu:
 - **Included Folders** — Folder yang dipindai (hanya aktif saat Scan All Audio OFF)
 - **Excluded Folders** — Folder yang dilewati
 - **Format Audio** — Filter ekstensi format file yang dipindai (Audio, Rekaman, MIDI, Video, Stream)
+- **Lihat Dokumentasi** — Buka pembaca dokumentasi in-app (README, PANDUAN, STRUKTUR, CHANGELOG)
 
 ## Izin
 
