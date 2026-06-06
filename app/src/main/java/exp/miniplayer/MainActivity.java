@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
     private ImageButton shuffleButton;
     private ImageButton repeatButton;
     private ImageButton favoriteButton;
+    private ImageButton closeSheetButton;
 
     private Handler progressHandler;
     private Runnable progressRunnable;
@@ -200,8 +203,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         sheetBehavior = BottomSheetBehavior.from(sheetView);
         float density = getResources().getDisplayMetrics().density;
         sheetBehavior.setPeekHeight((int) (80 * density));
-        sheetBehavior.setHideable(true);
-        sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
         miniPlayerOverlay = findViewById(R.id.mini_player_overlay);
         miniPlayer = findViewById(R.id.mini_player);
@@ -224,6 +226,11 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         shuffleButton = findViewById(R.id.shuffle_button);
         repeatButton = findViewById(R.id.repeat_button);
         favoriteButton = findViewById(R.id.favorite_button);
+        closeSheetButton = findViewById(R.id.close_sheet_button);
+
+        closeSheetButton.setOnClickListener(v -> {
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        });
 
         miniPlayer.setOnClickListener(v -> {
             if (sheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
@@ -268,7 +275,13 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
 
         sheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onStateChanged(View sheet, int newState) {}
+            public void onStateChanged(View sheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    miniPlayerOverlay.setVisibility(View.INVISIBLE);
+                } else {
+                    miniPlayerOverlay.setVisibility(View.VISIBLE);
+                }
+            }
 
             @Override
             public void onSlide(View sheet, float slideOffset) {
@@ -276,6 +289,27 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
                 miniPlayerOverlay.setAlpha(miniAlpha);
             }
         });
+
+        GestureDetector albumArtGesture = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) {
+                        previous();
+                    } else {
+                        next();
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        nowPlayingAlbumArt.setOnTouchListener((v, event) -> albumArtGesture.onTouchEvent(event));
 
         progressHandler = new Handler(Looper.getMainLooper());
         progressRunnable = new Runnable() {
@@ -334,9 +368,21 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
                 sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         } else {
-            if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
+            miniPlayerTitle.setText(R.string.app_name);
+            miniPlayerArtist.setText(R.string.select_song);
+            miniPlayerAlbumArt.setImageResource(R.drawable.ic_album_default);
+            miniPlayerPlayPause.setImageResource(R.drawable.ic_play);
+
+            nowPlayingTitle.setText(R.string.app_name);
+            nowPlayingArtist.setText(R.string.select_song);
+            nowPlayingAlbumArt.setImageResource(R.drawable.ic_album_default);
+            playPauseButton.setImageResource(R.drawable.ic_play);
+
+            updateShuffleButton(false);
+            updateRepeatButton(androidx.media3.common.Player.REPEAT_MODE_OFF);
+            favoriteButton.setImageResource(R.drawable.ic_favorite_border);
+            favoriteButton.setColorFilter(
+                    ContextCompat.getColor(this, R.color.on_surface_variant));
         }
     }
 
@@ -497,11 +543,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
 
     @Override
     public void onQueueEnded() {
-        runOnUiThread(() -> {
-            if (sheetBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-                sheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-        });
+        runOnUiThread(this::updateNowPlaying);
     }
 
     private void loadFragment(Fragment fragment, String tag) {

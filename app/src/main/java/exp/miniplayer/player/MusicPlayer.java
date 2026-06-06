@@ -3,9 +3,11 @@ package exp.miniplayer.player;
 import android.content.Context;
 import android.net.Uri;
 
+import androidx.media3.common.C;
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.Player;
+import androidx.media3.common.PlaybackException;
 import androidx.media3.exoplayer.ExoPlayer;
 
 import exp.miniplayer.model.Audio;
@@ -58,6 +60,23 @@ public class MusicPlayer {
             @Override
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == Player.STATE_ENDED) {
+                    if (exoPlayer.getRepeatMode() == Player.REPEAT_MODE_OFF
+                            && currentIndex >= queue.size() - 1) {
+                        notifyQueueEnded();
+                    }
+                }
+            }
+
+            @Override
+            public void onPlayerError(PlaybackException error) {
+                error.printStackTrace();
+                int nextIndex = exoPlayer.getCurrentMediaItemIndex() + 1;
+                if (nextIndex >= 0 && nextIndex < queue.size()) {
+                    exoPlayer.stop();
+                    exoPlayer.seekTo(nextIndex, C.TIME_UNSET);
+                    exoPlayer.prepare();
+                    exoPlayer.play();
+                } else {
                     notifyQueueEnded();
                 }
             }
@@ -121,6 +140,9 @@ public class MusicPlayer {
         if (exoPlayer.isPlaying()) {
             exoPlayer.pause();
         } else {
+            if (exoPlayer.getPlaybackState() == Player.STATE_ENDED) {
+                exoPlayer.seekTo(0);
+            }
             exoPlayer.play();
         }
     }

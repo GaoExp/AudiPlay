@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mini Player</string>
+    <string name="select_song">Pilih lagu untuk diputar</string>
     <string name="songs">Lagu</string>
     <string name="favorites">Favorit</string>
     <string name="playlists">Playlist</string>
@@ -26,10 +27,9 @@
     <string name="duration">Durasi</string>
     <string name="date_added">Tanggal Ditambahkan</string>
     <string name="keep_screen_on">Jaga Layar Tetap Nyala</string>
-    <string name="default_repeat_mode">Mode Ulang Default</string>
-    <string name="repeat_off">Ulang Mati</string>
-    <string name="repeat_all">Ulang Semua</string>
-    <string name="repeat_one">Ulang Satu</string>
+    <string name="keep_screen_on_subtitle">Membatalkan batas waktu layar</string>
+    <string name="play_over_other_apps">Putar Audio Diatas Aplikasi Lain</string>
+    <string name="play_over_other_apps_subtitle">Tidak ada gangguan pemutaran</string>
     <string name="scan_all_audio">Pindai Semua Audio</string>
     <string name="included_folders">Folder Disertakan</string>
     <string name="excluded_folders">Folder Dikecualikan</string>
@@ -60,4 +60,13 @@
     <string name="no_excluded_folders">Tidak ada folder yang dikecualikan</string>
     <string name="scanning_started">Memindai ulang audio…</string>
     <string name="close">Tutup</string>
+
+    <string name="audio_formats">Format Audio</string>
+    <string name="format_group_audio">Audio</string>
+    <string name="format_group_recording">Rekaman</string>
+    <string name="format_group_midi">MIDI</string>
+    <string name="format_group_video">Video</string>
+    <string name="format_group_stream">Stream/Container</string>
+    <string name="select_all">Pilih Semua</string>
+    <string name="deselect_all">Hapus Semua</string>
 </resources>

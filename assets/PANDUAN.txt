@@ -62,11 +62,12 @@ Pemutaran Background:
 - Notifikasi dengan tampilan informasi lagu
 
 Pengaturan (Settings):
-- Keep Screen On - Layar tetap menyala
-- Default Repeat Mode - Atur mode ulang default
-- Scan All Audio - Pindai ulang semua file audio
-- Included Folders - Folder yang dipindai
+- Keep Screen On - Layar tetap menyala (info: membatalkan batas waktu layar)
+- Putar Audio Diatas Aplikasi Lain - Lanjut pemutaran saat buka app lain (info: tidak ada gangguan)
+- Scan All Audio - Toggle ON/OFF: ON = pindai semua tanpa filter folder; OFF = hanya folder disertakan dipindai (Folder Disertakan otomatis dinonaktifkan saat ON)
+- Included Folders - Folder yang dipindai (hanya aktif saat Scan All Audio OFF)
 - Excluded Folders - Folder yang dilewati
+- Format Audio - Filter ekstensi format file yang dipindai
 
 IZIN
 ----

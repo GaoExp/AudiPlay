@@ -8,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.annotation.SuppressLint;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -22,6 +26,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import exp.miniplayer.R;
@@ -30,7 +37,9 @@ public class SettingsFragment extends Fragment {
 
     private SettingsViewModel viewModel;
     private SwitchCompat keepScreenOnSwitch;
-    private Spinner defaultRepeatSpinner;
+    private SwitchCompat scanAllAudioSwitch;
+    private SwitchCompat playOverOtherAppsSwitch;
+    private TextView includedFolders;
     private boolean pendingFolderIsExcluded;
 
     private final ActivityResultLauncher<Uri> folderPickerLauncher = registerForActivityResult(
@@ -51,40 +60,37 @@ public class SettingsFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
         keepScreenOnSwitch = view.findViewById(R.id.keep_screen_on_switch);
-        defaultRepeatSpinner = view.findViewById(R.id.default_repeat_spinner);
+        scanAllAudioSwitch = view.findViewById(R.id.scan_all_audio_switch);
+        playOverOtherAppsSwitch = view.findViewById(R.id.play_over_other_apps_switch);
+        includedFolders = view.findViewById(R.id.included_folders);
 
         viewModel.getKeepScreenOn().observe(getViewLifecycleOwner(), keepScreenOnSwitch::setChecked);
-        viewModel.getDefaultRepeatMode().observe(getViewLifecycleOwner(), defaultRepeatSpinner::setSelection);
+        viewModel.getPlayOverOtherApps().observe(getViewLifecycleOwner(), playOverOtherAppsSwitch::setChecked);
 
         keepScreenOnSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             viewModel.setKeepScreenOn(isChecked);
         });
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                requireContext(), R.array.repeat_modes, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        defaultRepeatSpinner.setAdapter(adapter);
-        defaultRepeatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                viewModel.setDefaultRepeatMode(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+        playOverOtherAppsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewModel.setPlayOverOtherApps(isChecked);
         });
 
-        TextView scanAllAudio = view.findViewById(R.id.scan_all_audio);
-        TextView includedFolders = view.findViewById(R.id.included_folders);
+        scanAllAudioSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewModel.setScanAllAudio(isChecked);
+        });
+
+        viewModel.getScanAllAudio().observe(getViewLifecycleOwner(), scanAll -> {
+            scanAllAudioSwitch.setChecked(scanAll);
+            includedFolders.setEnabled(!scanAll);
+            includedFolders.setAlpha(scanAll ? 0.38f : 1f);
+        });
+
         TextView excludedFolders = view.findViewById(R.id.excluded_folders);
-
-        scanAllAudio.setOnClickListener(v -> {
-            viewModel.triggerScan();
-            Toast.makeText(requireContext(), R.string.scanning_started, Toast.LENGTH_SHORT).show();
-        });
+        TextView audioFormats = view.findViewById(R.id.audio_formats);
 
         includedFolders.setOnClickListener(v -> showFolderDialog(false));
         excludedFolders.setOnClickListener(v -> showFolderDialog(true));
+        audioFormats.setOnClickListener(v -> showFormatDialog());
     }
 
     private void showFolderDialog(boolean isExcluded) {
@@ -163,5 +169,80 @@ public class SettingsFragment extends Fragment {
             }
         } catch (Exception ignored) {}
         return treeUri.getPath();
+    }
+
+    @SuppressLint("InflateParams")
+    private void showFormatDialog() {
+        Map<String, List<String>> groups = SettingsViewModel.getFormatGroups();
+        Set<String> enabled = viewModel.getAudioFormats().getValue();
+        if (enabled == null) enabled = new HashSet<>();
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setTitle(R.string.audio_formats);
+
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_audio_formats, null);
+        builder.setView(dialogView);
+
+        LinearLayout container = dialogView.findViewById(R.id.format_container);
+        container.removeAllViews();
+
+        TextView selectAll = new TextView(requireContext());
+        selectAll.setText(R.string.select_all);
+        selectAll.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyLarge);
+        selectAll.setPadding(0, 0, 0, (int) (8 * getResources().getDisplayMetrics().density));
+        selectAll.setClickable(true);
+        selectAll.setFocusable(true);
+        selectAll.setOnClickListener(v -> {
+            viewModel.setAllFormats(viewModel.getAllFormatExtensions());
+            updateFormatCheckboxes(container, viewModel.getAudioFormats().getValue());
+        });
+        container.addView(selectAll);
+
+        TextView deselectAll = new TextView(requireContext());
+        deselectAll.setText(R.string.deselect_all);
+        deselectAll.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyLarge);
+        deselectAll.setPadding(0, 0, 0, (int) (8 * getResources().getDisplayMetrics().density));
+        deselectAll.setClickable(true);
+        deselectAll.setFocusable(true);
+        deselectAll.setOnClickListener(v -> {
+            viewModel.setAllFormats(new HashSet<>());
+            updateFormatCheckboxes(container, viewModel.getAudioFormats().getValue());
+        });
+        container.addView(deselectAll);
+
+        int headerTopPadding = (int) (16 * getResources().getDisplayMetrics().density);
+        int headerBottomPadding = (int) (4 * getResources().getDisplayMetrics().density);
+
+        for (Map.Entry<String, List<String>> entry : groups.entrySet()) {
+            TextView header = new TextView(requireContext());
+            header.setText(entry.getKey());
+            header.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleSmall);
+            header.setPadding(0, headerTopPadding, 0, headerBottomPadding);
+            container.addView(header);
+
+            for (String format : entry.getValue()) {
+                CheckBox checkBox = new CheckBox(requireContext());
+                checkBox.setText("." + format);
+                checkBox.setChecked(enabled.contains(format));
+                checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    viewModel.toggleAudioFormat(format);
+                });
+                container.addView(checkBox);
+            }
+        }
+
+        builder.setPositiveButton(R.string.close, null);
+        builder.show();
+    }
+
+    private void updateFormatCheckboxes(LinearLayout container, Set<String> enabled) {
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            if (child instanceof CheckBox) {
+                String text = ((CheckBox) child).getText().toString();
+                String format = text.startsWith(".") ? text.substring(1) : text;
+                ((CheckBox) child).setChecked(enabled != null && enabled.contains(format));
+            }
+        }
     }
 }

@@ -49,8 +49,9 @@ public class MusicScanner {
                 int dateAddedCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED);
                 int dataCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
-                Set<String> included = prefs != null ? prefs.getIncludedFolders() : null;
-                Set<String> excluded = prefs != null ? prefs.getExcludedFolders() : null;
+                boolean scanAllAudio = prefs == null || prefs.isScanAllAudio();
+                Set<String> included = !scanAllAudio ? prefs.getIncludedFolders() : null;
+                Set<String> excluded = !scanAllAudio ? prefs.getExcludedFolders() : null;
                 boolean hasIncluded = included != null && !included.isEmpty();
                 boolean hasExcluded = excluded != null && !excluded.isEmpty();
 
@@ -77,6 +78,12 @@ public class MusicScanner {
                             }
                         }
                         if (match) continue;
+                    }
+
+                    Set<String> audioFormats = prefs != null ? prefs.getAudioFormats() : null;
+                    if (audioFormats != null && !audioFormats.isEmpty() && filePath != null) {
+                        String ext = getFileExtension(filePath);
+                        if (ext != null && !audioFormats.contains(ext)) continue;
                     }
 
                     long id = idCol >= 0 ? cursor.getLong(idCol) : 0;
@@ -110,5 +117,13 @@ public class MusicScanner {
             e.printStackTrace();
         }
         return audioList;
+    }
+
+    private static String getFileExtension(String path) {
+        int dot = path.lastIndexOf('.');
+        if (dot >= 0 && dot < path.length() - 1) {
+            return path.substring(dot + 1).toLowerCase();
+        }
+        return null;
     }
 }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="repeat_modes">
-        <item>@string/repeat_off</item>
-        <item>@string/repeat_all</item>
-        <item>@string/repeat_one</item>
-    </string-array>
-</resources>

@@ -33,6 +33,7 @@ import exp.miniplayer.utils.PermissionHelper;
 import exp.miniplayer.utils.PreferencesManager;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MusicService extends android.app.Service implements
@@ -66,6 +67,7 @@ public class MusicService extends android.app.Service implements
         musicPlayer.addListener(this);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         prefs = new PreferencesManager(this);
+        restorePlayerState();
         createNotificationChannel();
         registerBecomingNoisyReceiver();
         setupMediaSession();
@@ -116,18 +118,44 @@ public class MusicService extends android.app.Service implements
     }
 
     public void playQueue(List<Audio> queue, int startIndex) {
+        if (!isForeground) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
+                    || checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    startForeground(NOTIFICATION_ID, buildBasicNotification());
+                    isForeground = true;
+                } catch (Exception ignored) {}
+            }
+        }
         requestAudioFocus();
         musicPlayer.setQueue(queue, startIndex);
         musicPlayer.play();
     }
 
     private void requestAudioFocus() {
+        if (prefs.isPlayOverOtherApps()) {
+            abandonAudioFocus();
+            return;
+        }
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 audioManager.requestAudioFocus(audioFocusRequest);
             } else {
                 audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC,
                         AudioManager.AUDIOFOCUS_GAIN);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void abandonAudioFocus() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && audioFocusRequest != null) {
+                audioManager.abandonAudioFocusRequest(audioFocusRequest);
+            } else {
+                audioManager.abandonAudioFocus(this);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -275,6 +303,9 @@ public class MusicService extends android.app.Service implements
 
     @Override
     public void onTrackChanged(Audio audio, int index) {
+        if (audio != null) {
+            prefs.saveLastPlayedTrack(audio);
+        }
         updateNotification();
     }
 
@@ -310,7 +341,12 @@ public class MusicService extends android.app.Service implements
     public void onRepeatModeChanged(int mode) {}
 
     @Override
-    public void onQueueEnded() {}
+    public void onQueueEnded() {
+        Audio current = musicPlayer.getCurrentAudio();
+        if (current != null) {
+            prefs.saveLastPlayedTrack(current);
+        }
+    }
 
     private Notification buildBasicNotification() {
         return new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -320,6 +356,16 @@ public class MusicService extends android.app.Service implements
                 .setOngoing(true)
                 .setShowWhen(false)
                 .build();
+    }
+
+    private void restorePlayerState() {
+        if (musicPlayer.getCurrentAudio() != null) return;
+        Audio lastTrack = prefs.getLastPlayedTrack();
+        if (lastTrack != null) {
+            List<Audio> singleQueue = new ArrayList<>();
+            singleQueue.add(lastTrack);
+            musicPlayer.setQueue(singleQueue, 0);
+        }
     }
 
     @Override

@@ -10,19 +10,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageButton
+            android:id="@+id/close_sheet_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/padding_medium"
+            android:layout_marginTop="@dimen/padding_large"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="center"
+            android:src="@drawable/ic_arrow_down"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/now_playing_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/padding_medium"
+            android:layout_marginStart="@dimen/padding_small"
+            android:layout_marginEnd="@dimen/padding_medium"
             android:layout_marginTop="@dimen/padding_large"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceHeadlineSmall"
             android:textColor="?attr/colorOnSurface"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/favorite_button"
+            app:layout_constraintStart_toEndOf="@id/close_sheet_button"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/now_playing_artist"
@@ -151,8 +164,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/padding_medium"
+            android:layout_marginTop="@dimen/padding_large"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="center"
+            android:padding="8dp"
             android:src="@drawable/ic_favorite_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

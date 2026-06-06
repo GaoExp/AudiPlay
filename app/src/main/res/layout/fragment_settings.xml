@@ -33,12 +33,36 @@
                 android:orientation="vertical"
                 android:padding="@dimen/padding_small">
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/keep_screen_on_switch"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/keep_screen_on"
-                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/padding_small"
+                    android:paddingBottom="@dimen/padding_small">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/keep_screen_on"
+                        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/keep_screen_on_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_small"
+                    android:paddingStart="@dimen/padding_small"
+                    android:text="@string/keep_screen_on_subtitle"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <View
                     android:layout_width="match_parent"
@@ -50,21 +74,31 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="@dimen/padding_small">
+                    android:paddingTop="@dimen/padding_small"
+                    android:paddingBottom="@dimen/padding_small">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/default_repeat_mode"
+                        android:text="@string/play_over_other_apps"
                         android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-                    <Spinner
-                        android:id="@+id/default_repeat_spinner"
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/play_over_other_apps_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/padding_small"
+                    android:paddingStart="@dimen/padding_small"
+                    android:text="@string/play_over_other_apps_subtitle"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
 
             </LinearLayout>
 
@@ -92,16 +126,26 @@
                 android:orientation="vertical"
                 android:padding="@dimen/padding_small">
 
-                <TextView
-                    android:id="@+id/scan_all_audio"
-                    style="?android:attr/buttonBarButtonStyle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:paddingVertical="@dimen/padding_small"
-                    android:text="@string/scan_all_audio"
-                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/padding_small">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/scan_all_audio"
+                        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/scan_all_audio_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -133,6 +177,22 @@
                     android:focusable="true"
                     android:paddingVertical="@dimen/padding_small"
                     android:text="@string/excluded_folders"
+                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/colorOutlineVariant" />
+
+                <TextView
+                    android:id="@+id/audio_formats"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:paddingVertical="@dimen/padding_small"
+                    android:text="@string/audio_formats"
                     android:textAppearance="?attr/textAppearanceBodyLarge" />
 
             </LinearLayout>

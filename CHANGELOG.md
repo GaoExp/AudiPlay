@@ -1,3 +1,49 @@
+## [1.0.0.1.2] - 2026-06-06
+
+### 🔢 Version
+- versionCode: 6
+- versionName: 1.0.0.1.2
+
+### ✨ Fitur Baru
+- Format Audio di Settings — filter file berdasarkan ekstensi format (Audio, Rekaman, MIDI, Video, Stream)
+
+### ♻️ Perubahan Fitur
+- mini player selalu tampil di bawah meski tidak ada lagu diputar
+- tampilan kosong: judul "Mini Player", subjudul "Pilih lagu untuk diputar"
+- Scan All Audio diubah dari tombol klik jadi SwitchCompat — saat ON, semua audio dipindai tanpa filter folder; saat OFF, hanya folder yang disertakan dipindai
+- Folder Disertakan otomatis dinonaktifkan (disabled/greyed out) saat Scan All Audio aktif
+- Hapus opsi Mode Ulang Default di Pengaturan
+- Jaga Layar Tetap Nyala ditambahi informasi "Membatalkan batas waktu layar"
+- Tambah opsi Putar Audio Diatas Aplikasi Lain — toggle + informasi "Tidak ada gangguan pemutaran"; implementasi: skip audio focus request saat ON, abandon fokus, pause kalah fokus saat OFF
+- Tambah tombol panah bawah (▼) di Now Playing untuk menutup expanded player
+- Icon favorit dirapikan — posisi, padding, hapus redundant android:tint
+- Navigasi ganti lagu: dari ketukan sisi (previous/next) jadi swipe kiri/kanan di album art
+- Tombol panah bawah & favorit di Now Playing tidak bisa ditekan — diperbaiki (mini_player_overlay disembunyikan saat expanded)
+
+### 🗒️ File Added
+- `app/src/main/res/layout/dialog_audio_formats.xml`
+
+### 🐞 Bug Fixes
+- lagu berhenti saat keluar app — `startForeground()` dipanggil di `playQueue()` SEBELUM player mulai (hindari `ForegroundServiceStartNotAllowedException` di Android 12+)
+- lagu berhenti sendiri & now playing kosong (service restart) — simpan track terakhir ke SharedPreferences, pulihkan saat service restart
+- file audio corrupt/codec error — ExoPlayer skip ke track berikutnya (onPlayerError)
+- queue habis (repeat off) — togglePlayPause restart dari awal, bukan diam
+
+### ✏️ File Changed
+- `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java`
+- `app/src/main/java/exp/miniplayer/utils/MusicScanner.java`
+- `app/src/main/java/exp/miniplayer/player/MusicPlayer.java`
+- `app/src/main/java/exp/miniplayer/service/MusicService.java`
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java`
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java`
+- `app/src/main/res/layout/fragment_settings.xml`
+- `app/src/main/res/values/strings.xml`
+- `app/src/main/res/layout/view_now_playing_sheet.xml`
+- `app/src/main/java/exp/miniplayer/MainActivity.java`
+- `app/src/main/res/drawable/ic_favorite.xml`
+- `app/src/main/res/drawable/ic_favorite_border.xml`
+- `app/src/main/res/values/arrays.xml`
+
 ## [1.0.0.1.1] - 2026-06-06
 
 ### 🔢 Version
