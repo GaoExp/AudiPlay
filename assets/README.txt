@@ -21,7 +21,7 @@ INFORMASI PROJECT
 Package       : exp.miniplayer
 Target SDK    : 35
 Min SDK       : 26
-Version       : 1.0.0.0.0
+Version       : 1.0.0.0.1
 Build System  : Gradle + AGP 8.12.0
 
 TECH STACK
