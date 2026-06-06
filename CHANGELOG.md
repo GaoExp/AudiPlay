@@ -1,4 +1,27 @@
-# Changelog — Mini Player
+## [1.0.0.1.0] - 2026-06-06
+
+### 🔢 Version
+- versionCode: 4
+- versionName: 1.0.0.1.0
+
+### ✨ Fitur Baru
+- migrasi navigasi dari Bottom Navigation Bar ke Navigation Drawer (sidebar)
+- tambah Toolbar dengan hamburger icon
+
+### ♻️ Perubahan Fitur
+- warna diubah ke palet dark theme Material3 sepenuhnya
+- hapus folder values-night (tidak terpakai)
+
+### 🐞 Bug Fixes
+- fix force close SongsFragment — cast SearchView pakai instanceof
+
+### ✏️ File Changed
+- `MainActivity.java`
+- `SongsFragment.java`
+- `activity_main.xml`
+- `strings.xml`
+- `app/src/main/res/values/colors.xml`
+- `STRUKTUR.md`
 
 ## [1.0.0.0.2] - 2026-06-06
 

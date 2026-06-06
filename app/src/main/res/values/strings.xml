@@ -25,8 +25,6 @@
     <string name="name_z_a">Name Z-A</string>
     <string name="duration">Duration</string>
     <string name="date_added">Date Added</string>
-    <string name="dark_mode">Dark Mode</string>
-    <string name="follow_system">Follow System Theme</string>
     <string name="keep_screen_on">Keep Screen On</string>
     <string name="default_repeat_mode">Default Repeat Mode</string>
     <string name="repeat_off">Repeat Off</string>
@@ -48,4 +46,6 @@
     <string name="shuffle">Shuffle</string>
     <string name="now_playing">Now Playing</string>
     <string name="channel_playback">Playback</string>
+    <string name="open_drawer">Open navigation</string>
+    <string name="close_drawer">Close navigation</string>
 </resources>

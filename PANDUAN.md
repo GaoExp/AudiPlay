@@ -21,9 +21,13 @@
 
 ## Navigasi
 
-Bottom Navigation Bar terdiri dari 4 tab:
+Aplikasi menggunakan **Navigation Drawer** (sidebar) yang bisa dibuka dengan:
+- Tap ikon hamburger (☰) di kiri atas
+- Swipe dari tepi kiri layar
 
-| Tab        | Ikon           | Fungsi                          |
+Drawer terdiri dari 4 menu:
+
+| Menu       | Ikon           | Fungsi                          |
 |------------|----------------|---------------------------------|
 | Songs      | Musik note     | Daftar semua lagu               |
 | Favorites  | Heart          | Lagu yang ditandai favorit      |
@@ -72,8 +76,6 @@ Bottom Navigation Bar terdiri dari 4 tab:
 - Notifikasi dengan tampilan informasi lagu
 
 ### Pengaturan (Settings)
-- **Dark Mode** — Aktif/nonaktifkan tema gelap
-- **Follow System Theme** — Ikuti tema sistem
 - **Keep Screen On** — Layar tetap menyala saat pemutaran
 - **Default Repeat Mode** — Atur mode ulang default
 - **Scan All Audio** — Pindai ulang semua file audio

@@ -15,34 +15,18 @@ import exp.miniplayer.utils.PreferencesManager;
 public class SettingsViewModel extends AndroidViewModel {
 
     private final PreferencesManager prefs;
-    private final MutableLiveData<Boolean> darkMode;
-    private final MutableLiveData<Boolean> followSystem;
     private final MutableLiveData<Boolean> keepScreenOn;
     private final MutableLiveData<Integer> defaultRepeatMode;
 
     public SettingsViewModel(@NonNull Application application) {
         super(application);
         prefs = new PreferencesManager(application);
-        darkMode = new MutableLiveData<>(prefs.isDarkMode());
-        followSystem = new MutableLiveData<>(prefs.isFollowSystem());
         keepScreenOn = new MutableLiveData<>(prefs.isKeepScreenOn());
         defaultRepeatMode = new MutableLiveData<>(prefs.getDefaultRepeatMode());
     }
 
-    public LiveData<Boolean> getDarkMode() { return darkMode; }
-    public LiveData<Boolean> getFollowSystem() { return followSystem; }
     public LiveData<Boolean> getKeepScreenOn() { return keepScreenOn; }
     public LiveData<Integer> getDefaultRepeatMode() { return defaultRepeatMode; }
-
-    public void setDarkMode(boolean enabled) {
-        prefs.setDarkMode(enabled);
-        darkMode.setValue(enabled);
-    }
-
-    public void setFollowSystem(boolean enabled) {
-        prefs.setFollowSystem(enabled);
-        followSystem.setValue(enabled);
-    }
 
     public void setKeepScreenOn(boolean enabled) {
         prefs.setKeepScreenOn(enabled);

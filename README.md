@@ -11,7 +11,7 @@ Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka mi
 - **Now Playing** — Antarmuka pemutaran dengan kontrol lengkap
 - **Mini Player Bar** — Bar persistent untuk akses cepat ke pemutaran
 - **Mode Acak & Ulang** — Shuffle, Repeat All, Repeat One
-- **Dark Mode** — Tampilan gelap dan ikuti tema sistem
+- **Dark Mode** — Tema gelap selalu aktif
 - **Pencarian** — Cari lagu dengan cepat
 - **Background Playback** — Musik tetap berjalan saat aplikasi di-minimize
 - **Notifikasi** — Kontrol pemutaran dari notifikasi
@@ -23,13 +23,13 @@ Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka mi
 | Package           | exp.miniplayer                  |
 | Target SDK        | 35                              |
 | Min SDK           | 26                              |
-| Version           | 1.0.0.0.2                       |
+| Version           | 1.0.0.1.0                       |
 | Build System      | Gradle + AGP 8.12.0             |
 
 ## Tech Stack
 
 - **Bahasa** — Java
-- **UI** — ViewBinding, Fragment, Bottom Navigation
+- **UI** — ViewBinding, Fragment, Navigation Drawer
 - **Pemutaran** — Media3 ExoPlayer (1.5.1)
 - **Database** — Room (2.6.1)
 - **Arsitektur** — MVVM (LiveData + ViewModel)

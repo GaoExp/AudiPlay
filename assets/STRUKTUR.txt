@@ -23,7 +23,6 @@ AudiPlay/
 │       │   ├── layout/           # Layout XML (activity, fragment, item, view)
 │       │   ├── menu/             # Menu definitions
 │       │   ├── values/           # strings, colors, themes, dimens, arrays
-│       │   ├── values-night/     # Dark theme
 │       │   ├── mipmap-*/         # Launcher icons
 │       │   └── xml/              # Backup rules
 │       │

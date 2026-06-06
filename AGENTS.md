@@ -294,20 +294,43 @@ Aturan penulisan ada di **Section 2 — CHANGELOG.txt** di atas.
  
 --- 
  
-## 4. Workflow AI 
+## 4. Workflow AI
 
-Sesudah mengedit: 
+Ada dua mode kerja: **Edit Biasa** dan **Rilis**.
 
-1. update kode 
-2. update versionCode 
-3. update versionName 
-4. update `CHANGELOG.md` (root) + `CHANGELOG.txt` (assets)
-5. update pasangan dokumentasi yang relevan (.md root + .txt assets):
+### 4.1 Edit Biasa (default)
+
+Setelah mengedit kode:
+
+1. update kode
+2. catat perubahan di `CHANGELOG.md` + `CHANGELOG.txt` pada **entry versi terakhir**
+   - jika belum ada entry versi, buat entry baru dengan format `## [X.X.X.X.X] - YYYY-MM-DD`
+   - **JANGAN** buat entry versi baru jika sudah ada entry untuk versi saat ini
+3. update pasangan dokumentasi yang relevan (.md root + .txt assets):
    - `README.md` + `README.txt`
    - `STRUKTUR.md` + `STRUKTUR.txt`
    - `PANDUAN.md` + `PANDUAN.txt`
    - `DEVELOPMENT.md` + `DEVELOPMENT.txt`
    - `TENTANG.md` + `TENTANG.txt`
+4. **JANGAN** update versionCode / versionName
+5. **JANGAN** commit
+6. **JANGAN** tag
+
+### 4.2 Rilis (hanya saat diperintahkan)
+
+Saat user memerintahkan commit & tag:
+
+1. pastikan kode sudah lengkap
+2. update versionCode (+1)
+3. update versionName sesuai Algoritma Increment (Section 1)
+4. update `CHANGELOG.md` + `CHANGELOG.txt`:
+   - buat entry baru di paling atas dengan format `## [X.X.X.X.X] - YYYY-MM-DD`
+   - atau tulis ulang ringkasan perubahan untuk release ini
+5. update semua pasangan dokumentasi yang relevan
+6. **JANGAN commit dulu** — pastikan semua dokumen tersinkronisasi
+7. setelah semua siap: `git add -A && git commit`
+8. `git tag vX.X.X.X.X`
+9. beri tahu user bahwa tinggal `git push`
  
 --- 
  
@@ -322,7 +345,6 @@ JANGAN:
 - mengaudit seluruh project tanpa diminta 
 - membuat checklist panjang maupun singkat untuk request sederhana (important) 
 - memberi penjelasan panjang bila tidak diminta 
-- melakukan over-engineering 
  
 Utamakan: 
 - perubahan minimal 
@@ -338,8 +360,6 @@ jangan terlalu rajin.
 Jika user meminta perubahan kecil, 
 kerjakan perubahan kecil. 
  
-JANGAN memperluas scope sendiri. 
- 
 ### Chat Response Rules 
  
 Default response style: 
@@ -351,6 +371,6 @@ JANGAN:
 - menjelaskan langkah yang tidak dilakukan 
 - membuat audit project tanpa diminta 
 - menjelaskan teori panjang untuk perubahan sederhana 
-- menambahkan rekomendasi besar di luar request 
+- menambahkan rekomendasi besar di luar request tanpa diminta
  
 Jika request sederhana = jawab sederhana.

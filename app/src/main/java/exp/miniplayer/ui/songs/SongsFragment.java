@@ -108,8 +108,9 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
         inflater.inflate(R.menu.songs_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-            if (searchView != null) {
+            View actionView = searchItem.getActionView();
+            if (actionView instanceof SearchView) {
+                searchView = (SearchView) actionView;
                 searchView.setQueryHint(getString(R.string.search_songs));
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override

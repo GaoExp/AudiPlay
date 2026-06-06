@@ -2,13 +2,12 @@ package exp.miniplayer;
 
 import android.app.Application;
 
-import exp.miniplayer.utils.PreferencesManager;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class MiniPlayerApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        PreferencesManager prefs = new PreferencesManager(this);
-        prefs.applyTheme();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 }

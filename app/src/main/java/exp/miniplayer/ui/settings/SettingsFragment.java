@@ -24,8 +24,6 @@ import exp.miniplayer.R;
 public class SettingsFragment extends Fragment {
 
     private SettingsViewModel viewModel;
-    private SwitchCompat darkModeSwitch;
-    private SwitchCompat followSystemSwitch;
     private SwitchCompat keepScreenOnSwitch;
     private Spinner defaultRepeatSpinner;
 
@@ -42,25 +40,12 @@ public class SettingsFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
-        darkModeSwitch = view.findViewById(R.id.dark_mode_switch);
-        followSystemSwitch = view.findViewById(R.id.follow_system_switch);
         keepScreenOnSwitch = view.findViewById(R.id.keep_screen_on_switch);
         defaultRepeatSpinner = view.findViewById(R.id.default_repeat_spinner);
 
-        viewModel.getDarkMode().observe(getViewLifecycleOwner(), darkModeSwitch::setChecked);
-        viewModel.getFollowSystem().observe(getViewLifecycleOwner(), followSystemSwitch::setChecked);
         viewModel.getKeepScreenOn().observe(getViewLifecycleOwner(), keepScreenOnSwitch::setChecked);
         viewModel.getDefaultRepeatMode().observe(getViewLifecycleOwner(), mode -> {
             defaultRepeatSpinner.setSelection(mode);
-        });
-
-        darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            viewModel.setDarkMode(isChecked);
-        });
-
-        followSystemSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            viewModel.setFollowSystem(isChecked);
-            darkModeSwitch.setEnabled(!isChecked);
         });
 
         keepScreenOnSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -80,7 +65,5 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-
-        darkModeSwitch.setEnabled(!followSystemSwitch.isChecked());
     }
 }

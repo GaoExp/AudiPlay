@@ -14,13 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import exp.miniplayer.model.Audio;
 import exp.miniplayer.player.MusicPlayer;
@@ -35,7 +38,8 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity implements MusicPlayer.PlayerListener {
 
-    private BottomNavigationView bottomNavigationView;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
     private FragmentManager fragmentManager;
 
     private MusicService musicService;
@@ -73,27 +77,36 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
 
         fragmentManager = getSupportFragmentManager();
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar,
+                R.string.open_drawer, R.string.close_drawer);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_songs) {
                 loadFragment(new SongsFragment(), "songs");
-                return true;
             } else if (itemId == R.id.nav_favorites) {
                 loadFragment(new FavoritesFragment(), "favorites");
-                return true;
             } else if (itemId == R.id.nav_playlists) {
                 loadFragment(new PlaylistFragment(), "playlists");
-                return true;
             } else if (itemId == R.id.nav_settings) {
                 loadFragment(new SettingsFragment(), "settings");
-                return true;
             }
-            return false;
+            drawerLayout.closeDrawers();
+            return true;
         });
 
         if (savedInstanceState == null) {
-            bottomNavigationView.setSelectedItemId(R.id.nav_songs);
+            navigationView.setCheckedItem(R.id.nav_songs);
+            loadFragment(new SongsFragment(), "songs");
         }
 
         startService(new Intent(this, MusicService.class));
