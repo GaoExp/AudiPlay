@@ -1,19 +1,5 @@
 # Changelog — Mini Player
 
-## [1.0.0.0.1] - 2026-06-06
-
-### 🔢 Version
-- versionCode: 2
-- versionName: 1.0.0.0.1
-
-### 🔧 Optimasi & Penyesuaian
-- hapus `aapt2FromMavenOverride` dari gradle.properties (menyebabkan gagal di CI)
-
-### ✏️ File Changed
-- `.github/workflows/release.yml`
-- `gradle.properties`
-- `app/build.gradle`
-
 ## [1.0.0.0.0] - 2026-06-06
 
 ### 🔢 Version
