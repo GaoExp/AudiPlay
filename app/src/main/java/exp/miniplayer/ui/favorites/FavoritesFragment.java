@@ -52,6 +52,32 @@ public class FavoritesFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(FavoritesViewModel.class);
         repository = viewModel.getRepository();
 
+        adapter = new SongAdapter(requireContext(), new ArrayList<>());
+        adapter.setOnItemClickListener((audio, position) -> {
+            List<Audio> currentList = adapter.getCurrentList();
+            QueueHolder.setQueue(currentList, position);
+            Intent intent = new Intent(requireContext(), NowPlayingActivity.class);
+            startActivity(intent);
+        });
+        adapter.setOnItemLongClickListener((audio, position) -> {
+            PopupMenu popup = new PopupMenu(requireContext(), recyclerView);
+            popup.getMenuInflater().inflate(R.menu.song_options_menu, popup.getMenu());
+            popup.getMenu().findItem(R.id.action_add_favorite)
+                    .setTitle(getString(R.string.remove_from_favorites));
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.action_add_favorite) {
+                    viewModel.removeFavorite(audio.getId());
+                    Toast.makeText(requireContext(), "Removed from favorites",
+                            Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
+            return true;
+        });
+        recyclerView.setAdapter(adapter);
+
         viewModel.getFavoriteEntities().observe(getViewLifecycleOwner(), favorites -> {
             if (favorites == null || favorites.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
@@ -66,30 +92,7 @@ public class FavoritesFragment extends Fragment {
                             entity.getUri(), entity.getAlbumArt(), entity.getAddedAt());
                     audioList.add(audio);
                 }
-                adapter = new SongAdapter(requireContext(), audioList);
-                adapter.setOnItemClickListener((audio, position) -> {
-                    QueueHolder.setQueue(audioList, position);
-                    Intent intent = new Intent(requireContext(), NowPlayingActivity.class);
-                    startActivity(intent);
-                });
-                adapter.setOnItemLongClickListener((audio, position1) -> {
-                    PopupMenu popup = new PopupMenu(requireContext(), recyclerView);
-                    popup.getMenuInflater().inflate(R.menu.song_options_menu, popup.getMenu());
-                    popup.getMenu().findItem(R.id.action_add_favorite)
-                            .setTitle(getString(R.string.remove_from_favorites));
-                    popup.setOnMenuItemClickListener(item -> {
-                        if (item.getItemId() == R.id.action_add_favorite) {
-                            viewModel.removeFavorite(audio.getId());
-                            Toast.makeText(requireContext(), "Removed from favorites",
-                                    Toast.LENGTH_SHORT).show();
-                            return true;
-                        }
-                        return false;
-                    });
-                    popup.show();
-                    return true;
-                });
-                recyclerView.setAdapter(adapter);
+                adapter.updateData(audioList);
             }
         });
     }

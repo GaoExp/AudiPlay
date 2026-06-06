@@ -1,5 +1,25 @@
 # Changelog — Mini Player
 
+## [1.0.0.0.2] - 2026-06-06
+
+### 🔢 Version
+- versionCode: 3
+- versionName: 1.0.0.0.2
+
+### 🐞 Bug Fixes
+- hapus `fallbackToDestructiveMigration()` agar data tidak terhapus saat migrasi
+- `previous()` sekarang restart dari 10 detik, bukan langsung loncat lagu
+- adapter song tidak dibuat ulang setiap data change
+- reset posisi & durasi saat queue habis
+
+### ✏️ File Changed
+- `AppDatabase.java`
+- `MusicPlayer.java`
+- `SongAdapter.java`
+- `SongsFragment.java`
+- `FavoritesFragment.java`
+- `NowPlayingViewModel.java`
+
 ## [1.0.0.0.1] - 2026-06-06
 
 ### 🔢 Version

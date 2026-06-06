@@ -84,13 +84,7 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyView.setVisibility(View.GONE);
-                adapter = new SongAdapter(requireContext(), audioList);
-                adapter.setOnItemClickListener(this);
-                adapter.setOnItemLongClickListener((audio, position) -> {
-                    showSongOptions(audio);
-                    return true;
-                });
-                recyclerView.setAdapter(adapter);
+                adapter.updateData(audioList);
             }
         });
 

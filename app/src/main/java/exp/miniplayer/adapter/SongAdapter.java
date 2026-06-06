@@ -48,6 +48,12 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         this.onItemLongClickListener = listener;
     }
 
+    public void updateData(List<Audio> newList) {
+        audioList.clear();
+        audioList.addAll(newList);
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -81,6 +87,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     @Override
     public int getItemCount() {
         return audioList.size();
+    }
+
+    public List<Audio> getCurrentList() {
+        return new ArrayList<>(audioList);
     }
 
     private void loadAlbumArt(String albumArtUri, ImageView imageView) {

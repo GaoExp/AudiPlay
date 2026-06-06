@@ -230,5 +230,7 @@ public class NowPlayingViewModel extends AndroidViewModel implements MusicPlayer
     @Override
     public void onQueueEnded() {
         isPlaying.postValue(false);
+        currentPosition.postValue(0L);
+        duration.postValue(0L);
     }
 }

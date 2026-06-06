@@ -135,7 +135,12 @@ public class MusicPlayer {
 
     public void previous() {
         try {
-            exoPlayer.seekToPreviousMediaItem();
+            long currentPos = exoPlayer.getCurrentPosition();
+            if (currentPos > 10000) {
+                exoPlayer.seekTo(0);
+            } else {
+                exoPlayer.seekToPreviousMediaItem();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
