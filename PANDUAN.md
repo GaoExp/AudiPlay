@@ -55,20 +55,13 @@ Drawer terdiri dari 4 menu:
 - Tambah/hapus lagu dari playlist
 - Lihat detail isi playlist
 
-### Mini Player Bar
-- Bar persistent di bagian bawah saat lagu diputar
-- Menampilkan judul, artis, dan album art
-- Tombol play/pause untuk kontrol cepat
-- Tap bar untuk membuka layar Now Playing penuh
-
-### Now Playing
-- Cover art placeholder
-- Informasi lagu (judul, artis, album)
-- Kontrol pemutaran: Play/Pause, Next, Previous
-- Mode Shuffle
-- Mode Repeat (Off, All, One)
-- Progress bar & time display
-- Seek slider
+### Bottom Sheet Player
+- Mini player bar di bagian bawah saat lagu diputar (judul, artis, album art, play/pause)
+- Tap atau swipe up pada bar untuk membuka pemutaran penuh
+- Tampilan penuh: cover art, judul, artis, seek slider, progress time
+- Kontrol pemutaran: Shuffle, Previous, Play/Pause, Next, Repeat
+- Tombol Favorit di pojok kanan atas
+- Swipe down untuk menutup tampilan penuh kembali ke mini player
 
 ### Pemutaran Background
 - Musik tetap berjalan saat aplikasi di-minimize

@@ -1,7 +1,6 @@
 package exp.miniplayer.ui.songs;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,11 +26,8 @@ import exp.miniplayer.adapter.SongAdapter;
 import exp.miniplayer.data.AudioRepository;
 import exp.miniplayer.database.PlaylistEntity;
 import exp.miniplayer.model.Audio;
-import exp.miniplayer.service.MusicService;
-import exp.miniplayer.ui.nowplaying.NowPlayingActivity;
 import exp.miniplayer.utils.PermissionHelper;
 import exp.miniplayer.utils.PreferencesManager;
-import exp.miniplayer.utils.QueueHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,9 +137,10 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
     @Override
     public void onItemClick(Audio audio, int position) {
         List<Audio> queue = repository.getCachedAudio();
-        QueueHolder.setQueue(queue, position);
-        Intent intent = new Intent(requireContext(), NowPlayingActivity.class);
-        startActivity(intent);
+        Activity activity = requireActivity();
+        if (activity instanceof MainActivity) {
+            ((MainActivity) activity).playFromSongs(queue, position);
+        }
     }
 
     private void showSongOptions(Audio audio) {

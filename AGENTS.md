@@ -296,41 +296,59 @@ Aturan penulisan ada di **Section 2 — CHANGELOG.txt** di atas.
  
 ## 4. Workflow AI
 
-Ada dua mode kerja: **Edit Biasa** dan **Rilis**.
+Siklus kerja: **setelah rilis → edit → rilis → edit → ...**
 
-### 4.1 Edit Biasa (default)
+### Aturan Dasar
 
-Setelah mengedit kode:
+- **JANGAN** commit atau tag kecuali diperintahkan secara eksplisit.
+- **JANGAN** membuat commit kosong atau tanpa perubahan kode.
+
+### 4.1 Setelah Rilis (commit & tag selesai)
+
+Setelah user memerintahkan rilis dan commit+tag sukses terbentuk, **versi saat ini dianggap final**.
+
+Perubahan berikutnya WAJIB menggunakan **versi baru**:
+
+1. update versionCode (+1)
+2. update versionName sesuai Algoritma Increment (Section 1)
+3. buat entry baru di `CHANGELOG.md` + `CHANGELOG.txt` di paling atas
+4. catat perubahan pada entry baru tersebut
+5. update pasangan dokumentasi yang relevan (.md root + .txt assets)
+6. **JANGAN commit**
+7. **JANGAN tag**
+
+### 4.2 Edit Biasa (versi sudah ada)
+
+Jika sudah ada entry versi yang sedang dikerjakan (belum di-commit/tag):
 
 1. update kode
-2. catat perubahan di `CHANGELOG.md` + `CHANGELOG.txt` pada **entry versi terakhir**
-   - jika belum ada entry versi, buat entry baru dengan format `## [X.X.X.X.X] - YYYY-MM-DD`
-   - **JANGAN** buat entry versi baru jika sudah ada entry untuk versi saat ini
+2. catat perubahan di `CHANGELOG.md` + `CHANGELOG.txt` pada **entry versi yang sedang dikerjakan**
 3. update pasangan dokumentasi yang relevan (.md root + .txt assets):
    - `README.md` + `README.txt`
    - `STRUKTUR.md` + `STRUKTUR.txt`
    - `PANDUAN.md` + `PANDUAN.txt`
    - `DEVELOPMENT.md` + `DEVELOPMENT.txt`
    - `TENTANG.md` + `TENTANG.txt`
-4. **JANGAN** update versionCode / versionName
+4. **JANGAN** update versionCode / versionName (sudah diatur di langkah 4.1)
 5. **JANGAN** commit
 6. **JANGAN** tag
 
-### 4.2 Rilis (hanya saat diperintahkan)
+### 4.3 Rilis (hanya saat diperintahkan)
 
 Saat user memerintahkan commit & tag:
 
 1. pastikan kode sudah lengkap
-2. update versionCode (+1)
-3. update versionName sesuai Algoritma Increment (Section 1)
-4. update `CHANGELOG.md` + `CHANGELOG.txt`:
-   - buat entry baru di paling atas dengan format `## [X.X.X.X.X] - YYYY-MM-DD`
-   - atau tulis ulang ringkasan perubahan untuk release ini
-5. update semua pasangan dokumentasi yang relevan
-6. **JANGAN commit dulu** — pastikan semua dokumen tersinkronisasi
-7. setelah semua siap: `git add -A && git commit`
-8. `git tag vX.X.X.X.X`
-9. beri tahu user bahwa tinggal `git push`
+2. **JIKA** versi sudah dibuat (langkah 4.1 sudah dijalankan sebelumnya):
+   - lewati update versionCode / versionName
+   - lewati update CHANGELOG (entry sudah ada)
+3. **JIKA** versi belum dibuat (lupa atau skip):
+   - update versionCode (+1)
+   - update versionName sesuai Algoritma Increment
+   - buat entry CHANGELOG baru
+4. update semua pasangan dokumentasi yang relevan — pastikan semuanya sinkron
+5. `git add -A && git commit`
+6. `git tag vX.X.X.X.X`
+7. beri tahu user bahwa tinggal `git push`
  
 --- 
  

@@ -9,10 +9,15 @@ import exp.miniplayer.model.Audio;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class MusicScanner {
 
     public static List<Audio> scanAudio(Context context) {
+        return scanAudio(context, null);
+    }
+
+    public static List<Audio> scanAudio(Context context, PreferencesManager prefs) {
         List<Audio> audioList = new ArrayList<>();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = {
@@ -25,7 +30,8 @@ public class MusicScanner {
                 MediaStore.Audio.Media.DATE_ADDED,
                 MediaStore.Audio.Media.SIZE,
                 MediaStore.Audio.Media.MIME_TYPE,
-                MediaStore.Audio.Media.IS_MUSIC
+                MediaStore.Audio.Media.IS_MUSIC,
+                MediaStore.Audio.Media.DATA
         };
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND "
                 + MediaStore.Audio.Media.DURATION + " > 0";
@@ -41,8 +47,38 @@ public class MusicScanner {
                 int durationCol = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
                 int albumIdCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
                 int dateAddedCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED);
+                int dataCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+
+                Set<String> included = prefs != null ? prefs.getIncludedFolders() : null;
+                Set<String> excluded = prefs != null ? prefs.getExcludedFolders() : null;
+                boolean hasIncluded = included != null && !included.isEmpty();
+                boolean hasExcluded = excluded != null && !excluded.isEmpty();
 
                 do {
+                    String filePath = dataCol >= 0 ? cursor.getString(dataCol) : null;
+
+                    if (hasIncluded && filePath != null) {
+                        boolean match = false;
+                        for (String folder : included) {
+                            if (filePath.startsWith(folder)) {
+                                match = true;
+                                break;
+                            }
+                        }
+                        if (!match) continue;
+                    }
+
+                    if (hasExcluded && filePath != null) {
+                        boolean match = false;
+                        for (String folder : excluded) {
+                            if (filePath.startsWith(folder)) {
+                                match = true;
+                                break;
+                            }
+                        }
+                        if (match) continue;
+                    }
+
                     long id = idCol >= 0 ? cursor.getLong(idCol) : 0;
                     String title = titleCol >= 0 ? cursor.getString(titleCol) : null;
                     String artist = artistCol >= 0 ? cursor.getString(artistCol) : null;
@@ -60,9 +96,9 @@ public class MusicScanner {
                     }
 
                     Audio audio = new Audio(id,
-                            title != null ? title : "Unknown Title",
-                            artist != null ? artist : "Unknown Artist",
-                            album != null ? album : "Unknown Album",
+                            title != null ? title : "",
+                            artist != null ? artist : "",
+                            album != null ? album : "",
                             duration,
                             contentUri,
                             albumArt,

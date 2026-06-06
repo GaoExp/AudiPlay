@@ -1,3 +1,73 @@
+[1.0.0.1.1] - 2026-06-06
+
+VERSION
+-------
+versionCode: 5
+versionName: 1.0.0.1.1
+
+FITUR BARU
+----------
+- implementasi Scan All Audio (trigger re-scan manual)
+- implementasi Included Folders (filter folder scan)
+- implementasi Excluded Folders (folder dilewati scan)
+
+PERUBAHAN FITUR
+---------------
+- semua string UI ke bahasa Indonesia
+- ikon tutup Now Playing dari x (close) jadi V (panah bawah)
+- judul & artis pindah ke toolbar Now Playing
+- tombol prev/next di mini player
+- swipe-down drag tutup Now Playing
+- Now Playing + mini player digabung jadi Bottom Sheet di MainActivity
+- kontrol pemutaran pindah ke MainActivity (shuffle, repeat, seekbar, favorit)
+- klik mini player buka expanded player (crossfade transform)
+- seret expanded player ke bawah collapse ke mini player
+
+OPTIMASI & PENYESUAIAN
+----------------------
+- tambah izin WAKE_LOCK
+- folder picker pakai SAF (file manager)
+- Now Playing jadi overlay
+- Bottom Sheet crossfade transform
+
+FILE ADDED
+----------
+- app/src/main/res/drawable/ic_arrow_down.xml
+- app/src/main/res/drawable/drag_handle_background.xml
+- app/src/main/res/layout/dialog_folder_list.xml
+- app/src/main/res/layout/item_folder.xml
+- app/src/main/res/layout/dialog_folder_input.xml
+- app/src/main/res/anim/slide_in_up.xml
+- app/src/main/res/anim/slide_out_down.xml
+- app/src/main/res/anim/stay.xml
+
+FILE CHANGED
+------------
+- app/src/main/AndroidManifest.xml
+- app/src/main/res/values/strings.xml
+- app/src/main/res/layout/fragment_settings.xml
+- app/src/main/res/layout/activity_main.xml
+- app/src/main/res/layout/view_now_playing_sheet.xml
+- app/src/main/res/values/themes.xml
+- app/src/main/res/values/dimens.xml
+- app/src/main/java/exp/miniplayer/utils/PreferencesManager.java
+- app/src/main/java/exp/miniplayer/utils/MusicScanner.java
+- app/src/main/java/exp/miniplayer/data/AudioRepository.java
+- app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java
+- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java
+- app/src/main/java/exp/miniplayer/MainActivity.java
+- app/src/main/java/exp/miniplayer/service/MusicService.java
+- app/src/main/java/exp/miniplayer/ui/songs/SongsFragment.java
+- app/src/main/java/exp/miniplayer/ui/favorites/FavoritesFragment.java
+- app/src/main/java/exp/miniplayer/ui/playlist/PlaylistDetailActivity.java
+
+FILE REMOVED
+------------
+- app/src/main/java/exp/miniplayer/ui/nowplaying/NowPlayingActivity.java
+- app/src/main/java/exp/miniplayer/ui/nowplaying/NowPlayingViewModel.java
+- app/src/main/res/layout/activity_now_playing.xml
+- app/src/main/res/layout/view_mini_player.xml
+
 [1.0.0.1.0] - 2026-06-06
 
 VERSION

@@ -20,7 +20,7 @@ AudiPlay/
 │       ├── AndroidManifest.xml
 │       ├── res/
 │       │   ├── drawable/         # Ikon & asset grafis
-│       │   ├── layout/           # Layout XML (activity, fragment, item, view)
+│       │   ├── layout/           # Layout XML (activity, fragment, item, sheet)
 │       │   ├── menu/             # Menu definitions
 │       │   ├── values/           # strings, colors, themes, dimens, arrays
 │       │   ├── mipmap-*/         # Launcher icons
@@ -68,9 +68,6 @@ AudiPlay/
 │               │   ├── PlaylistViewModel.java
 │               │   ├── PlaylistDetailActivity.java
 │               │   └── PlaylistDetailViewModel.java
-│               ├── nowplaying/
-│               │   ├── NowPlayingActivity.java
-│               │   └── NowPlayingViewModel.java
 │               └── settings/
 │                   ├── SettingsFragment.java
 │                   └── SettingsViewModel.java
@@ -89,7 +86,6 @@ AudiPlay/
 | ui.songs        | Daftar lagu dengan pencarian                   |
 | ui.favorites    | Lagu favorit                                   |
 | ui.playlist     | Playlist & detail playlist                     |
-| ui.nowplaying   | Layar pemutaran sekarang                       |
 | ui.settings     | Pengaturan aplikasi                            |
 | utils           | Utility helper (scanner, prefs, permission)    |
 

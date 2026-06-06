@@ -17,10 +17,11 @@ import exp.miniplayer.utils.PreferencesManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class AudioRepository {
+    private static boolean forceRescan = false;
+
     private final Context context;
     private final AppDatabase database;
     private final FavoriteDao favoriteDao;
@@ -42,14 +43,19 @@ public class AudioRepository {
         this.currentSortMode = prefs.getSortMode();
     }
 
+    public static void triggerRescan() {
+        forceRescan = true;
+    }
+
     public List<Audio> scanAudio() {
-        cachedAudioList = MusicScanner.scanAudio(context);
+        cachedAudioList = MusicScanner.scanAudio(context, prefs);
         sortAudioList(currentSortMode);
+        forceRescan = false;
         return cachedAudioList;
     }
 
     public List<Audio> getCachedAudio() {
-        if (cachedAudioList.isEmpty()) {
+        if (cachedAudioList.isEmpty() || forceRescan) {
             scanAudio();
         }
         return cachedAudioList;

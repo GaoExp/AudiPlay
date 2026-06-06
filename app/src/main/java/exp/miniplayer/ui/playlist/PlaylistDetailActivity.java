@@ -14,11 +14,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import exp.miniplayer.MainActivity;
 import exp.miniplayer.R;
 import exp.miniplayer.adapter.PlaylistDetailAdapter;
 import exp.miniplayer.database.PlaylistSongEntity;
 import exp.miniplayer.model.Audio;
-import exp.miniplayer.ui.nowplaying.NowPlayingActivity;
 import exp.miniplayer.utils.QueueHolder;
 
 import java.util.ArrayList;
@@ -72,7 +72,8 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                                 s.getAlbumArt(), s.getAddedAt()));
                     }
                     QueueHolder.setQueue(queue, position);
-                    Intent intent = new Intent(this, NowPlayingActivity.class);
+                    Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 });
                 adapter.setOnItemLongClickListener((song, position) -> {

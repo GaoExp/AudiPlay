@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_large"
-            android:text="Playback"
+            android:text="@string/playback"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorPrimary" />
 
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_large"
-            android:text="Storage"
+            android:text="@string/storage"
             android:textAppearance="?attr/textAppearanceTitleSmall"
             android:textColor="?attr/colorPrimary" />
 
@@ -93,8 +93,12 @@
                 android:padding="@dimen/padding_small">
 
                 <TextView
+                    android:id="@+id/scan_all_audio"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:paddingVertical="@dimen/padding_small"
                     android:text="@string/scan_all_audio"
                     android:textAppearance="?attr/textAppearanceBodyLarge" />
@@ -105,8 +109,12 @@
                     android:background="?attr/colorOutlineVariant" />
 
                 <TextView
+                    android:id="@+id/included_folders"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:paddingVertical="@dimen/padding_small"
                     android:text="@string/included_folders"
                     android:textAppearance="?attr/textAppearanceBodyLarge" />
@@ -117,8 +125,12 @@
                     android:background="?attr/colorOutlineVariant" />
 
                 <TextView
+                    android:id="@+id/excluded_folders"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:paddingVertical="@dimen/padding_small"
                     android:text="@string/excluded_folders"
                     android:textAppearance="?attr/textAppearanceBodyLarge" />

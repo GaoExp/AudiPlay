@@ -28,7 +28,7 @@ import exp.miniplayer.MainActivity;
 import exp.miniplayer.R;
 import exp.miniplayer.model.Audio;
 import exp.miniplayer.player.MusicPlayer;
-import exp.miniplayer.ui.nowplaying.NowPlayingActivity;
+
 import exp.miniplayer.utils.PermissionHelper;
 import exp.miniplayer.utils.PreferencesManager;
 
@@ -168,7 +168,7 @@ public class MusicService extends android.app.Service implements
         Audio current = musicPlayer.getCurrentAudio();
         if (current == null) return;
 
-        Intent nowPlayingIntent = new Intent(this, NowPlayingActivity.class);
+        Intent nowPlayingIntent = new Intent(this, MainActivity.class);
         nowPlayingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent contentIntent = PendingIntent.getActivity(
                 this, 0, nowPlayingIntent,

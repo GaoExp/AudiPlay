@@ -1,6 +1,5 @@
 package exp.miniplayer.ui.favorites;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +14,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import exp.miniplayer.MainActivity;
 import exp.miniplayer.R;
 import exp.miniplayer.adapter.SongAdapter;
 import exp.miniplayer.data.AudioRepository;
 import exp.miniplayer.database.FavoriteEntity;
 import exp.miniplayer.model.Audio;
-import exp.miniplayer.ui.nowplaying.NowPlayingActivity;
-import exp.miniplayer.utils.QueueHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +53,9 @@ public class FavoritesFragment extends Fragment {
         adapter = new SongAdapter(requireContext(), new ArrayList<>());
         adapter.setOnItemClickListener((audio, position) -> {
             List<Audio> currentList = adapter.getCurrentList();
-            QueueHolder.setQueue(currentList, position);
-            Intent intent = new Intent(requireContext(), NowPlayingActivity.class);
-            startActivity(intent);
+            if (requireActivity() instanceof MainActivity) {
+                ((MainActivity) requireActivity()).playFromSongs(currentList, position);
+            }
         });
         adapter.setOnItemLongClickListener((audio, position) -> {
             PopupMenu popup = new PopupMenu(requireContext(), recyclerView);

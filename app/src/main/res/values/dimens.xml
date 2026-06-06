@@ -14,4 +14,5 @@
     <dimen name="elevation_medium">4dp</dimen>
     <dimen name="bottom_nav_height">64dp</dimen>
     <dimen name="now_playing_cover_margin">32dp</dimen>
+    <dimen name="padding_extra_large">32dp</dimen>
 </resources>

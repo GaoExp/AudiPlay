@@ -8,8 +8,7 @@ FITUR UTAMA
 - Daftar Lagu - Lihat semua lagu yang terdeteksi dengan informasi detail
 - Favorit - Tandai lagu favorit untuk akses cepat
 - Playlist - Buat, kelola, dan atur playlist kustom
-- Now Playing - Antarmuka pemutaran dengan kontrol lengkap
-- Mini Player Bar - Bar persistent untuk akses cepat ke pemutaran
+- Now Playing Bottom Sheet - Pemutaran penuh dalam Bottom Sheet (mini player + layar penuh)
 - Mode Acak & Ulang - Shuffle, Repeat All, Repeat One
 - Dark Mode - Tema gelap selalu aktif
 - Pencarian - Cari lagu dengan cepat
@@ -21,7 +20,7 @@ INFORMASI PROJECT
 Package       : exp.miniplayer
 Target SDK    : 35
 Min SDK       : 26
-Version       : 1.0.0.1.0
+Version       : 1.0.0.1.1
 Build System  : Gradle + AGP 8.12.0
 
 TECH STACK

@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH"
         android:maxSdkVersion="31" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MiniPlayerApp"
@@ -31,12 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.nowplaying.NowPlayingActivity"
-            android:exported="false"
-            android:theme="@style/AppTheme"
-            android:launchMode="singleTask" />
 
         <activity
             android:name=".ui.playlist.PlaylistDetailActivity"
