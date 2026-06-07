@@ -1,3 +1,16 @@
+## [1.0.0.5.1] - 2026-06-07
+
+### 🔢 Version
+- versionCode: 9
+- versionName: 1.0.0.5.1
+
+### 🔧 Optimasi & Penyesuaian
+- Release workflow: release notes sekarang pakai CHANGELOG bukan auto-generate dari commit
+
+### ✏️ File Changed
+- `.github/workflows/release.yml` — ganti `generate_release_notes` dengan ekstraksi section user-facing dari CHANGELOG.md
+- `app/build.gradle` — version bump
+
 ## [1.0.0.5.0] - 2026-06-07
 
 ### 🔢 Version
