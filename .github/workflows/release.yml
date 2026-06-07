@@ -48,9 +48,29 @@ jobs:
           find . -type f -name "*.apk" 2>/dev/null
           echo "=== Selesai ==="
 
+      - name: Extract release notes from CHANGELOG
+        id: changelog
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          NOTES=$(awk -v ver="$VERSION" '
+            /^## \['"$VERSION"'\]/ { found=1; next }
+            found && /^## \[/ { exit }
+            found && /^### / {
+              if ($0 ~ /Fitur Baru|Fitur Dihapus|Fitur Dipulihkan|Perubahan Fitur|Optimasi|Bug Fixes|Catatan/) {
+                keep = 1
+              } else {
+                keep = 0
+              }
+            }
+            keep
+          ' CHANGELOG.md)
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Upload APK to Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             **/build/outputs/apk/release/*.apk
-          generate_release_notes: true
+          body: ${{ steps.changelog.outputs.notes }}
