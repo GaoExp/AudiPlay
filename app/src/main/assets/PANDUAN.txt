@@ -51,9 +51,10 @@ Playlist:
 Bottom Sheet Player:
 - Mini player bar di bagian bawah saat lagu diputar (judul, artis, album art, play/pause)
 - Tap atau swipe up pada bar untuk membuka pemutaran penuh
-- Tampilan penuh: cover art, judul, artis, seek slider, progress time
+- Tampilan penuh: cover art, judul, artis, info teknis (sample rate, bitrate, codec), seek slider, progress time
 - Kontrol pemutaran: Shuffle, Previous, Play/Pause, Next, Repeat
 - Tombol Favorit di pojok kanan atas
+- Tombol menu (tiga titik) - Tambah ke Playlist, Rincian lagu, Bagikan, Hapus file
 - Swipe down untuk menutup tampilan penuh kembali ke mini player
 
 Pemutaran Background:
@@ -68,6 +69,7 @@ Pengaturan (Settings):
 - Included Folders - Folder yang dipindai (hanya aktif saat Scan All Audio OFF)
 - Excluded Folders - Folder yang dilewati
 - Format Audio - Filter ekstensi format file yang dipindai
+- Ikon Aplikasi - Pilih dari 5 ikon alternatif (Nota Musik, Putar, Nota Musik Gelap, Putar Gelap, Antrian)
 - Lihat Dokumentasi - Buka pembaca dokumentasi in-app (README, PANDUAN, STRUKTUR, CHANGELOG)
 
 IZIN

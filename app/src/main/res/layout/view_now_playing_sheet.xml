@@ -33,7 +33,7 @@
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceHeadlineSmall"
             android:textColor="?attr/colorOnSurface"
-            app:layout_constraintEnd_toStartOf="@id/favorite_button"
+            app:layout_constraintEnd_toStartOf="@id/overflow_button"
             app:layout_constraintStart_toEndOf="@id/close_sheet_button"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +50,20 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
+        <TextView
+            android:id="@+id/now_playing_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_medium"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/now_playing_artist"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
         <ImageView
             android:id="@+id/now_playing_album_art"
             android:layout_width="0dp"
@@ -57,7 +71,7 @@
             android:layout_margin="@dimen/now_playing_cover_margin"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_album_default"
-            app:layout_constraintTop_toBottomOf="@id/now_playing_artist"
+            app:layout_constraintTop_toBottomOf="@id/now_playing_info"
             app:layout_constraintBottom_toTopOf="@id/seek_bar_layout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -158,6 +172,18 @@
                 android:scaleType="center"
                 android:src="@drawable/ic_repeat" />
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/overflow_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_large"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="center"
+            android:padding="8dp"
+            android:src="@drawable/ic_overflow"
+            app:layout_constraintEnd_toStartOf="@id/favorite_button"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/favorite_button"

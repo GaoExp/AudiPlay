@@ -78,10 +78,10 @@ public class DocumentationActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             card.setCardElevation(0f);
             card.setStrokeWidth(1);
-            card.setStrokeColor(getColor(com.google.android.material.R.color.material_outline));
+            card.setStrokeColor(getColor(R.color.outline));
             card.setClickable(true);
             card.setFocusable(true);
-            card.setRadius(getResources().getDimensionPixelSize(com.google.android.material.R.dimen.m3_card_rounded_small));
+            card.setRadius(getResources().getDimensionPixelSize(R.dimen.corner_radius));
 
             LinearLayout content = new LinearLayout(this);
             content.setOrientation(LinearLayout.VERTICAL);
@@ -94,7 +94,7 @@ public class DocumentationActivity extends AppCompatActivity {
             TextView subtitleView = new TextView(this);
             subtitleView.setText(doc.subtitleRes);
             subtitleView.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodySmall);
-            subtitleView.setTextColor(getColor(com.google.android.material.R.color.material_on_surface_variant));
+            subtitleView.setTextColor(getColor(R.color.on_surface_variant));
 
             content.addView(titleView);
             content.addView(subtitleView);

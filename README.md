@@ -1,7 +1,7 @@
 # Mini Player
 
-**Current Release:** `1.0.0.4.0`
-**Last Updated:** `2026-06-06`
+**Current Release:** `1.0.0.5.0`
+**Last Updated:** `2026-06-07`
 
 Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka minimalis.
 
@@ -19,6 +19,7 @@ Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka mi
 - **Pencarian** — Cari lagu dengan cepat
 - **Background Playback** — Musik tetap berjalan saat aplikasi di-minimize
 - **Notifikasi** — Kontrol pemutaran dari notifikasi
+- **Kustomisasi Ikon** — 5 pilihan ikon aplikasi dari Pengaturan
 
 ---
 
@@ -90,6 +91,22 @@ Project ini **TIDAK** menggunakan Semantic Versioning standar. Format khusus: `m
 Aturan:
 - `patch` reset ke 0 saat `minor` naik
 - `minor` +1 saat `major`, `removed`, atau `restored` naik
+
+### Section Changelog
+
+| Section | Deskripsi |
+|---------|-----------|
+| 🔢 Version | versionCode & versionName |
+| ✨ Fitur Baru | Fitur baru ditambahkan |
+| 🚮️ Fitur Dihapus | Fitur dihapus/dinonaktifkan |
+| 📥️ Fitur Dipulihkan | Fitur lama dikembalikan |
+| ♻️️ Perubahan Fitur | Perubahan fitur existing |
+| 🗒️ File Added | File baru |
+| ✏️️ File Changed | File diubah |
+| 🔥️ File Removed | File dihapus |
+| 🔧 Optimasi & Penyesuaian | Optimasi, refactor, maintenance |
+| 🐞 Bug Fixes | Perbaikan bug |
+| 💡 Catatan | Informasi tambahan |
 
 ### Dependencies
 

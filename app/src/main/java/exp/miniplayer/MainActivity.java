@@ -1,18 +1,27 @@
 package exp.miniplayer;
 
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.media.MediaMetadataRetriever;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.Observer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -33,6 +42,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
 import exp.miniplayer.data.AudioRepository;
+import exp.miniplayer.database.PlaylistEntity;
 import exp.miniplayer.model.Audio;
 import exp.miniplayer.player.MusicPlayer;
 import exp.miniplayer.service.MusicService;
@@ -44,7 +54,9 @@ import exp.miniplayer.utils.QueueHolder;
 import exp.miniplayer.utils.TimeUtils;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements MusicPlayer.PlayerListener {
 
@@ -108,6 +120,10 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
     private ImageButton repeatButton;
     private ImageButton favoriteButton;
     private ImageButton closeSheetButton;
+    private ImageButton overflowButton;
+    private TextView nowPlayingInfo;
+
+    private final Map<String, String> metadataCache = new HashMap<>();
 
     private Handler progressHandler;
     private Runnable progressRunnable;
@@ -227,6 +243,10 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         repeatButton = findViewById(R.id.repeat_button);
         favoriteButton = findViewById(R.id.favorite_button);
         closeSheetButton = findViewById(R.id.close_sheet_button);
+        overflowButton = findViewById(R.id.overflow_button);
+        overflowButton.setColorFilter(
+                ContextCompat.getColor(this, R.color.on_surface_variant));
+        nowPlayingInfo = findViewById(R.id.now_playing_info);
 
         closeSheetButton.setOnClickListener(v -> {
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -248,6 +268,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         shuffleButton.setOnClickListener(v -> toggleShuffle());
         repeatButton.setOnClickListener(v -> cycleRepeatMode());
         favoriteButton.setOnClickListener(v -> toggleFavorite());
+        overflowButton.setOnClickListener(v -> showNowPlayingOptions());
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -363,6 +384,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
             updateShuffleButton(player.isShuffleEnabled());
             updateRepeatButton(player.getRepeatMode());
             updateFavorite(current.getId());
+            loadNowPlayingInfo(current);
 
             if (sheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                 sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -383,7 +405,217 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
             favoriteButton.setImageResource(R.drawable.ic_favorite_border);
             favoriteButton.setColorFilter(
                     ContextCompat.getColor(this, R.color.on_surface_variant));
+            nowPlayingInfo.setVisibility(View.GONE);
         }
+    }
+
+    private void loadNowPlayingInfo(Audio audio) {
+        String uri = audio.getUri();
+        if (uri == null) {
+            nowPlayingInfo.setVisibility(View.GONE);
+            return;
+        }
+        if (metadataCache.containsKey(uri)) {
+            String cached = metadataCache.get(uri);
+            if (!cached.isEmpty()) {
+                nowPlayingInfo.setText(cached);
+                nowPlayingInfo.setVisibility(View.VISIBLE);
+            } else {
+                nowPlayingInfo.setVisibility(View.GONE);
+            }
+            return;
+        }
+        new Thread(() -> {
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            try {
+                mmr.setDataSource(this, Uri.parse(uri));
+                String sampleRate = mmr.extractMetadata(
+                        MediaMetadataRetriever.METADATA_KEY_SAMPLERATE);
+                String bitrate = mmr.extractMetadata(
+                        MediaMetadataRetriever.METADATA_KEY_BITRATE);
+                String mime = mmr.extractMetadata(
+                        MediaMetadataRetriever.METADATA_KEY_MIMETYPE);
+
+                StringBuilder sb = new StringBuilder();
+                if (sampleRate != null && !sampleRate.isEmpty()) {
+                    sb.append(sampleRate).append(" Hz");
+                }
+                if (bitrate != null && !bitrate.isEmpty()) {
+                    try {
+                        int kbps = Integer.parseInt(bitrate) / 1000;
+                        if (sb.length() > 0) sb.append(" · ");
+                        sb.append(kbps).append(" kbps");
+                    } catch (NumberFormatException ignored) {}
+                }
+                if (mime != null && !mime.isEmpty()) {
+                    String codec = mime.replace("audio/", "").toUpperCase();
+                    if (sb.length() > 0) sb.append(" · ");
+                    sb.append(codec);
+                }
+                String result = sb.toString();
+                metadataCache.put(uri, result);
+                runOnUiThread(() -> {
+                    Audio cur = musicService != null ?
+                            musicService.getMusicPlayer().getCurrentAudio() : null;
+                    if (cur != null && uri.equals(cur.getUri())) {
+                        if (!result.isEmpty()) {
+                            nowPlayingInfo.setText(result);
+                            nowPlayingInfo.setVisibility(View.VISIBLE);
+                        } else {
+                            nowPlayingInfo.setVisibility(View.GONE);
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                metadataCache.put(uri, "");
+                runOnUiThread(() -> {
+                    Audio cur = musicService != null ?
+                            musicService.getMusicPlayer().getCurrentAudio() : null;
+                    if (cur != null && uri.equals(cur.getUri())) {
+                        nowPlayingInfo.setVisibility(View.GONE);
+                    }
+                });
+            } finally {
+                try {
+                    mmr.release();
+                } catch (Exception ignored) {}
+            }
+        }).start();
+    }
+
+    private void showNowPlayingOptions() {
+        Audio current = musicService != null ?
+                musicService.getMusicPlayer().getCurrentAudio() : null;
+        if (current == null) return;
+
+        PopupMenu popup = new PopupMenu(this, overflowButton);
+        popup.getMenuInflater().inflate(R.menu.now_playing_options_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_add_to_playlist) {
+                showPlaylistDialog(current);
+                return true;
+            } else if (id == R.id.action_details) {
+                showDetailsDialog(current);
+                return true;
+            } else if (id == R.id.action_share) {
+                shareAudio(current);
+                return true;
+            } else if (id == R.id.action_delete) {
+                deleteAudio(current);
+                return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
+    private void showPlaylistDialog(Audio audio) {
+        repository.getPlaylists().observe(this, new Observer<List<PlaylistEntity>>() {
+            @Override
+            public void onChanged(List<PlaylistEntity> playlists) {
+                repository.getPlaylists().removeObserver(this);
+                if (playlists == null || playlists.isEmpty()) {
+                    Toast.makeText(MainActivity.this, R.string.no_playlists,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String[] names = new String[playlists.size()];
+                for (int i = 0; i < playlists.size(); i++) {
+                    names[i] = playlists.get(i).getName();
+                }
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.add_to_playlist)
+                        .setItems(names, (dialog, which) -> {
+                            PlaylistEntity playlist = playlists.get(which);
+                            boolean added = repository.addToPlaylist(playlist.getId(), audio);
+                            if (added) {
+                                Toast.makeText(MainActivity.this,
+                                        getString(R.string.added_to_playlist, playlist.getName()),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(MainActivity.this,
+                                        R.string.already_in_playlist,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .show();
+            }
+        });
+    }
+
+    private void showDetailsDialog(Audio audio) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getString(R.string.detail_title)).append(" ").append(audio.getTitle()).append("\n");
+        sb.append(getString(R.string.detail_artist)).append(" ").append(audio.getArtist()).append("\n");
+        sb.append(getString(R.string.detail_album)).append(" ").append(audio.getAlbum()).append("\n");
+        sb.append(getString(R.string.detail_duration)).append(" ").append(TimeUtils.formatDuration(audio.getDuration())).append("\n");
+
+        String cachedInfo = metadataCache.get(audio.getUri());
+        if (cachedInfo != null && !cachedInfo.isEmpty()) {
+            sb.append(getString(R.string.detail_technical)).append(" ").append(cachedInfo).append("\n");
+        }
+
+        String filePath = resolveFilePath(audio.getId());
+        if (filePath != null) {
+            sb.append(getString(R.string.file_path)).append(" ").append(filePath);
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.details)
+                .setMessage(sb.toString())
+                .setPositiveButton(R.string.ok, null)
+                .show();
+    }
+
+    private String resolveFilePath(long audioId) {
+        try {
+            Uri uri = Uri.withAppendedPath(
+                    android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    String.valueOf(audioId));
+            Cursor cursor = getContentResolver().query(uri,
+                    new String[]{android.provider.MediaStore.Audio.Media.DATA},
+                    null, null, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                String path = cursor.getString(0);
+                cursor.close();
+                return path;
+            }
+            if (cursor != null) cursor.close();
+        } catch (Exception ignored) {}
+        return null;
+    }
+
+    private void shareAudio(Audio audio) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("audio/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(audio.getUri()));
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share)));
+    }
+
+    private void deleteAudio(Audio audio) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_audio)
+                .setMessage(getString(R.string.delete_audio_confirm) + "\n" + getString(R.string.delete_audio_message))
+                .setPositiveButton(R.string.delete_audio, (dialog, which) -> {
+                    ContentResolver cr = getContentResolver();
+                    int deleted = cr.delete(Uri.parse(audio.getUri()), null, null);
+                    if (deleted > 0) {
+                        if (repository.isFavorite(audio.getId())) {
+                            repository.toggleFavorite(audio);
+                        }
+                        Toast.makeText(MainActivity.this, R.string.audio_deleted,
+                                Toast.LENGTH_SHORT).show();
+                        Audio current = musicService != null ?
+                                musicService.getMusicPlayer().getCurrentAudio() : null;
+                        if (current != null && current.getId() == audio.getId()) {
+                            next();
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void togglePlayPause() {

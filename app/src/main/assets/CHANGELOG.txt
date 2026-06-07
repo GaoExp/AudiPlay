@@ -1,19 +1,38 @@
-Section yang digunakan di CHANGELOG:
+[1.0.0.5.0] - 2026-06-07
 
-Section           Deskripsi
-🔢 Version       versionCode & versionName
-✨ Fitur Baru     Fitur baru ditambahkan
-🚮️ Fitur Dihapus  Fitur dihapus/dinonaktifkan
-📥️ Fitur Dipulihkan  Fitur lama dikembalikan
-♻️️ Perubahan Fitur  Perubahan fitur existing
-🗒️ File Added    File baru
-✏️️ File Changed  File diubah
-🔥️ File Removed  File dihapus
-🔧 Optimasi & Penyesuaian  Optimasi, refactor, maintenance
-🐞 Bug Fixes     Perbaikan bug
-💡 Catatan       Informasi tambahan
+🔢 VERSION
+---------
+versionCode: 8
+versionName: 1.0.0.5.0
 
----
+✨ Fitur Baru
+-----------
+- Now Playing info strip - tampilkan sample rate, bitrate, dan format codec di expanded player
+- Three-dot menu di Now Playing - Tambah ke Playlist, Rincian, Bagikan, Hapus
+- Pilih Ikon Aplikasi - 5 ikon alternatif dari Pengaturan -> Tampilan -> Ikon Aplikasi
+
+🗒️ File Added
+--------------
+- app/src/main/res/drawable/ic_overflow.xml
+- app/src/main/res/menu/now_playing_options_menu.xml
+- app/src/main/res/drawable/ic_bg_purple.xml
+- app/src/main/res/drawable/ic_bg_surface.xml
+- app/src/main/res/drawable/ic_fg_note.xml
+- app/src/main/res/drawable/ic_fg_play.xml
+- app/src/main/res/drawable/ic_fg_queue.xml
+- app/src/main/res/drawable/ic_fg_note_dark.xml
+- app/src/main/res/drawable/ic_fg_play_dark.xml
+- 10 file app/src/main/res/mipmap-anydpi-v26/ic_launcher_*.xml (5 ikon x normal + round)
+
+✏️ File Changed
+---------------
+- app/build.gradle - version bump
+- app/src/main/res/layout/view_now_playing_sheet.xml - tambah TextView info strip + overflow button
+- app/src/main/java/exp/miniplayer/MainActivity.java - info strip metadata, PopupMenu overflow, 4 handler (playlist, details, share, delete)
+- app/src/main/res/values/strings.xml - tambah string untuk rincian dan menu
+- app/src/main/AndroidManifest.xml - 5 activity-alias untuk pemilih ikon
+- app/src/main/res/layout/fragment_settings.xml - tambah section Tampilan dengan row Ikon Aplikasi
+- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - tambah handler showIconDialog()
 
 [1.0.0.4.0] - 2026-06-06
 
