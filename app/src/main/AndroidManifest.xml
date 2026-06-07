@@ -26,12 +26,72 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" />
+
+        <activity-alias
+            android:name=".icon_note"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_note"
+            android:roundIcon="@mipmap/ic_launcher_note_round"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".icon_play"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_play"
+            android:roundIcon="@mipmap/ic_launcher_play_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".icon_note_dark"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_note_dark"
+            android:roundIcon="@mipmap/ic_launcher_note_dark_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".icon_play_dark"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_play_dark"
+            android:roundIcon="@mipmap/ic_launcher_play_dark_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".icon_queue"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_queue"
+            android:roundIcon="@mipmap/ic_launcher_queue_round"
+            android:enabled="false"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <activity
             android:name=".ui.playlist.PlaylistDetailActivity"

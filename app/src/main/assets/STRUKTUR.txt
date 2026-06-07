@@ -1,7 +1,7 @@
 STRUKTUR PROJECT
 ================
 26 folder
-84 file
+105 file
 
 AudiPlay/
 │
@@ -99,12 +99,20 @@ AudiPlay/
             │   ├── drag_handle_background.xml
             │   ├── ic_album_default.xml
             │   ├── ic_arrow_down.xml
+            │   ├── ic_bg_purple.xml
+            │   ├── ic_bg_surface.xml
             │   ├── ic_close.xml
             │   ├── ic_favorite.xml
             │   ├── ic_favorite_border.xml
+            │   ├── ic_fg_note.xml
+            │   ├── ic_fg_note_dark.xml
+            │   ├── ic_fg_play.xml
+            │   ├── ic_fg_play_dark.xml
+            │   ├── ic_fg_queue.xml
             │   ├── ic_launcher_background.xml
             │   ├── ic_launcher_foreground.xml
             │   ├── ic_music_note.xml
+            │   ├── ic_overflow.xml
             │   ├── ic_pause.xml
             │   ├── ic_play.xml
             │   ├── ic_playlist_add.xml
@@ -135,11 +143,22 @@ AudiPlay/
             │
             ├── menu/
             │   ├── bottom_nav_menu.xml
+            │   ├── now_playing_options_menu.xml
             │   ├── song_options_menu.xml
             │   └── songs_menu.xml
             │
             ├── mipmap-anydpi-v26/
             │   ├── ic_launcher.xml
+            │   ├── ic_launcher_note.xml
+            │   ├── ic_launcher_note_dark.xml
+            │   ├── ic_launcher_note_dark_round.xml
+            │   ├── ic_launcher_note_round.xml
+            │   ├── ic_launcher_play.xml
+            │   ├── ic_launcher_play_dark.xml
+            │   ├── ic_launcher_play_dark_round.xml
+            │   ├── ic_launcher_play_round.xml
+            │   ├── ic_launcher_queue.xml
+            │   ├── ic_launcher_queue_round.xml
             │   └── ic_launcher_round.xml
             │
             ├── values/

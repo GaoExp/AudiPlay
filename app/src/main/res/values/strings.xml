@@ -60,6 +60,24 @@
     <string name="no_excluded_folders">Tidak ada folder yang dikecualikan</string>
     <string name="scanning_started">Memindai ulang audio…</string>
     <string name="close">Tutup</string>
+    <string name="details">Rincian</string>
+    <string name="share">Bagikan</string>
+    <string name="delete_audio">Hapus</string>
+    <string name="delete_audio_confirm">Yakin ingin menghapus file ini?</string>
+    <string name="delete_audio_message">File audio akan dihapus dari penyimpanan.</string>
+    <string name="audio_deleted">File audio berhasil dihapus</string>
+    <string name="file_path">Direktori Folder</string>
+    <string name="file_size">Ukuran File</string>
+    <string name="sample_rate">Sample Rate</string>
+    <string name="bitrate">Bitrate</string>
+    <string name="format">Format</string>
+    <string name="added_to_playlist">Ditambahkan ke %s</string>
+    <string name="already_in_playlist">Sudah ada di playlist</string>
+    <string name="detail_title">Judul:</string>
+    <string name="detail_artist">Artis:</string>
+    <string name="detail_album">Album:</string>
+    <string name="detail_duration">Durasi:</string>
+    <string name="detail_technical">Info Teknis:</string>
 
     <string name="audio_formats">Format Audio</string>
     <string name="format_group_audio">Audio</string>
@@ -69,6 +87,16 @@
     <string name="format_group_stream">Stream/Container</string>
     <string name="select_all">Pilih Semua</string>
     <string name="deselect_all">Hapus Semua</string>
+
+    <string name="appearance">Tampilan</string>
+    <string name="choose_app_icon">Ikon Aplikasi</string>
+    <string name="choose_app_icon_subtitle">Ubah ikon aplikasi di layar utama</string>
+
+    <string name="icon_name_note">Nota Musik</string>
+    <string name="icon_name_play">Putar</string>
+    <string name="icon_name_note_dark">Nota Musik (Gelap)</string>
+    <string name="icon_name_play_dark">Putar (Gelap)</string>
+    <string name="icon_name_queue">Antrian</string>
 
     <string name="documentation">Dokumentasi</string>
     <string name="view_documentation">Lihat Dokumentasi</string>

@@ -31,7 +31,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
 import exp.miniplayer.R;
 import exp.miniplayer.ui.documentation.DocumentationActivity;
@@ -99,6 +101,9 @@ public class SettingsFragment extends Fragment {
         viewDocumentation.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), DocumentationActivity.class));
         });
+
+        TextView chooseAppIcon = view.findViewById(R.id.choose_app_icon);
+        chooseAppIcon.setOnClickListener(v -> showIconDialog());
     }
 
     private void showFolderDialog(boolean isExcluded) {
@@ -252,5 +257,50 @@ public class SettingsFragment extends Fragment {
                 ((CheckBox) child).setChecked(enabled != null && enabled.contains(format));
             }
         }
+    }
+
+    private void showIconDialog() {
+        PackageManager pm = requireContext().getPackageManager();
+
+        String[] iconSuffixes = {
+                "icon_note", "icon_play",
+                "icon_note_dark", "icon_play_dark", "icon_queue"
+        };
+
+        String[] iconNames = {
+                getString(R.string.icon_name_note),
+                getString(R.string.icon_name_play),
+                getString(R.string.icon_name_note_dark),
+                getString(R.string.icon_name_play_dark),
+                getString(R.string.icon_name_queue)
+        };
+
+        ComponentName[] components = new ComponentName[iconSuffixes.length];
+        final int[] checkedItem = {0};
+        for (int i = 0; i < iconSuffixes.length; i++) {
+            String fullClass = requireContext().getPackageName() + "." + iconSuffixes[i];
+            components[i] = new ComponentName(requireContext(), fullClass);
+            if (pm.getComponentEnabledSetting(components[i])
+                    == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+                checkedItem[0] = i;
+            }
+        }
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.choose_app_icon)
+                .setSingleChoiceItems(iconNames, checkedItem[0], (dialog, which) -> checkedItem[0] = which)
+                .setPositiveButton(R.string.ok, (dialog, which) -> {
+                    for (int i = 0; i < components.length; i++) {
+                        pm.setComponentEnabledSetting(
+                                components[i],
+                                i == checkedItem[0]
+                                        ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                                        : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                PackageManager.DONT_KILL_APP
+                        );
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 }
