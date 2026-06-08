@@ -6,13 +6,9 @@ import android.provider.DocumentsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import android.annotation.SuppressLint;
 
@@ -37,14 +33,15 @@ import android.content.pm.PackageManager;
 
 import exp.miniplayer.R;
 import exp.miniplayer.ui.documentation.DocumentationActivity;
+import exp.miniplayer.ui.folders.FolderListActivity;
 
 public class SettingsFragment extends Fragment {
 
     private SettingsViewModel viewModel;
     private SwitchCompat keepScreenOnSwitch;
-    private SwitchCompat scanAllAudioSwitch;
+    private SwitchCompat limitFoldersSwitch;
     private SwitchCompat playOverOtherAppsSwitch;
-    private TextView includedFolders;
+    private View batasiFolderRow;
     private boolean pendingFolderIsExcluded;
 
     private final ActivityResultLauncher<Uri> folderPickerLauncher = registerForActivityResult(
@@ -65,9 +62,9 @@ public class SettingsFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
         keepScreenOnSwitch = view.findViewById(R.id.keep_screen_on_switch);
-        scanAllAudioSwitch = view.findViewById(R.id.scan_all_audio_switch);
+        limitFoldersSwitch = view.findViewById(R.id.limit_folders_switch);
         playOverOtherAppsSwitch = view.findViewById(R.id.play_over_other_apps_switch);
-        includedFolders = view.findViewById(R.id.included_folders);
+        batasiFolderRow = view.findViewById(R.id.batasi_folder_row);
 
         viewModel.getKeepScreenOn().observe(getViewLifecycleOwner(), keepScreenOnSwitch::setChecked);
         viewModel.getPlayOverOtherApps().observe(getViewLifecycleOwner(), playOverOtherAppsSwitch::setChecked);
@@ -80,22 +77,48 @@ public class SettingsFragment extends Fragment {
             viewModel.setPlayOverOtherApps(isChecked);
         });
 
-        scanAllAudioSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            viewModel.setScanAllAudio(isChecked);
+        limitFoldersSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            viewModel.setLimitFolders(isChecked);
         });
 
-        viewModel.getScanAllAudio().observe(getViewLifecycleOwner(), scanAll -> {
-            scanAllAudioSwitch.setChecked(scanAll);
-            includedFolders.setEnabled(!scanAll);
-            includedFolders.setAlpha(scanAll ? 0.38f : 1f);
+        batasiFolderRow.setOnClickListener(v -> {
+            boolean newState = !limitFoldersSwitch.isChecked();
+            limitFoldersSwitch.setChecked(newState);
+            viewModel.setLimitFolders(newState);
         });
 
+        TextView includedFolders = view.findViewById(R.id.included_folders);
         TextView excludedFolders = view.findViewById(R.id.excluded_folders);
         TextView audioFormats = view.findViewById(R.id.audio_formats);
+        TextView includedFoldersSub = view.findViewById(R.id.included_folders_subtitle);
 
-        includedFolders.setOnClickListener(v -> showFolderDialog(false));
-        excludedFolders.setOnClickListener(v -> showFolderDialog(true));
+        viewModel.getLimitFolders().observe(getViewLifecycleOwner(), limit -> {
+            limitFoldersSwitch.setChecked(limit);
+            batasiFolderRow.setAlpha(limit ? 1f : 0.5f);
+            float dimAlpha = limit ? 0.5f : 1f;
+            includedFolders.setAlpha(dimAlpha);
+            includedFoldersSub.setAlpha(dimAlpha);
+        });
+
+        includedFolders.setOnClickListener(v -> {
+            if (!limitFoldersSwitch.isChecked()) {
+                limitFoldersSwitch.setChecked(true);
+                viewModel.setLimitFolders(true);
+            }
+            showFolderDialog(false);
+        });
+        excludedFolders.setOnClickListener(v -> {
+            if (!limitFoldersSwitch.isChecked()) {
+                limitFoldersSwitch.setChecked(true);
+                viewModel.setLimitFolders(true);
+            }
+            showFolderDialog(true);
+        });
         audioFormats.setOnClickListener(v -> showFormatDialog());
+
+        TextView lihatFolderAudio = view.findViewById(R.id.lihat_folder_audio);
+        lihatFolderAudio.setOnClickListener(v ->
+                startActivity(new Intent(requireContext(), FolderListActivity.class)));
 
         TextView viewDocumentation = view.findViewById(R.id.view_documentation);
         viewDocumentation.setOnClickListener(v -> {
@@ -303,4 +326,5 @@ public class SettingsFragment extends Fragment {
                 .setNegativeButton(R.string.cancel, null)
                 .show();
     }
+
 }

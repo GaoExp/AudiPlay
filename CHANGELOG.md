@@ -1,20 +1,106 @@
-## [1.0.0.6.1] - 2026-06-08
+---
+## [1.1.0.7.1] - 2026-06-08
+
+### 🔢 Version
+- versionCode: 13
+- versionName: 1.1.0.7.1
+
+### ✨ Fitur Baru
+- **Batasi Folder** — Pengaturan penyimpanan dirombak: toggle "Pindai Semua Audio" dan "Folder Disertakan" digabung menjadi satu toggle "Batasi Folder"
+- **Lihat Folder Audio** — Opsi baru di Pengaturan untuk melihat semua folder yang berisi file audio
+- **FolderListActivity** — Activity baru dengan dua mode tampilan: Kontrol (dikelompokkan per status Diizinkan/Dikecualikan/Belum Ditentukan, bisa dibuka-tutup) dan Semua (daftar flat dengan tebal/coret/biasa)
+- **Drag antar Section** — Folder di mode Kontrol bisa di-long-press lalu drag ke section lain (Diizinkan/Dikecualikan/Belum Ditentukan); perubahan langsung tersimpan dan tersinkronisasi dengan pengaturan Folder
+
+### ♻️ Perubahan Fitur
+- Default audio format diubah — hanya mp3 dan m4a aktif secara default, format lain diaktifkan manual
+- **Restrukturisasi Settings Storage** — "Folder yang Diizinkan" dipisah menjadi item terpisah dari "Batasi Pemindaian"; urutan: Batasi Pemindaian → Folder Diizinkan → Folder Dikecualikan → Lihat Folder Audio → Format Audio
+- **Rename string** — "Batasi Folder" → "Batasi Pemindaian"; subtitle baru untuk setiap item folder (included/excluded)
+- **Folder Diizinkan redup** — Saat Batasi Pemindaian off, "Folder yang Diizinkan" dan subtitlenya diredupkan (alpha 0.5)
+- **excludedFolders selalu diterapkan** — `MusicScanner.scanAudio()` membaca excludedFolders tanpa tergantung `limitFolders` toggle
+
+### 🎨 UX Drag Ditingkatkan
+- Padding item folder diperbesar (8dp → 16dp vertical)
+- Teks folder diperbesar (bodyMedium → bodyLarge)
+- Elevasi saat drag: `setTranslationZ(16f)` saat drag start, `setTranslationZ(0f)` saat selesai
+
+### 📚 Dokumentasi
+- Deskripsi semua file dilengkapi di STRUKTUR.md dan STRUKTUR.txt (anim, drawable, layout, menu, mipmap, values, xml, root files, assets, manifes, dsb.)
+
+### ✏️ File Changed
+- `app/build.gradle` — version bump
+- `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — DEFAULT_AUDIO_FORMATS, +limit_folders
+- `app/src/main/java/exp/miniplayer/utils/MusicScanner.java` — scanAudio pakai isLimitFolders
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java` — scanAllAudio → limitFolders
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — UI Batasi Folder + Lihat Folder Audio
+- `app/src/main/res/layout/fragment_settings.xml` — layout storage dirombak
+- `app/src/main/res/layout/activity_folder_list.xml` — layout baru
+- `app/src/main/res/layout/item_folder_list.xml` — layout baru
+- `app/src/main/res/values/strings.xml` — +diizinkan, belum_ditentukan, kontrol, semua; rename "Batasi Folder" → "Batasi Pemindaian"; +subtitle baru
+- `app/src/main/AndroidManifest.xml` — +FolderListActivity
+- `app/src/main/java/exp/miniplayer/ui/folders/FolderListActivity.java` — file baru, +ItemTouchHelper drag antar section, +setTranslationZ drag elevation
+- `app/src/main/res/values/colors.xml` — +green
+- `PANDUAN.md` — sinkron deskripsi fitur folder
+- `app/src/main/assets/PANDUAN.txt` — sinkron deskripsi fitur folder
+- `STRUKTUR.md` — deskripsi lengkap semua file
+- `app/src/main/assets/STRUKTUR.txt` — deskripsi lengkap semua file
+---
+
+### 🔢 Version
+- versionCode: 12
+- versionName: 1.1.0.7.0
+
+### ✨ Fitur Baru
+- **Batasi Folder** — Pengaturan penyimpanan dirombak: toggle "Pindai Semua Audio" dan "Folder Disertakan" digabung menjadi satu toggle "Batasi Folder"
+- **Lihat Folder Audio** — Opsi baru di Pengaturan untuk melihat semua folder yang berisi file audio
+- **FolderListActivity** — Activity baru dengan dua mode tampilan: Kontrol (dikelompokkan per status Diizinkan/Dikecualikan/Belum Ditentukan, bisa dibuka-tutup) dan Semua (daftar flat dengan tebal/coret/biasa)
+- **Drag antar Section** — Folder di mode Kontrol bisa di-long-press lalu drag ke section lain (Diizinkan/Dikecualikan/Belum Ditentukan); perubahan langsung tersimpan dan tersinkronisasi dengan pengaturan Folder
+
+### ♻️ Perubahan Fitur
+- Default audio format diubah — hanya mp3 dan m4a aktif secara default, format lain diaktifkan manual
+- **Restrukturisasi Settings Storage** — "Folder yang Diizinkan" dipisah menjadi item terpisah dari "Batasi Pemindaian"; urutan: Batasi Pemindaian → Folder Diizinkan → Folder Dikecualikan → Lihat Folder Audio → Format Audio
+- **Rename string** — "Batasi Folder" → "Batasi Pemindaian"; subtitle baru untuk setiap item folder (included/excluded)
+- **Folder Diizinkan redup** — Saat Batasi Pemindaian off, "Folder yang Diizinkan" dan subtitlenya diredupkan (alpha 0.5)
+- **excludedFolders selalu diterapkan** — `MusicScanner.scanAudio()` membaca excludedFolders tanpa tergantung `limitFolders` toggle
+
+### 🎨 UX Drag Ditingkatkan
+- Padding item folder diperbesar (8dp → 16dp vertical)
+- Teks folder diperbesar (bodyMedium → bodyLarge)
+- Elevasi saat drag: `setTranslationZ(16f)` saat drag start, `setTranslationZ(0f)` saat selesai
+
+### ✏️ File Changed
+- `app/build.gradle` — version bump
+- `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — DEFAULT_AUDIO_FORMATS, +limit_folders
+- `app/src/main/java/exp/miniplayer/utils/MusicScanner.java` — scanAudio pakai isLimitFolders
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java` — scanAllAudio → limitFolders
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — UI Batasi Folder + Lihat Folder Audio
+- `app/src/main/res/layout/fragment_settings.xml` — layout storage dirombak
+- `app/src/main/res/layout/activity_folder_list.xml` — layout baru
+- `app/src/main/res/layout/item_folder_list.xml` — layout baru
+- `app/src/main/res/values/strings.xml` — +diizinkan, belum_ditentukan, kontrol, semua; rename "Batasi Folder" → "Batasi Pemindaian"; +subtitle baru
+- `app/src/main/AndroidManifest.xml` — +FolderListActivity
+- `app/src/main/java/exp/miniplayer/ui/folders/FolderListActivity.java` — file baru, +ItemTouchHelper drag antar section, +setTranslationZ drag elevation
+- `app/src/main/res/layout/item_folder_list.xml` — paddingVertical 8dp→16dp, textAppearance bodyMedium→bodyLarge
+- `app/src/main/res/layout/fragment_settings.xml` — restrukturisasi storage card: +subtitle, +included/excluded folders row
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — +includedFolders dim alpha, +binding excluded/included
+- `app/src/main/java/exp/miniplayer/utils/MusicScanner.java` — excludedFolders selalu dibaca (tidak tergantung limitFolders)
+---
+## [1.1.0.6.1] - 2026-06-08
 
 ### 🔢 Version
 - versionCode: 11
-- versionName: 1.0.0.6.1
+- versionName: 1.1.0.6.1
 
 ### 🔧 Optimasi & Penyesuaian
 - Default format audio aktif diubah — hanya mp3 dan m4a secara default, format lain harus diaktifkan manual di Pengaturan
 
 ### ✏️ File Changed
 - `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — DEFAULT_AUDIO_FORMATS hanya mp3, m4a
-
-## [1.0.0.6.0] - 2026-06-07
+---
+## [1.1.0.6.0] - 2026-06-07
 
 ### 🔢 Version
 - versionCode: 10
-- versionName: 1.0.0.6.0
+- versionName: 1.1.0.6.0
 
 ### ✨ Fitur Baru
 - MIDI playback support — putar file .mid/.midi/.rmi/.kar via ExoPlayer MidiRenderer + JSyn synthesizer
@@ -27,8 +113,8 @@
 - `app/build.gradle` — version bump, tambah media3-exoplayer-midi
 - `app/src/main/java/exp/miniplayer/player/MusicPlayer.java` — set extensionRendererMode PREFER
 - `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — tambah mid, midi, rmi, kar ke DEFAULT_AUDIO_FORMATS
-
-## [1.0.0.5.1] - 2026-06-07
+---
+## [1.1.0.5.1] - 2026-06-07
 
 ### 🔢 Version
 - versionCode: 9
@@ -40,12 +126,12 @@
 ### ✏️ File Changed
 - `.github/workflows/release.yml` — ganti `generate_release_notes` dengan ekstraksi section user-facing dari CHANGELOG.md
 - `app/build.gradle` — version bump
-
-## [1.0.0.5.0] - 2026-06-07
+---
+## [1.1.0.5.0] - 2026-06-07
 
 ### 🔢 Version
 - versionCode: 8
-- versionName: 1.0.0.5.0
+- versionName: 1.1.0.5.0
 
 ### ✨ Fitur Baru
 - Now Playing info strip — tampilkan sample rate, bitrate, dan format codec di expanded player
@@ -72,12 +158,12 @@
 - `app/src/main/AndroidManifest.xml` — 5 activity-alias untuk pemilih ikon
 - `app/src/main/res/layout/fragment_settings.xml` — tambah section Tampilan dengan row Ikon Aplikasi
 - `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — tambah handler showIconDialog()
-
-## [1.0.0.4.0] - 2026-06-06
+---
+## [1.1.0.4.0] - 2026-06-06
 
 ### 🔢 Version
 - versionCode: 7
-- versionName: 1.0.0.4.0
+- versionName: 1.1.0.4.0
 
 ### ✨ Fitur Baru
 - DocumentationActivity — tampilan daftar dokumentasi, tap untuk baca isi dari assets (.txt)
@@ -116,12 +202,12 @@
 ### 🔥 File Removed
 - `DEVELOPMENT.md` — konten digabung ke README
 - `app/src/main/assets/TENTANG.txt` — konten sudah di-merge ke README
-
-## [1.0.0.3.0] - 2026-06-06
+---
+## [1.1.0.3.0] - 2026-06-06
 
 ### 🔢 Version
 - versionCode: 6
-- versionName: 1.0.0.3.0
+- versionName: 1.1.0.3.0
 
 ### ✨ Fitur Baru
 - Format Audio di Settings — filter file berdasarkan ekstensi format (Audio, Rekaman, MIDI, Video, Stream)
@@ -162,7 +248,7 @@
 - `app/src/main/res/drawable/ic_favorite.xml`
 - `app/src/main/res/drawable/ic_favorite_border.xml`
 - `app/src/main/res/values/arrays.xml`
-
+---
 ## [1.0.0.2.0] - 2026-06-06
 
 ### 🔢 Version
@@ -226,7 +312,7 @@
 - `app/src/main/java/exp/miniplayer/ui/nowplaying/NowPlayingViewModel.java`
 - `app/src/main/res/layout/activity_now_playing.xml`
 - `app/src/main/res/layout/view_mini_player.xml`
-
+---
 ## [1.0.0.1.0] - 2026-06-06
 
 ### 🔢 Version
@@ -249,9 +335,9 @@
 - `SongsFragment.java`
 - `activity_main.xml`
 - `strings.xml`
-- `app/src/main/res/values/colors.xml`
+- `app/src/main/res/values/colors.xml` — +green
 - `STRUKTUR.md`
-
+---
 ## [1.0.0.0.2] - 2026-06-06
 
 ### 🔢 Version
@@ -271,7 +357,7 @@
 - `SongsFragment.java`
 - `FavoritesFragment.java`
 - `NowPlayingViewModel.java`
-
+---
 ## [1.0.0.0.1] - 2026-06-06
 
 ### 🔢 Version
@@ -284,7 +370,7 @@
 ### ✏️ File Changed
 - `gradle.properties`
 - `app/build.gradle`
-
+---
 ## [1.0.0.0.0] - 2026-06-06
 
 ### 🔢 Version
@@ -309,5 +395,4 @@
 
 ### 🗒️ File Added
 - seluruh struktur project awal
-
 ---

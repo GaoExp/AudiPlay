@@ -72,9 +72,10 @@ Drawer terdiri dari 4 menu:
 ### Pengaturan (Settings)
 - **Keep Screen On** — Layar tetap menyala (info: membatalkan batas waktu layar)
 - **Putar Audio Diatas Aplikasi Lain** — Lanjut pemutaran saat buka app lain (info: tidak ada gangguan pemutaran)
-- **Scan All Audio** — Toggle: ON = pindai semua audio tanpa filter folder; OFF = hanya folder yang disertakan dipindai (Folder Disertakan otomatis dinonaktifkan saat ON)
-- **Included Folders** — Folder yang dipindai (hanya aktif saat Scan All Audio OFF)
-- **Excluded Folders** — Folder yang dilewati
+- **Batasi Pemindaian** — Toggle: ON = hanya folder yang diizinkan dipindai; OFF = semua folder dipindai (Folder Dikecualikan tetap diterapkan)
+- **Folder yang Diizinkan** — Folder yang dipindai saat Batasi Pemindaian aktif (redup saat nonaktif, tap untuk mengaktifkan)
+- **Folder Dikecualikan** — Folder yang selalu dilewati saat pemindaian (tidak tergantung toggle Batasi Pemindaian)
+- **Lihat Folder Audio** — Buka FolderListActivity untuk melihat/mengelola semua folder audio: mode Kontrol Grup (kelompok Diizinkan/Dikecualikan/Belum Ditentukan, drag antar section) dan Visual Daftar (daftar flat, warna hijau/merah sesuai status)
 - **Format Audio** — Filter ekstensi format file yang dipindai (Audio, Rekaman, MIDI, Video, Stream)
 - **Ikon Aplikasi** — Pilih dari 5 ikon alternatif untuk aplikasi di layar utama (Nota Musik, Putar, Nota Musik Gelap, Putar Gelap, Antrian)
 - **Lihat Dokumentasi** — Buka pembaca dokumentasi in-app (README, PANDUAN, STRUKTUR, CHANGELOG)

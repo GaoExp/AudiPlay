@@ -1,6 +1,6 @@
-# Mini Player
+# Mini Player (Audio Player Mini)
 
-**Current Release:** `1.0.0.6.1`
+**Current Release:** `1.1.0.7.1`
 **Last Updated:** `2026-06-08`
 
 Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka minimalis.
@@ -21,6 +21,8 @@ Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka mi
 - **Background Playback** — Musik tetap berjalan saat aplikasi di-minimize
 - **Notifikasi** — Kontrol pemutaran dari notifikasi
 - **Kustomisasi Ikon** — 5 pilihan ikon aplikasi dari Pengaturan
+- **Batasi Pemindaian** — Filter folder audio yang dipindai dengan folder diizinkan/dikecualikan
+- **Lihat Folder Audio** — Lihat semua folder audio dengan status (Diizinkan/Dikecualikan/Belum Ditentukan)
 
 ---
 

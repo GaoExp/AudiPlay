@@ -14,7 +14,7 @@ public class PreferencesManager {
     private static final String KEY_KEEP_SCREEN_ON = "keep_screen_on";
     private static final String KEY_PLAY_OVER_OTHER_APPS = "play_over_other_apps";
     private static final String KEY_SORT_MODE = "sort_mode";
-    private static final String KEY_SCAN_ALL_AUDIO = "scan_all_audio";
+    private static final String KEY_LIMIT_FOLDERS = "limit_folders";
     private static final String KEY_INCLUDED_FOLDERS = "included_folders";
     private static final String KEY_EXCLUDED_FOLDERS = "excluded_folders";
     private static final String KEY_AUDIO_FORMATS = "audio_formats";
@@ -62,12 +62,12 @@ public class PreferencesManager {
         prefs.edit().putInt(KEY_SORT_MODE, mode).apply();
     }
 
-    public boolean isScanAllAudio() {
-        return prefs.getBoolean(KEY_SCAN_ALL_AUDIO, true);
+    public boolean isLimitFolders() {
+        return prefs.getBoolean(KEY_LIMIT_FOLDERS, false);
     }
 
-    public void setScanAllAudio(boolean scanAll) {
-        prefs.edit().putBoolean(KEY_SCAN_ALL_AUDIO, scanAll).apply();
+    public void setLimitFolders(boolean limit) {
+        prefs.edit().putBoolean(KEY_LIMIT_FOLDERS, limit).apply();
     }
 
     public Set<String> getIncludedFolders() {

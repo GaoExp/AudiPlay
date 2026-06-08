@@ -23,7 +23,7 @@ public class SettingsViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> keepScreenOn;
     private final MutableLiveData<Boolean> playOverOtherApps;
     private final MutableLiveData<Set<String>> audioFormats;
-    private final MutableLiveData<Boolean> scanAllAudio;
+    private final MutableLiveData<Boolean> limitFolders;
 
     public SettingsViewModel(@NonNull Application application) {
         super(application);
@@ -31,13 +31,13 @@ public class SettingsViewModel extends AndroidViewModel {
         keepScreenOn = new MutableLiveData<>(prefs.isKeepScreenOn());
         playOverOtherApps = new MutableLiveData<>(prefs.isPlayOverOtherApps());
         audioFormats = new MutableLiveData<>(prefs.getAudioFormats());
-        scanAllAudio = new MutableLiveData<>(prefs.isScanAllAudio());
+        limitFolders = new MutableLiveData<>(prefs.isLimitFolders());
     }
 
     public LiveData<Boolean> getKeepScreenOn() { return keepScreenOn; }
     public LiveData<Boolean> getPlayOverOtherApps() { return playOverOtherApps; }
     public LiveData<Set<String>> getAudioFormats() { return audioFormats; }
-    public LiveData<Boolean> getScanAllAudio() { return scanAllAudio; }
+    public LiveData<Boolean> getLimitFolders() { return limitFolders; }
 
     public void setKeepScreenOn(boolean enabled) {
         prefs.setKeepScreenOn(enabled);
@@ -49,9 +49,9 @@ public class SettingsViewModel extends AndroidViewModel {
         playOverOtherApps.setValue(enabled);
     }
 
-    public void setScanAllAudio(boolean enabled) {
-        prefs.setScanAllAudio(enabled);
-        scanAllAudio.setValue(enabled);
+    public void setLimitFolders(boolean enabled) {
+        prefs.setLimitFolders(enabled);
+        limitFolders.setValue(enabled);
     }
 
     public boolean isNotificationPermissionGranted() {

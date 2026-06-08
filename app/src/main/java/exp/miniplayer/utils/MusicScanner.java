@@ -118,9 +118,9 @@ public class MusicScanner {
                 int dateAddedCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED);
                 int dataCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
-                boolean scanAllAudio = prefs == null || prefs.isScanAllAudio();
-                Set<String> included = !scanAllAudio ? prefs.getIncludedFolders() : null;
-                Set<String> excluded = !scanAllAudio ? prefs.getExcludedFolders() : null;
+                boolean limitFolders = prefs != null && prefs.isLimitFolders();
+                Set<String> included = limitFolders ? prefs.getIncludedFolders() : null;
+                Set<String> excluded = prefs != null ? prefs.getExcludedFolders() : null;
                 boolean hasIncluded = included != null && !included.isEmpty();
                 boolean hasExcluded = excluded != null && !excluded.isEmpty();
 

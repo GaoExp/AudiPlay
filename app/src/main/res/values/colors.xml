@@ -20,5 +20,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
     <color name="album_placeholder">#FF49454F</color>
+    <color name="green">#FF4CAF50</color>
     <color name="divider">#1FFFFFFF</color>
 </resources>
