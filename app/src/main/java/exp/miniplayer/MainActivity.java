@@ -46,10 +46,15 @@ import exp.miniplayer.database.PlaylistEntity;
 import exp.miniplayer.model.Audio;
 import exp.miniplayer.player.MusicPlayer;
 import exp.miniplayer.service.MusicService;
+import exp.miniplayer.ui.albums.AlbumsFragment;
+import exp.miniplayer.ui.artists.ArtistsFragment;
 import exp.miniplayer.ui.favorites.FavoritesFragment;
+import exp.miniplayer.ui.folders.FoldersFragment;
+import exp.miniplayer.ui.other_audio.OtherAudioFragment;
 import exp.miniplayer.ui.playlist.PlaylistFragment;
 import exp.miniplayer.ui.settings.SettingsFragment;
 import exp.miniplayer.ui.songs.SongsFragment;
+import exp.miniplayer.ui.system_picker.SystemPickerFragment;
 import exp.miniplayer.utils.QueueHolder;
 import exp.miniplayer.utils.TimeUtils;
 
@@ -155,8 +160,18 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
                 loadFragment(new SongsFragment(), "songs");
             } else if (itemId == R.id.nav_favorites) {
                 loadFragment(new FavoritesFragment(), "favorites");
+            } else if (itemId == R.id.nav_artists) {
+                loadFragment(new ArtistsFragment(), "artists");
+            } else if (itemId == R.id.nav_albums) {
+                loadFragment(new AlbumsFragment(), "albums");
             } else if (itemId == R.id.nav_playlists) {
                 loadFragment(new PlaylistFragment(), "playlists");
+            } else if (itemId == R.id.nav_other_audio) {
+                loadFragment(new OtherAudioFragment(), "other_audio");
+            } else if (itemId == R.id.nav_folders) {
+                loadFragment(new FoldersFragment(), "folders");
+            } else if (itemId == R.id.nav_system_picker) {
+                loadFragment(new SystemPickerFragment(), "system_picker");
             } else if (itemId == R.id.nav_settings) {
                 loadFragment(new SettingsFragment(), "settings");
             }

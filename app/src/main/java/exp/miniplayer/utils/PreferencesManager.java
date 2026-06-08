@@ -28,9 +28,7 @@ public class PreferencesManager {
     private static final String KEY_LAST_TRACK_DATE_ADDED = "last_track_date_added";
 
     private static final Set<String> DEFAULT_AUDIO_FORMATS = new HashSet<>(Arrays.asList(
-            "mp3", "aac", "m4a", "wav", "flac", "ogg", "opus", "wma", "ape", "alac",
-            "aiff", "aif", "aifc", "au", "snd", "ra", "rm", "ac3", "dts", "mka", "pcm",
-            "amr", "3ga", "3gp", "caf"
+            "mp3", "m4a"
     ));
 
     private final SharedPreferences prefs;

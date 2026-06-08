@@ -8,6 +8,7 @@ import androidx.media3.common.MediaItem;
 import androidx.media3.common.MediaMetadata;
 import androidx.media3.common.Player;
 import androidx.media3.common.PlaybackException;
+import androidx.media3.exoplayer.DefaultRenderersFactory;
 import androidx.media3.exoplayer.ExoPlayer;
 
 import exp.miniplayer.model.Audio;
@@ -41,7 +42,12 @@ public class MusicPlayer {
     }
 
     private void initializePlayer() {
-        exoPlayer = new ExoPlayer.Builder(context).build();
+        DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(context);
+        renderersFactory.setExtensionRendererMode(
+                DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
+        exoPlayer = new ExoPlayer.Builder(context)
+                .setRenderersFactory(renderersFactory)
+                .build();
         exoPlayer.addListener(new Player.Listener() {
             @Override
             public void onIsPlayingChanged(boolean isPlaying) {

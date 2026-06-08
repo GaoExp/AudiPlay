@@ -1,7 +1,7 @@
 # Mini Player
 
-**Current Release:** `1.0.0.5.1`
-**Last Updated:** `2026-06-07`
+**Current Release:** `1.0.0.6.1`
+**Last Updated:** `2026-06-08`
 
 Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka minimalis.
 
@@ -10,6 +10,7 @@ Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka mi
 ## ✨ Fitur Utama
 
 - **Pemutaran Musik Lokal** — Putar file audio dari penyimpanan perangkat
+- **MIDI Playback** — Putar file MIDI (.mid/.midi/.rmi/.kar) dengan dukungan synthesizer
 - **Daftar Lagu** — Lihat semua lagu yang terdeteksi dengan informasi detail
 - **Favorit** — Tandai lagu favorit untuk akses cepat
 - **Playlist** — Buat, kelola, dan atur playlist kustom

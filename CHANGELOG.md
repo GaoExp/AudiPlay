@@ -1,3 +1,33 @@
+## [1.0.0.6.1] - 2026-06-08
+
+### 🔢 Version
+- versionCode: 11
+- versionName: 1.0.0.6.1
+
+### 🔧 Optimasi & Penyesuaian
+- Default format audio aktif diubah — hanya mp3 dan m4a secara default, format lain harus diaktifkan manual di Pengaturan
+
+### ✏️ File Changed
+- `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — DEFAULT_AUDIO_FORMATS hanya mp3, m4a
+
+## [1.0.0.6.0] - 2026-06-07
+
+### 🔢 Version
+- versionCode: 10
+- versionName: 1.0.0.6.0
+
+### ✨ Fitur Baru
+- MIDI playback support — putar file .mid/.midi/.rmi/.kar via ExoPlayer MidiRenderer + JSyn synthesizer
+
+### ♻️ Perubahan Fitur
+- Format MIDI (mid, midi, rmi, kar) aktif secara default di scanner audio
+
+### ✏️ File Changed
+- `build.gradle` — tambah JitPack repository untuk JSyn dependency
+- `app/build.gradle` — version bump, tambah media3-exoplayer-midi
+- `app/src/main/java/exp/miniplayer/player/MusicPlayer.java` — set extensionRendererMode PREFER
+- `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — tambah mid, midi, rmi, kar ke DEFAULT_AUDIO_FORMATS
+
 ## [1.0.0.5.1] - 2026-06-07
 
 ### 🔢 Version
