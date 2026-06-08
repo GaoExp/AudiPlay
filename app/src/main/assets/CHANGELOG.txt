@@ -1,3 +1,23 @@
+[1.1.0.7.2] - 2026-06-08
+
+🔢 VERSION
+----------
+versionCode: 14
+versionName: 1.1.0.7.2
+
+🐞 Bug Fixes
+------------
+- CHANGELOG.md dobel entry - hapus body 1.1.0.7.0 yang terlanjur tertinggal saat merge entry
+
+✏️ File Changed
+---------------
+- app/build.gradle - version bump
+- CHANGELOG.md - hapus duplikasi entry 1.1.0.7.0
+
+💡 Catatan
+----------
+- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1
+
 [1.1.0.7.1] - 2026-06-08
 
 🔢 VERSION

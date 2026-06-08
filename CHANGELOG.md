@@ -1,4 +1,20 @@
 ---
+## [1.1.0.7.2] - 2026-06-08
+
+### 🔢 Version
+- versionCode: 14
+- versionName: 1.1.0.7.2
+
+### 🐞 Bug Fixes
+- CHANGELOG.md dobel entry — hapus body `1.1.0.7.0` yang terlanjur tertinggal saat merge entry
+
+### ✏️ File Changed
+- `app/build.gradle` — version bump
+- `CHANGELOG.md` — hapus duplikasi entry 1.1.0.7.0
+
+### 💡 Catatan
+- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1 yang sudah ada
+---
 ## [1.1.0.7.1] - 2026-06-08
 
 ### 🔢 Version
@@ -43,46 +59,6 @@
 - `app/src/main/assets/PANDUAN.txt` — sinkron deskripsi fitur folder
 - `STRUKTUR.md` — deskripsi lengkap semua file
 - `app/src/main/assets/STRUKTUR.txt` — deskripsi lengkap semua file
----
-
-### 🔢 Version
-- versionCode: 12
-- versionName: 1.1.0.7.0
-
-### ✨ Fitur Baru
-- **Batasi Folder** — Pengaturan penyimpanan dirombak: toggle "Pindai Semua Audio" dan "Folder Disertakan" digabung menjadi satu toggle "Batasi Folder"
-- **Lihat Folder Audio** — Opsi baru di Pengaturan untuk melihat semua folder yang berisi file audio
-- **FolderListActivity** — Activity baru dengan dua mode tampilan: Kontrol (dikelompokkan per status Diizinkan/Dikecualikan/Belum Ditentukan, bisa dibuka-tutup) dan Semua (daftar flat dengan tebal/coret/biasa)
-- **Drag antar Section** — Folder di mode Kontrol bisa di-long-press lalu drag ke section lain (Diizinkan/Dikecualikan/Belum Ditentukan); perubahan langsung tersimpan dan tersinkronisasi dengan pengaturan Folder
-
-### ♻️ Perubahan Fitur
-- Default audio format diubah — hanya mp3 dan m4a aktif secara default, format lain diaktifkan manual
-- **Restrukturisasi Settings Storage** — "Folder yang Diizinkan" dipisah menjadi item terpisah dari "Batasi Pemindaian"; urutan: Batasi Pemindaian → Folder Diizinkan → Folder Dikecualikan → Lihat Folder Audio → Format Audio
-- **Rename string** — "Batasi Folder" → "Batasi Pemindaian"; subtitle baru untuk setiap item folder (included/excluded)
-- **Folder Diizinkan redup** — Saat Batasi Pemindaian off, "Folder yang Diizinkan" dan subtitlenya diredupkan (alpha 0.5)
-- **excludedFolders selalu diterapkan** — `MusicScanner.scanAudio()` membaca excludedFolders tanpa tergantung `limitFolders` toggle
-
-### 🎨 UX Drag Ditingkatkan
-- Padding item folder diperbesar (8dp → 16dp vertical)
-- Teks folder diperbesar (bodyMedium → bodyLarge)
-- Elevasi saat drag: `setTranslationZ(16f)` saat drag start, `setTranslationZ(0f)` saat selesai
-
-### ✏️ File Changed
-- `app/build.gradle` — version bump
-- `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — DEFAULT_AUDIO_FORMATS, +limit_folders
-- `app/src/main/java/exp/miniplayer/utils/MusicScanner.java` — scanAudio pakai isLimitFolders
-- `app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java` — scanAllAudio → limitFolders
-- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — UI Batasi Folder + Lihat Folder Audio
-- `app/src/main/res/layout/fragment_settings.xml` — layout storage dirombak
-- `app/src/main/res/layout/activity_folder_list.xml` — layout baru
-- `app/src/main/res/layout/item_folder_list.xml` — layout baru
-- `app/src/main/res/values/strings.xml` — +diizinkan, belum_ditentukan, kontrol, semua; rename "Batasi Folder" → "Batasi Pemindaian"; +subtitle baru
-- `app/src/main/AndroidManifest.xml` — +FolderListActivity
-- `app/src/main/java/exp/miniplayer/ui/folders/FolderListActivity.java` — file baru, +ItemTouchHelper drag antar section, +setTranslationZ drag elevation
-- `app/src/main/res/layout/item_folder_list.xml` — paddingVertical 8dp→16dp, textAppearance bodyMedium→bodyLarge
-- `app/src/main/res/layout/fragment_settings.xml` — restrukturisasi storage card: +subtitle, +included/excluded folders row
-- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — +includedFolders dim alpha, +binding excluded/included
-- `app/src/main/java/exp/miniplayer/utils/MusicScanner.java` — excludedFolders selalu dibaca (tidak tergantung limitFolders)
 ---
 ## [1.1.0.6.1] - 2026-06-08
 

@@ -1,6 +1,6 @@
 # Mini Player (Audio Player Mini)
 
-**Current Release:** `1.1.0.7.1`
+**Current Release:** `1.1.0.7.2`
 **Last Updated:** `2026-06-08`
 
 Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka minimalis.
