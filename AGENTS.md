@@ -202,7 +202,23 @@ Format (.md):
 ## [X.X.X.X.X] - YYYY-MM-DD 
 ``` 
 
-Gunakan section sesuai kebutuhan (daftar lengkap ada di CHANGELOG.md). 
+Gunakan section sesuai kebutuhan. Urutan section WAJIB mengikuti urutan berikut:
+
+```
+✨ Fitur Baru
+🚮 Fitur Dihapus
+📥 Fitur Dipulihkan
+♻️ Perubahan Fitur
+🔧 Optimasi & Penyesuaian
+🐞 Bug Fixes
+💡 Catatan
+🗒️ File Added
+✏️ File Changed
+🔥 File Removed
+🔢 Version
+```
+
+Daftar lengkap dengan deskripsi ada di **Section Changelog** README.md / README.txt.
 
 ### Aturan 
 
@@ -211,12 +227,14 @@ WAJIB:
 - update versionCode dicatat 
 - update versionName dicatat 
 - khusus untuk build.gradle, changelog dan readme tidak perlu dicatat (dikecualikan)
+- section WAJIB ditulis sesuai urutan di atas
 
 JANGAN: 
 - menambah changelog untuk perubahan trivial 
 - menulis penjelasan terlalu panjang 
 - membuat subsection yang tidak perlu 
 - mengulang detail implementasi kecil 
+- mengubah urutan section
 
 Ringkas, faktual, langsung ke perubahan. 
  

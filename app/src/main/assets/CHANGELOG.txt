@@ -1,3 +1,18 @@
+[1.1.0.7.3] - 2026-06-08
+
+🔢 VERSION
+----------
+versionCode: 15
+versionName: 1.1.0.7.3
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Urutan section changelog distandarisasi di semua entry CHANGELOG.md
+- Klasifikasi ulang entry antara Perubahan Fitur dan Optimasi & Penyesuaian
+- Section non-standar (UX, Dokumentasi) digabung ke section standar
+- AGENTS.md diperbarui - daftar urutan section changelog eksplisit
+- README.md / README.txt - section changelog table diurutkan ulang
+
 [1.1.0.7.2] - 2026-06-08
 
 🔢 VERSION

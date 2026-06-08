@@ -1,25 +1,34 @@
 ---
-## [1.1.0.7.2] - 2026-06-08
+## [1.1.0.7.3] - 2026-06-08
+
+### 🔧 Optimasi & Penyesuaian
+- Urutan section changelog distandarisasi di semua entry CHANGELOG.md
+- Klasifikasi ulang entry antara ♻️ Perubahan Fitur dan 🔧 Optimasi & Penyesuaian
+- Section non-standar (🎨 UX, 📚 Dokumentasi) digabung ke section standar
+- AGENTS.md diperbarui — daftar urutan section changelog eksplisit
+- README.md / README.txt — section changelog table diurutkan ulang
 
 ### 🔢 Version
-- versionCode: 14
-- versionName: 1.1.0.7.2
+- versionCode: 15
+- versionName: 1.1.0.7.3
+---
+## [1.1.0.7.2] - 2026-06-08
 
 ### 🐞 Bug Fixes
 - CHANGELOG.md dobel entry — hapus body `1.1.0.7.0` yang terlanjur tertinggal saat merge entry
+
+### 💡 Catatan
+- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1 yang sudah ada
 
 ### ✏️ File Changed
 - `app/build.gradle` — version bump
 - `CHANGELOG.md` — hapus duplikasi entry 1.1.0.7.0
 
-### 💡 Catatan
-- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1 yang sudah ada
+### 🔢 Version
+- versionCode: 14
+- versionName: 1.1.0.7.2
 ---
 ## [1.1.0.7.1] - 2026-06-08
-
-### 🔢 Version
-- versionCode: 13
-- versionName: 1.1.0.7.1
 
 ### ✨ Fitur Baru
 - **Batasi Folder** — Pengaturan penyimpanan dirombak: toggle "Pindai Semua Audio" dan "Folder Disertakan" digabung menjadi satu toggle "Batasi Folder"
@@ -33,13 +42,11 @@
 - **Rename string** — "Batasi Folder" → "Batasi Pemindaian"; subtitle baru untuk setiap item folder (included/excluded)
 - **Folder Diizinkan redup** — Saat Batasi Pemindaian off, "Folder yang Diizinkan" dan subtitlenya diredupkan (alpha 0.5)
 - **excludedFolders selalu diterapkan** — `MusicScanner.scanAudio()` membaca excludedFolders tanpa tergantung `limitFolders` toggle
-
-### 🎨 UX Drag Ditingkatkan
 - Padding item folder diperbesar (8dp → 16dp vertical)
 - Teks folder diperbesar (bodyMedium → bodyLarge)
 - Elevasi saat drag: `setTranslationZ(16f)` saat drag start, `setTranslationZ(0f)` saat selesai
 
-### 📚 Dokumentasi
+### 💡 Catatan
 - Deskripsi semua file dilengkapi di STRUKTUR.md dan STRUKTUR.txt (anim, drawable, layout, menu, mipmap, values, xml, root files, assets, manifes, dsb.)
 
 ### ✏️ File Changed
@@ -59,24 +66,24 @@
 - `app/src/main/assets/PANDUAN.txt` — sinkron deskripsi fitur folder
 - `STRUKTUR.md` — deskripsi lengkap semua file
 - `app/src/main/assets/STRUKTUR.txt` — deskripsi lengkap semua file
+
+### 🔢 Version
+- versionCode: 13
+- versionName: 1.1.0.7.1
 ---
 ## [1.1.0.6.1] - 2026-06-08
 
-### 🔢 Version
-- versionCode: 11
-- versionName: 1.1.0.6.1
-
-### 🔧 Optimasi & Penyesuaian
+### ♻️ Perubahan Fitur
 - Default format audio aktif diubah — hanya mp3 dan m4a secara default, format lain harus diaktifkan manual di Pengaturan
 
 ### ✏️ File Changed
 - `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — DEFAULT_AUDIO_FORMATS hanya mp3, m4a
----
-## [1.1.0.6.0] - 2026-06-07
 
 ### 🔢 Version
-- versionCode: 10
-- versionName: 1.1.0.6.0
+- versionCode: 11
+- versionName: 1.1.0.6.1
+---
+## [1.1.0.6.0] - 2026-06-07
 
 ### ✨ Fitur Baru
 - MIDI playback support — putar file .mid/.midi/.rmi/.kar via ExoPlayer MidiRenderer + JSyn synthesizer
@@ -89,12 +96,12 @@
 - `app/build.gradle` — version bump, tambah media3-exoplayer-midi
 - `app/src/main/java/exp/miniplayer/player/MusicPlayer.java` — set extensionRendererMode PREFER
 - `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — tambah mid, midi, rmi, kar ke DEFAULT_AUDIO_FORMATS
----
-## [1.1.0.5.1] - 2026-06-07
 
 ### 🔢 Version
-- versionCode: 9
-- versionName: 1.0.0.5.1
+- versionCode: 10
+- versionName: 1.1.0.6.0
+---
+## [1.1.0.5.1] - 2026-06-07
 
 ### 🔧 Optimasi & Penyesuaian
 - Release workflow: release notes sekarang pakai CHANGELOG bukan auto-generate dari commit
@@ -102,12 +109,12 @@
 ### ✏️ File Changed
 - `.github/workflows/release.yml` — ganti `generate_release_notes` dengan ekstraksi section user-facing dari CHANGELOG.md
 - `app/build.gradle` — version bump
----
-## [1.1.0.5.0] - 2026-06-07
 
 ### 🔢 Version
-- versionCode: 8
-- versionName: 1.1.0.5.0
+- versionCode: 9
+- versionName: 1.1.0.5.1
+---
+## [1.1.0.5.0] - 2026-06-07
 
 ### ✨ Fitur Baru
 - Now Playing info strip — tampilkan sample rate, bitrate, dan format codec di expanded player
@@ -134,12 +141,12 @@
 - `app/src/main/AndroidManifest.xml` — 5 activity-alias untuk pemilih ikon
 - `app/src/main/res/layout/fragment_settings.xml` — tambah section Tampilan dengan row Ikon Aplikasi
 - `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — tambah handler showIconDialog()
----
-## [1.1.0.4.0] - 2026-06-06
 
 ### 🔢 Version
-- versionCode: 7
-- versionName: 1.1.0.4.0
+- versionCode: 8
+- versionName: 1.1.0.5.0
+---
+## [1.1.0.4.0] - 2026-06-06
 
 ### ✨ Fitur Baru
 - DocumentationActivity — tampilan daftar dokumentasi, tap untuk baca isi dari assets (.txt)
@@ -178,22 +185,24 @@
 ### 🔥 File Removed
 - `DEVELOPMENT.md` — konten digabung ke README
 - `app/src/main/assets/TENTANG.txt` — konten sudah di-merge ke README
+
+### 🔢 Version
+- versionCode: 7
+- versionName: 1.1.0.4.0
 ---
 ## [1.1.0.3.0] - 2026-06-06
 
-### 🔢 Version
-- versionCode: 6
-- versionName: 1.1.0.3.0
-
 ### ✨ Fitur Baru
 - Format Audio di Settings — filter file berdasarkan ekstensi format (Audio, Rekaman, MIDI, Video, Stream)
+
+### 🚮 Fitur Dihapus
+- Opsi "Mode Ulang Default" di Pengaturan
 
 ### ♻️ Perubahan Fitur
 - mini player selalu tampil di bawah meski tidak ada lagu diputar
 - tampilan kosong: judul "Mini Player", subjudul "Pilih lagu untuk diputar"
 - Scan All Audio diubah dari tombol klik jadi SwitchCompat — saat ON, semua audio dipindai tanpa filter folder; saat OFF, hanya folder yang disertakan dipindai
 - Folder Disertakan otomatis dinonaktifkan (disabled/greyed out) saat Scan All Audio aktif
-- Hapus opsi Mode Ulang Default di Pengaturan
 - Jaga Layar Tetap Nyala ditambahi informasi "Membatalkan batas waktu layar"
 - Tambah opsi Putar Audio Diatas Aplikasi Lain — toggle + informasi "Tidak ada gangguan pemutaran"; implementasi: skip audio focus request saat ON, abandon fokus, pause kalah fokus saat OFF
 - Tambah tombol panah bawah (▼) di Now Playing untuk menutup expanded player
@@ -201,14 +210,14 @@
 - Navigasi ganti lagu: dari ketukan sisi (previous/next) jadi swipe kiri/kanan di album art
 - Tombol panah bawah & favorit di Now Playing tidak bisa ditekan — diperbaiki (mini_player_overlay disembunyikan saat expanded)
 
-### 🗒️ File Added
-- `app/src/main/res/layout/dialog_audio_formats.xml`
-
 ### 🐞 Bug Fixes
 - lagu berhenti saat keluar app — `startForeground()` dipanggil di `playQueue()` SEBELUM player mulai (hindari `ForegroundServiceStartNotAllowedException` di Android 12+)
 - lagu berhenti sendiri & now playing kosong (service restart) — simpan track terakhir ke SharedPreferences, pulihkan saat service restart
 - file audio corrupt/codec error — ExoPlayer skip ke track berikutnya (onPlayerError)
 - queue habis (repeat off) — togglePlayPause restart dari awal, bukan diam
+
+### 🗒️ File Added
+- `app/src/main/res/layout/dialog_audio_formats.xml`
 
 ### ✏️ File Changed
 - `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java`
@@ -224,12 +233,12 @@
 - `app/src/main/res/drawable/ic_favorite.xml`
 - `app/src/main/res/drawable/ic_favorite_border.xml`
 - `app/src/main/res/values/arrays.xml`
----
-## [1.0.0.2.0] - 2026-06-06
 
 ### 🔢 Version
-- versionCode: 5
-- versionName: 1.0.0.2.0
+- versionCode: 6
+- versionName: 1.1.0.3.0
+---
+## [1.0.0.2.0] - 2026-06-06
 
 ### ✨ Fitur Baru
 - implementasi Scan All Audio (trigger re-scan manual dari Settings)
@@ -247,12 +256,10 @@
 - kontrol pemutaran (shuffle, repeat, seekbar, favorit, progress) pindah ke MainActivity
 - klik mini player buka expanded player (bukan Activity baru)
 - seret expanded player ke bawah untuk tutup (collapse ke mini player)
+- folder picker kini pakai SAF (file manager) bukan input teks manual
 
 ### 🔧 Optimasi & Penyesuaian
 - tambah izin WAKE_LOCK
-- folder picker kini pakai SAF (file manager) bukan input teks manual
-- Now Playing jadi overlay di atas daftar lagu (transisi slide up/down)
-- drag-to-dismiss dengan animasi di Now Playing
 
 ### 🗒️ File Added
 - `app/src/main/res/drawable/ic_arrow_down.xml`
@@ -288,12 +295,12 @@
 - `app/src/main/java/exp/miniplayer/ui/nowplaying/NowPlayingViewModel.java`
 - `app/src/main/res/layout/activity_now_playing.xml`
 - `app/src/main/res/layout/view_mini_player.xml`
----
-## [1.0.0.1.0] - 2026-06-06
 
 ### 🔢 Version
-- versionCode: 4
-- versionName: 1.0.0.1.0
+- versionCode: 5
+- versionName: 1.0.0.2.0
+---
+## [1.0.0.1.0] - 2026-06-06
 
 ### ✨ Fitur Baru
 - migrasi navigasi dari Bottom Navigation Bar ke Navigation Drawer (sidebar)
@@ -301,7 +308,6 @@
 
 ### ♻️ Perubahan Fitur
 - warna diubah ke palet dark theme Material3 sepenuhnya
-- hapus folder values-night (tidak terpakai)
 
 ### 🐞 Bug Fixes
 - fix force close SongsFragment — cast SearchView pakai instanceof
@@ -313,12 +319,15 @@
 - `strings.xml`
 - `app/src/main/res/values/colors.xml` — +green
 - `STRUKTUR.md`
----
-## [1.0.0.0.2] - 2026-06-06
+
+### 🔥 File Removed
+- `app/src/main/res/values-night/` — tidak terpakai setelah migrasi ke dark theme sepenuhnya
 
 ### 🔢 Version
-- versionCode: 3
-- versionName: 1.0.0.0.2
+- versionCode: 4
+- versionName: 1.0.0.1.0
+---
+## [1.0.0.0.2] - 2026-06-06
 
 ### 🐞 Bug Fixes
 - hapus `fallbackToDestructiveMigration()` agar data tidak terhapus saat migrasi
@@ -333,12 +342,12 @@
 - `SongsFragment.java`
 - `FavoritesFragment.java`
 - `NowPlayingViewModel.java`
----
-## [1.0.0.0.1] - 2026-06-06
 
 ### 🔢 Version
-- versionCode: 2
-- versionName: 1.0.0.0.1
+- versionCode: 3
+- versionName: 1.0.0.0.2
+---
+## [1.0.0.0.1] - 2026-06-06
 
 ### 🔧 Optimasi & Penyesuaian
 - hapus `aapt2FromMavenOverride` dari gradle.properties untuk kompatibilitas CI
@@ -346,12 +355,12 @@
 ### ✏️ File Changed
 - `gradle.properties`
 - `app/build.gradle`
----
-## [1.0.0.0.0] - 2026-06-06
 
 ### 🔢 Version
-- versionCode: 1
-- versionName: 1.0.0.0.0
+- versionCode: 2
+- versionName: 1.0.0.0.1
+---
+## [1.0.0.0.0] - 2026-06-06
 
 ### ✨ Fitur Baru
 - inisialisasi project Mini Player
@@ -371,4 +380,8 @@
 
 ### 🗒️ File Added
 - seluruh struktur project awal
+
+### 🔢 Version
+- versionCode: 1
+- versionName: 1.0.0.0.0
 ---

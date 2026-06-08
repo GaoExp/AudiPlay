@@ -1,7 +1,7 @@
 MINI PLAYER
 ===========
 
-Current Release: 1.1.0.7.2
+Current Release: 1.1.0.7.3
 Last Updated: 2026-06-08
 
 Aplikasi pemutar musik lokal untuk Android dengan fitur lengkap dan antarmuka minimalis.
@@ -97,17 +97,17 @@ Aturan:
 SECTION CHANGELOG
 -----------------
 Section                    Deskripsi
-🔢 Version                versionCode & versionName
 ✨ Fitur Baru              Fitur baru ditambahkan
 🚮️ Fitur Dihapus           Fitur dihapus/dinonaktifkan
 📥️ Fitur Dipulihkan       Fitur lama dikembalikan
 ♻️️ Perubahan Fitur        Perubahan fitur existing
-🗒️ File Added             File baru
-✏️️ File Changed           File diubah
-🔥️ File Removed           File dihapus
 🔧 Optimasi & Penyesuaian Optimasi, refactor, maintenance
 🐞 Bug Fixes              Perbaikan bug
 💡 Catatan                Informasi tambahan
+🗒️ File Added             File baru
+✏️️ File Changed           File diubah
+🔥️ File Removed           File dihapus
+🔢 Version                versionCode & versionName
 
 DEPENDENCIES
 ------------
