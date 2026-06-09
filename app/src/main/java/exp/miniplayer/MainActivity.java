@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(item -> {
+            toolbar.setTitle(item.getTitle());
             int itemId = item.getItemId();
             if (itemId == R.id.nav_songs) {
                 loadFragment(new SongsFragment(), "songs");
@@ -183,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         if (savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.nav_songs);
             loadFragment(new SongsFragment(), "songs");
+            toolbar.setTitle(navigationView.getMenu().findItem(R.id.nav_songs).getTitle());
         }
 
         startService(new Intent(this, MusicService.class));

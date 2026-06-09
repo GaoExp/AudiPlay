@@ -26,6 +26,8 @@ import exp.miniplayer.database.PlaylistEntity;
 import exp.miniplayer.utils.PlaylistIO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlaylistFragment extends Fragment {
 
@@ -63,6 +65,11 @@ public class PlaylistFragment extends Fragment {
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyView.setVisibility(View.GONE);
                 adapter = new PlaylistAdapter(requireContext(), playlists);
+                Map<Integer, Integer> counts = new HashMap<>();
+                for (PlaylistEntity p : playlists) {
+                    counts.put(p.getId(), importRepo.getPlaylistSongCount(p.getId()));
+                }
+                adapter.setSongCounts(counts);
                 adapter.setOnItemClickListener((playlist, position) -> {
                     Intent intent = new Intent(requireContext(), PlaylistDetailActivity.class);
                     intent.putExtra("playlist_id", playlist.getId());

@@ -1,4 +1,33 @@
 ---
+## [1.1.0.8.1] - 2026-06-09
+
+### ✨ Fitur Baru
+- Real-time auto-scan .m3u — `PlaylistFileWatcher` pakai `FileObserver`:
+  playlist baru terdeteksi langsung tanpa restart aplikasi
+
+### 🐞 Bug Fixes
+- PlaylistAdapter selalu menampilkan "Playlist ini kosong" — tambah dukungan song count
+- Auto-scan .m3u: judul lagu "Unknown" saat file path tidak match scannedAudio — fallback ke nama file + normalize path biar matching akurat
+- Auto-scan .m3u: playlist lama yang sudah ada di DB dilewati — sekarang update title/artist lagu di tempat tanpa delete & re-insert
+
+### ♻️ Perubahan Fitur
+- `PlaylistScanner.importPlaylistFile()`: ganti deleteAll+insertAll jadi update in-place pake `REPLACE` by ID
+- Toolbar header sekarang menampilkan judul perpustakaan yang aktif (Lagu, Playlist, Pengaturan, dll)
+  bukan hanya judul aplikasi
+
+### ✏️ File Changed
+- `app/src/main/java/exp/miniplayer/adapter/PlaylistAdapter.java` — tampilkan jumlah lagu nyata dari `getPlaylistSongCount()`
+- `app/src/main/java/exp/miniplayer/utils/PlaylistScanner.java` — fallback title pakai nama file, normalize path pake `getCanonicalPath()`, update in-place untuk playlist existing
+- `app/src/main/java/exp/miniplayer/utils/PlaylistFileWatcher.java` — FileObserver real-time untuk file .m3u baru
+- `app/src/main/java/exp/miniplayer/MiniPlayerApp.java` — inisialisasi PlaylistFileWatcher saat app start
+- `app/src/main/java/exp/miniplayer/ui/playlist/PlaylistFragment.java` — kirim songCounts ke adapter
+- `app/src/main/res/values/strings.xml` — tambah plural `playlist_song_count`
+- `app/src/main/java/exp/miniplayer/MainActivity.java` — set toolbar title dari menu item terpilih
+
+### 🔢 Version
+- versionCode: 17
+- versionName: 1.1.0.8.1
+---
 ## [1.1.0.8.0] - 2026-06-09
 
 ### ✨ Fitur Baru
@@ -66,7 +95,6 @@
 - versionCode: 16
 - versionName: 1.1.0.8.0
 ---
-## [1.1.0.7.2] - 2026-06-08
 
 ### 🐞 Bug Fixes
 - CHANGELOG.md dobel entry — hapus body `1.1.0.7.0` yang terlanjur tertinggal saat merge entry

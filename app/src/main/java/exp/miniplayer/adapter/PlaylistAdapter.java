@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import exp.miniplayer.R;
 import exp.miniplayer.database.PlaylistEntity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder> {
 
     private final Context context;
     private final List<PlaylistEntity> playlistList;
+    private Map<Integer, Integer> songCounts = new HashMap<>();
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
 
@@ -32,6 +35,11 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public PlaylistAdapter(Context context, List<PlaylistEntity> playlistList) {
         this.context = context;
         this.playlistList = playlistList;
+    }
+
+    public void setSongCounts(Map<Integer, Integer> counts) {
+        this.songCounts = counts != null ? counts : new HashMap<>();
+        notifyDataSetChanged();
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -54,7 +62,15 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public void onBindViewHolder(@NonNull PlaylistViewHolder holder, int position) {
         PlaylistEntity playlist = playlistList.get(position);
         holder.nameText.setText(playlist.getName());
-        holder.songCountText.setText(context.getString(R.string.playlist_empty));
+        Integer count = songCounts.get(playlist.getId());
+        if (count != null && count > 0) {
+            holder.songCountText.setText(context.getResources()
+                    .getQuantityString(R.plurals.playlist_song_count, count, count));
+        } else if (count != null && count == 0) {
+            holder.songCountText.setText(context.getString(R.string.playlist_empty));
+        } else {
+            holder.songCountText.setText(context.getString(R.string.playlist_empty));
+        }
 
         holder.itemView.setOnClickListener(v -> {
             if (onItemClickListener != null) {

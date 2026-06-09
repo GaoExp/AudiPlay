@@ -45,6 +45,9 @@
     <string name="error_scanning">Gagal memindai file audio.</string>
     <string name="delete_playlist_confirm">Yakin ingin menghapus playlist ini?</string>
     <string name="playlist_empty">Playlist ini kosong</string>
+    <plurals name="playlist_song_count">
+        <item quantity="other">%d lagu</item>
+    </plurals>
     <string name="audio_file_missing">File audio tidak ditemukan</string>
     <string name="shuffle">Acak</string>
     <string name="now_playing">Sedang Diputar</string>

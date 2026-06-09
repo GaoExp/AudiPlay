@@ -8,8 +8,10 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import exp.miniplayer.data.AudioRepository;
@@ -141,8 +143,10 @@ public class PlaylistScanner {
                 String matchedArtist = null;
                 long matchedDuration = 0;
 
+                String normResolved = normalizePath(resolvedUri);
                 for (Audio audio : scannedAudio) {
-                    if (audio.getFilePath() != null && audio.getFilePath().equals(resolvedUri)) {
+                    String audioPath = audio.getFilePath();
+                    if (audioPath != null && normalizePath(audioPath).equals(normResolved)) {
                         matchedUri = audio.getUri();
                         matchedId = audio.getId();
                         matchedTitle = audio.getTitle();
@@ -152,10 +156,22 @@ public class PlaylistScanner {
                     }
                 }
 
-                String title = currentTitle != null ? currentTitle
-                        : (matchedTitle != null ? matchedTitle : "Unknown");
+                String fallbackTitle = matchedTitle;
+                if (fallbackTitle == null) {
+                    String uriPath = resolvedUri;
+                    int slash = uriPath.lastIndexOf('/');
+                    if (slash >= 0 && slash < uriPath.length() - 1) {
+                        fallbackTitle = uriPath.substring(slash + 1);
+                    } else {
+                        fallbackTitle = uriPath;
+                    }
+                    int extDot = fallbackTitle.lastIndexOf('.');
+                    if (extDot > 0) fallbackTitle = fallbackTitle.substring(0, extDot);
+                }
+
+                String title = currentTitle != null ? currentTitle : fallbackTitle;
                 String artist = currentArtist != null ? currentArtist
-                        : (matchedArtist != null ? matchedArtist : "Unknown");
+                        : (matchedArtist != null ? matchedArtist : "");
                 long duration = currentDuration > 0 ? currentDuration : matchedDuration;
 
                 entries.add(new PlaylistEntry(matchedId, title, artist, duration, matchedUri));
@@ -166,19 +182,51 @@ public class PlaylistScanner {
             }
 
             PlaylistEntity existing = repo.findPlaylistByName(playlistName);
-            if (existing != null) return;
 
-            long playlistId = repo.createPlaylist(playlistName);
+            long playlistId;
+            Map<String, PlaylistSongEntity> existingSongMap = new HashMap<>();
+
+            if (existing != null) {
+                playlistId = existing.getId();
+                List<PlaylistSongEntity> existingSongs = repo.getPlaylistSongDao().getSongsForPlaylistSync((int) playlistId);
+                for (PlaylistSongEntity song : existingSongs) {
+                    String songUri = song.getUri();
+                    if (songUri != null) {
+                        existingSongMap.put(normalizePath(songUri), song);
+                    }
+                }
+            } else {
+                playlistId = repo.createPlaylist(playlistName);
+            }
+
             int sortOrder = 0;
             for (PlaylistEntry entry : entries) {
-                PlaylistSongEntity entity = new PlaylistSongEntity(
-                        (int) playlistId, entry.audioId, entry.title, entry.artist, "",
-                        entry.duration, entry.uri, null, sortOrder++, System.currentTimeMillis());
-                repo.getPlaylistSongDao().insert(entity);
+                String normUri = normalizePath(entry.uri);
+                PlaylistSongEntity existingEntity = existingSongMap.get(normUri);
+                if (existingEntity != null) {
+                    existingEntity.setTitle(entry.title);
+                    existingEntity.setArtist(entry.artist);
+                    existingEntity.setDuration(entry.duration);
+                    existingEntity.setSortOrder(sortOrder++);
+                    repo.getPlaylistSongDao().insert(existingEntity);
+                } else {
+                    PlaylistSongEntity entity = new PlaylistSongEntity(
+                            (int) playlistId, entry.audioId, entry.title, entry.artist, "",
+                            entry.duration, entry.uri, null, sortOrder++, System.currentTimeMillis());
+                    repo.getPlaylistSongDao().insert(entity);
+                }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private static String normalizePath(String path) {
+        try {
+            return new File(path).getCanonicalPath().toLowerCase();
+        } catch (Exception e) {
+            return path.toLowerCase();
         }
     }
 

@@ -39,7 +39,7 @@ AudiPlay/
         │
         ├── java/exp/miniplayer/
         │   ├── MainActivity.java            — Activity utama: DrawerLayout navigasi, BottomSheet now-playing, service binding, info strip, PopupMenu overflow
-        │   ├── MiniPlayerApp.java            — Application subclass: memaksa mode gelap via AppCompatDelegate
+        │   ├── MiniPlayerApp.java            — Application subclass: memaksa mode gelap, inisialisasi PlaylistFileWatcher
         │   │
         │   ├── adapter/
         │   │   ├── GroupAdapter.java             — Adapter RecyclerView grup album/artis (nama + jumlah item)
@@ -104,7 +104,8 @@ AudiPlay/
         │       ├── MusicScanner.java             — Pindai MediaStore dengan filter folder (include/exclude) & filter format audio
         │       ├── PermissionHelper.java         — Handler izin runtime audio/storage & notifikasi
         │       ├── PlaylistIO.java               — Export/import playlist (M3U extended + JSON) via SAF
-        │       ├── PlaylistScanner.java          — Auto-scan file .m3u/.m3u8 dari folder musik, parse & import ke Room DB
+        │       ├── PlaylistFileWatcher.java      — FileObserver real-time: deteksi file .m3u baru dan trigger auto-scan
+        │       ├── PlaylistScanner.java          — Auto-scan file .m3u/.m3u8 dari folder musik, parse & import/update ke Room DB
         │       ├── PreferencesManager.java       — Wrapper SharedPreferences: screen-on, audio-focus, folder filter, format audio, last track, sort mode
         │       ├── QueueHolder.java              — Singleton statis antrean pemutaran (list Audio + starting index)
         │       └── TimeUtils.java                — Format milidetik ke string durasi (1:23 / 1:02:05)

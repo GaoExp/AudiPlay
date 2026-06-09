@@ -25,14 +25,19 @@ Aplikasi menggunakan **Navigation Drawer** (sidebar) yang bisa dibuka dengan:
 - Tap ikon hamburger (☰) di kiri atas
 - Swipe dari tepi kiri layar
 
-Drawer terdiri dari 4 menu:
+Drawer terdiri dari menu berikut:
 
-| Menu       | Ikon           | Fungsi                          |
-|------------|----------------|---------------------------------|
-| Songs      | Musik note     | Daftar semua lagu               |
-| Favorites  | Heart          | Lagu yang ditandai favorit      |
-| Playlists  | Queue music    | Daftar playlist                 |
-| Settings   | Gear           | Pengaturan aplikasi             |
+| Menu           | Ikon              | Fungsi                          |
+|----------------|-------------------|---------------------------------|
+| Lagu           | Nota musik        | Daftar semua lagu               |
+| Favorit        | Hati              | Lagu yang ditandai favorit      |
+| Artis          | Siluet orang      | Daftar artis                    |
+| Album          | CD                | Daftar album                    |
+| Playlist       | Antrian           | Daftar playlist                 |
+| Audio Lainnya  | Nota + gelombang  | File audio non-musik            |
+| Folder         | Folder            | Folder musik per direktori      |
+| System Picker  | Monitor           | Impor audio via system picker   |
+| Pengaturan     | Gear              | Pengaturan aplikasi             |
 
 ## Fitur
 
