@@ -38,6 +38,12 @@
     <string name="excluded_folders_subtitle">Tetap dikecualikan dari pemindaian meski Batasi Pemindaian dinonaktifkan</string>
     <string name="permission_required">Izin Diperlukan</string>
     <string name="permission_message">Izin penyimpanan diperlukan untuk memindai file audio.</string>
+    <string name="permission_first_run_message">AudiPlay membutuhkan akses ke berkas, foto, dan video untuk memindai dan memutar file media.</string>
+    <string name="later">Nanti</string>
+    <string name="manage_permissions">Kelola Izin</string>
+    <string name="manage_permissions_subtitle">Buka pengaturan sistem untuk mengelola izin aplikasi</string>
+    <string name="battery_optimization">Hemat Baterai</string>
+    <string name="battery_optimization_subtitle">Nonaktifkan optimasi baterai agar pemutaran tidak terhenti</string>
     <string name="grant">Izinkan</string>
     <string name="cancel">Batal</string>
     <string name="ok">OK</string>

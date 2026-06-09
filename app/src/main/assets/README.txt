@@ -77,7 +77,7 @@ ENVIRONMENT
 -----------
 Item               Detail
 Build System       Gradle + AGP 8.12.0
-Java               Java 8 (source/target)
+Java               Java 17 (source/target)
 Min SDK            26
 Target SDK         35
 Compile SDK        35
@@ -153,9 +153,17 @@ PERMISSION
 ----------
 Dideklarasikan di AndroidManifest.xml:
 
-- READ_MEDIA_AUDIO - API 33+
-- READ_EXTERNAL_STORAGE - API 32 ke bawah
-- FOREGROUND_SERVICE - Background playback
-- FOREGROUND_SERVICE_MEDIA_PLAYBACK - Media playback service
-- POST_NOTIFICATIONS - API 33+
-- BLUETOOTH_CONNECT - Kontrol Bluetooth AVRCP
+- READ_EXTERNAL_STORAGE (maxSdk 32) - Akses penyimpanan Android <=12
+- READ_MEDIA_AUDIO - Akses file audio (API 33+)
+- READ_MEDIA_VIDEO - Akses file video (API 33+)
+- READ_MEDIA_IMAGES - Akses file gambar (API 33+)
+- FOREGROUND_SERVICE - Layanan latar depan
+- FOREGROUND_SERVICE_MEDIA_PLAYBACK - Layanan pemutaran media
+- POST_NOTIFICATIONS - Notifikasi pemutaran (API 33+)
+- BLUETOOTH (maxSdk 31) - Bluetooth klasik
+- BLUETOOTH_CONNECT - Kontrol Bluetooth AVRCP (API 31+)
+- WAKE_LOCK - Jaga CPU tetap aktif
+- REQUEST_IGNORE_BATTERY_OPTIMIZATIONS - Nonaktifkan optimasi baterai
+
+Izin diminta otomatis saat pertama aplikasi dibuka. Pengguna juga bisa
+mengelola izin & nonaktifkan optimasi baterai melalui menu Pengaturan.

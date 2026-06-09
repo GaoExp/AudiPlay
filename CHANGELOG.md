@@ -1,9 +1,29 @@
 ## [1.1.0.10.1] - 2026-06-09
 
+### ✨ Fitur Baru
+- Izin `READ_MEDIA_VIDEO` dan `READ_MEDIA_IMAGES` untuk akses Berkas, Foto dan Video di Android 13+
+- Izin langsung diminta saat aplikasi pertama kali dibuka (dialog + `requestAllPermissions`)
+- Opsi "Kelola Izin" di Pengaturan — buka halaman izin sistem aplikasi
+
+### ♻️ Perubahan Fitur
+- `PermissionHelper` — tambah `requestAllPermissions()` untuk minta semua izin (audio, video, images, notifikasi) sekaligus
+- `PreferencesManager` — tambah `isFirstRun()` / `setFirstRunDone()` untuk deteksi pertama buka
+- `MainActivity` — deteksi first run, tampil dialog izin, panggil `requestAllPermissions()`
+
 ### 🔧 Optimasi & Penyesuaian
 - Hapus `aapt2FromMavenOverride` di `gradle.properties` — fix CI build (aapt2 tidak ditemukan)
+- Tambah step decode keystore & buat `keystore.properties` di GitHub Actions — APK release sekarang tersign
+- Tambah `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` — tombol "Hemat Baterai" di pengaturan
 
 ### ✏️ File Changed
+- `AndroidManifest.xml` — tambah `READ_MEDIA_VIDEO`, `READ_MEDIA_IMAGES`, `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`
+- `app/src/main/java/exp/miniplayer/utils/PermissionHelper.java` — tambah `requestAllPermissions()`
+- `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — tambah `isFirstRun()` / `setFirstRunDone()`
+- `app/src/main/java/exp/miniplayer/MainActivity.java` — first run dialog & request permission
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — tambah tombol "Kelola Izin" & "Hemat Baterai"
+- `app/src/main/res/layout/fragment_settings.xml` — tambah card Izin + baris Hemat Baterai
+- `app/src/main/res/values/strings.xml` — tambah string baru
+- `.github/workflows/release.yml` — tambah decode keystore + `keystore.properties`
 - `gradle.properties` — hapus `aapt2FromMavenOverride`
 
 ### 🔢 Version

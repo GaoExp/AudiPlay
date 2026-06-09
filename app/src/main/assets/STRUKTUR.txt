@@ -30,7 +30,7 @@ AudiPlay/
     ├── libs/                        — Direktori JAR libs (kosong)
     │
     └── src/main/
-        ├── AndroidManifest.xml      — Manifest: permissions audio/notifikasi/BT, 5 activity-alias ikon, 7 Activity, MusicService
+        ├── AndroidManifest.xml      — Manifest: permissions audio/video/images/notifikasi/BT/baterai, 5 activity-alias ikon, 7 Activity, MusicService
         │
         ├── assets/
         │   ├── CHANGELOG.txt        — Riwayat perubahan (plain text, untuk in-app viewer)
@@ -93,7 +93,7 @@ AudiPlay/
         │   │   │   ├── PlaylistFragment.java        — Fragment kelola playlist (buat/rename/hapus via FAB & long-press, stats per playlist + header total)
         │   │   │   └── PlaylistViewModel.java       — ViewModel daftar playlist via LiveData
         │   │   ├── settings/
-        │   │   │   ├── SettingsFragment.java     — Fragment pengaturan: screen-on, audio focus, batasi folder, format audio, ikon aplikasi, dokumentasi
+        │           │   │   ├── SettingsFragment.java     — Fragment pengaturan: screen-on, audio focus, batasi folder, format audio, ikon aplikasi, kelola izin, hemat baterai, dokumentasi
         │   │   │   └── SettingsViewModel.java    — ViewModel state pengaturan & preferensi folder (limitFolders, audioFormats, dll)
         │   │   ├── songs/
         │   │   │   ├── SongsFragment.java        — Fragment semua lagu: search, sort, tap putar, long-press favorit/playlist, header total stats
@@ -104,7 +104,7 @@ AudiPlay/
         │   │
         │   └── utils/
         │       ├── MusicScanner.java             — Pindai MediaStore dengan filter folder (include/exclude), filter format audio, filter by extension (bukan IS_MUSIC)
-        │       ├── PermissionHelper.java         — Handler izin runtime audio/storage & notifikasi
+        │       ├── PermissionHelper.java         — Handler izin runtime: audio/video/images, notifikasi, requestAllPermissions() untuk first-run
         │       ├── PlaylistIO.java               — Export/import playlist (M3U extended + JSON) via SAF
         │       ├── PlaylistFileWatcher.java      — FileObserver real-time: deteksi file .m3u baru dan trigger auto-scan
         │       ├── PlaylistScanner.java          — Auto-scan file .m3u/.m3u8 dari folder musik, parse & import/update ke Room DB
@@ -170,7 +170,7 @@ AudiPlay/
             │   ├── fragment_folders.xml           — Layout folder (LinearLayout + section_header + FrameLayout wrapper + RecyclerView + empty state)
             │   ├── fragment_other_audio.xml       — Layout audio lain (RecyclerView + empty state)
             │   ├── fragment_playlist.xml          — Layout playlist (ConstraintLayout + section_header + RecyclerView + FAB + empty state)
-            │   ├── fragment_settings.xml          — Layout settings (ScrollView, card: Playback, Storage, Appearance, Documentation)
+            │   ├── fragment_settings.xml          — Layout settings (ScrollView, card: Playback, Storage, Izin, Appearance, Documentation)
             │   ├── fragment_songs.xml             — Layout daftar lagu (ConstraintLayout + section_header + RecyclerView + empty state)
             │   ├── fragment_system_picker.xml     — Layout system picker (MaterialCardView tap target)
             │   ├── item_folder.xml                — Item folder (text path + tombol close)

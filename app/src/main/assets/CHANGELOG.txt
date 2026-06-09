@@ -1,8 +1,22 @@
 [1.1.0.10.1] - 2026-06-09
 
+✨ Fitur Baru
+------------
+- Izin READ_MEDIA_VIDEO dan READ_MEDIA_IMAGES untuk akses Berkas, Foto dan Video di Android 13+
+- Izin langsung diminta saat aplikasi pertama kali dibuka (dialog + requestAllPermissions)
+- Opsi "Kelola Izin" di Pengaturan - buka halaman izin sistem aplikasi
+
+♻️ Perubahan Fitur
+----------------
+- PermissionHelper: tambah requestAllPermissions() untuk minta semua izin (audio, video, images, notifikasi)
+- PreferencesManager: tambah isFirstRun() / setFirstRunDone() untuk deteksi pertama buka
+- MainActivity: deteksi first run, tampil dialog izin, panggil requestAllPermissions()
+
 🔧 Optimasi & Penyesuaian
 -------------------------
 - Hapus aapt2FromMavenOverride di gradle.properties - fix CI build (aapt2 tidak ditemukan)
+- Tambah step decode keystore & buat keystore.properties di GitHub Actions - APK release sekarang tersign
+- Tambah REQUEST_IGNORE_BATTERY_OPTIMIZATIONS - tombol "Hemat Baterai" di pengaturan
 
 🔢 VERSION
 ----------

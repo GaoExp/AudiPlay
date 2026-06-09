@@ -18,6 +18,7 @@ public class PreferencesManager {
     private static final String KEY_INCLUDED_FOLDERS = "included_folders";
     private static final String KEY_EXCLUDED_FOLDERS = "excluded_folders";
     private static final String KEY_AUDIO_FORMATS = "audio_formats";
+    private static final String KEY_FIRST_RUN = "first_run";
     private static final String KEY_LAST_TRACK_ID = "last_track_id";
     private static final String KEY_LAST_TRACK_TITLE = "last_track_title";
     private static final String KEY_LAST_TRACK_ARTIST = "last_track_artist";
@@ -136,6 +137,14 @@ public class PreferencesManager {
         Set<String> formats = getAudioFormats();
         formats.remove(format);
         setAudioFormats(formats);
+    }
+
+    public boolean isFirstRun() {
+        return prefs.getBoolean(KEY_FIRST_RUN, true);
+    }
+
+    public void setFirstRunDone() {
+        prefs.edit().putBoolean(KEY_FIRST_RUN, false).apply();
     }
 
     public void saveLastPlayedTrack(Audio audio) {

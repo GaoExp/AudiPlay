@@ -56,6 +56,8 @@ import exp.miniplayer.ui.settings.SettingsFragment;
 import exp.miniplayer.ui.songs.SongsFragment;
 import exp.miniplayer.ui.system_picker.SystemPickerFragment;
 import exp.miniplayer.adapter.GroupAdapter;
+import exp.miniplayer.utils.PermissionHelper;
+import exp.miniplayer.utils.PreferencesManager;
 import exp.miniplayer.utils.QueueHolder;
 import exp.miniplayer.utils.TimeUtils;
 
@@ -193,6 +195,18 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         updateNavHeader();
 
         initBottomSheet();
+
+        PreferencesManager prefs = new PreferencesManager(this);
+        if (prefs.isFirstRun()) {
+            prefs.setFirstRunDone();
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.permission_required)
+                    .setMessage(R.string.permission_first_run_message)
+                    .setPositiveButton(R.string.grant, (dialog, which) ->
+                            PermissionHelper.requestAllPermissions(this))
+                    .setNegativeButton(R.string.later, null)
+                    .show();
+        }
     }
 
     @Override

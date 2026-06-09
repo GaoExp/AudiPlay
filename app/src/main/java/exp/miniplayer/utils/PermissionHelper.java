@@ -15,6 +15,10 @@ public class PermissionHelper {
     public static boolean hasAudioPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_AUDIO)
+                    == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO)
+                    == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES)
                     == PackageManager.PERMISSION_GRANTED;
         } else {
             return ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -33,7 +37,26 @@ public class PermissionHelper {
     public static void requestAudioPermission(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.READ_MEDIA_AUDIO}, PERMISSION_REQUEST_CODE);
+                    new String[]{
+                            Manifest.permission.READ_MEDIA_AUDIO,
+                            Manifest.permission.READ_MEDIA_VIDEO,
+                            Manifest.permission.READ_MEDIA_IMAGES
+                    }, PERMISSION_REQUEST_CODE);
+        } else {
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    public static void requestAllPermissions(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{
+                            Manifest.permission.READ_MEDIA_AUDIO,
+                            Manifest.permission.READ_MEDIA_VIDEO,
+                            Manifest.permission.READ_MEDIA_IMAGES,
+                            Manifest.permission.POST_NOTIFICATIONS
+                    }, PERMISSION_REQUEST_CODE);
         } else {
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);

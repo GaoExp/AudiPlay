@@ -39,6 +39,18 @@ jobs:
           yes | $SDK_DIR/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
           $SDK_DIR/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0" 2>/dev/null || true
 
+      - name: Decode keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > audiplay10000hari-key.jks
+
+      - name: Create keystore.properties
+        run: |
+          cat > keystore.properties << EOF
+          storeFile=audiplay10000hari-key.jks
+          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.KEY_ALIAS }}
+          keyPassword=${{ secrets.KEY_PASSWORD }}
+          EOF
+
       - name: Build APK Release
         run: ./gradlew assembleRelease --no-daemon
 

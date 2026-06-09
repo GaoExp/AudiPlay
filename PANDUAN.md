@@ -16,8 +16,9 @@
 ## Memulai
 
 1. Install APK Mini Player
-2. Berikan izin akses audio saat diminta
-3. Aplikasi akan otomatis memindai file audio di perangkat
+2. Saat pertama dibuka, aplikasi akan meminta izin akses media (audio, video, gambar) & notifikasi
+3. Berikan izin yang diminta
+4. Aplikasi akan otomatis memindai file audio di perangkat
 
 ## Navigasi
 
@@ -96,17 +97,26 @@ Header drawer menampilkan total statistik perpustakaan: jumlah lagu, total duras
 - **Lihat Folder Audio** — Buka FolderListActivity untuk melihat/mengelola semua folder audio: mode Kontrol Grup (kelompok Diizinkan/Dikecualikan/Belum Ditentukan, drag antar section) dan Visual Daftar (daftar flat, warna hijau/merah sesuai status)
 - **Format Audio** — Filter ekstensi format file yang dipindai (Audio, Rekaman, MIDI, Video, Stream)
 - **Ikon Aplikasi** — Pilih dari 5 ikon alternatif untuk aplikasi di layar utama (Nota Musik, Putar, Nota Musik Gelap, Putar Gelap, Antrian)
+- **Kelola Izin** — Buka halaman izin sistem aplikasi untuk mengatur izin media, notifikasi, dan lainnya
+- **Hemat Baterai** — Nonaktifkan optimasi baterai agar pemutaran tidak terhenti saat layar mati
 - **Lihat Dokumentasi** — Buka pembaca dokumentasi in-app (README, PANDUAN, STRUKTUR, CHANGELOG)
 
 ## Izin
 
-| Izin                          | Fungsi                                   |
-|-------------------------------|------------------------------------------|
-| `READ_MEDIA_AUDIO` (13+)      | Membaca file audio                       |
-| `READ_EXTERNAL_STORAGE` (≤12) | Membaca storage (audio)                  |
-| `POST_NOTIFICATIONS` (13+)    | Menampilkan notifikasi pemutaran         |
-| `FOREGROUND_SERVICE`          | Menjalankan service background           |
-| `FOREGROUND_SERVICE_MEDIA_PLAYBACK` | Service media playback            |
-| `BLUETOOTH_CONNECT`           | Kontrol Bluetooth (headset)              |
+| Izin                                    | Fungsi                                   |
+|-----------------------------------------|------------------------------------------|
+| `READ_EXTERNAL_STORAGE` (maxSdk 32)     | Akses penyimpanan (Android ≤12)          |
+| `READ_MEDIA_AUDIO` (13+)                | Membaca file audio                       |
+| `READ_MEDIA_VIDEO` (13+)                | Membaca file video                       |
+| `READ_MEDIA_IMAGES` (13+)               | Membaca file gambar                      |
+| `POST_NOTIFICATIONS` (13+)              | Menampilkan notifikasi pemutaran         |
+| `FOREGROUND_SERVICE`                    | Menjalankan service background           |
+| `FOREGROUND_SERVICE_MEDIA_PLAYBACK`     | Service media playback                   |
+| `BLUETOOTH` (maxSdk 31)                 | Bluetooth klasik                         |
+| `BLUETOOTH_CONNECT`                     | Kontrol Bluetooth (headset)              |
+| `WAKE_LOCK`                             | Jaga CPU tetap aktif                     |
+| `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`  | Nonaktifkan optimasi baterai             |
+
+Izin diminta otomatis saat pertama aplikasi dibuka. Kelola izin & nonaktifkan optimasi baterai bisa dilakukan di **Pengaturan > Izin**.
 
 ---

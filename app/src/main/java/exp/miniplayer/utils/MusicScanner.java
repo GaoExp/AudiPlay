@@ -82,6 +82,7 @@ public class MusicScanner {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return audioList;
     }
 

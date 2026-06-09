@@ -17,6 +17,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 
 import exp.miniplayer.R;
 import exp.miniplayer.ui.audioformat.FormatAudioActivity;
@@ -116,6 +118,21 @@ public class SettingsFragment extends Fragment {
 
         TextView chooseAppIcon = view.findViewById(R.id.choose_app_icon);
         chooseAppIcon.setOnClickListener(v -> showIconDialog());
+
+        TextView managePermissions = view.findViewById(R.id.manage_permissions);
+        managePermissions.setOnClickListener(v -> {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+            startActivity(intent);
+        });
+
+        TextView batteryOptimization = view.findViewById(R.id.battery_optimization);
+        batteryOptimization.setOnClickListener(v -> {
+            Intent intent = new Intent(
+                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
+            startActivity(intent);
+        });
     }
 
     private void showIconDialog() {
