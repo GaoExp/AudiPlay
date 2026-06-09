@@ -1,3 +1,15 @@
+## [1.1.0.10.1] - 2026-06-09
+
+### 🔧 Optimasi & Penyesuaian
+- Hapus `aapt2FromMavenOverride` di `gradle.properties` — fix CI build (aapt2 tidak ditemukan)
+
+### ✏️ File Changed
+- `gradle.properties` — hapus `aapt2FromMavenOverride`
+
+### 🔢 Version
+- versionCode: 19
+- versionName: 1.1.0.10.1
+---
 ## [1.1.0.10.0] - 2026-06-09
 
 ### ✨ Fitur Baru
