@@ -26,7 +26,6 @@ public class MusicScanner {
                 MediaStore.Audio.Media.DATE_ADDED,
                 MediaStore.Audio.Media.SIZE,
                 MediaStore.Audio.Media.MIME_TYPE,
-                MediaStore.Audio.Media.IS_MUSIC,
                 MediaStore.Audio.Media.DATA
         };
         String selection = MediaStore.Audio.Media.DURATION + " > 0";
@@ -43,11 +42,15 @@ public class MusicScanner {
                 int albumIdCol = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID);
                 int dateAddedCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED);
                 int dataCol = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-                int isMusicCol = cursor.getColumnIndex(MediaStore.Audio.Media.IS_MUSIC);
+                int sizeCol = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE);
+                int mimeCol = cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE);
 
                 do {
-                    int isMusic = isMusicCol >= 0 ? cursor.getInt(isMusicCol) : 1;
-                    if (isMusic != 0) continue;
+                    String filePath = dataCol >= 0 ? cursor.getString(dataCol) : null;
+                    if (filePath == null) continue;
+
+                    String ext = getFileExtension(filePath);
+                    if (ext != null && isMusicExtension(ext)) continue;
 
                     long id = idCol >= 0 ? cursor.getLong(idCol) : 0;
                     String title = titleCol >= 0 ? cursor.getString(titleCol) : null;
@@ -56,8 +59,7 @@ public class MusicScanner {
                     long duration = durationCol >= 0 ? cursor.getLong(durationCol) : 0;
                     long albumId = albumIdCol >= 0 ? cursor.getLong(albumIdCol) : 0;
                     long dateAdded = dateAddedCol >= 0 ? cursor.getLong(dateAddedCol) : 0;
-
-                    String filePath = dataCol >= 0 ? cursor.getString(dataCol) : null;
+                    long fileSize = sizeCol >= 0 ? cursor.getLong(sizeCol) : 0;
 
                     String contentUri = Uri.withAppendedPath(
                             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, String.valueOf(id)).toString();
@@ -73,6 +75,7 @@ public class MusicScanner {
                             album != null ? album : "",
                             duration, contentUri, albumArt, dateAdded);
                     audio.setFilePath(filePath);
+                    audio.setFileSize(fileSize);
                     audioList.add(audio);
                 } while (cursor.moveToNext());
             }
@@ -171,6 +174,9 @@ public class MusicScanner {
                         albumArt = Uri.parse("content://media/external/audio/albumart/" + albumId).toString();
                     }
 
+                    int sizeCol = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE);
+                    long fileSize = sizeCol >= 0 ? cursor.getLong(sizeCol) : 0;
+
                     Audio audio = new Audio(id,
                             title != null ? title : "",
                             artist != null ? artist : "",
@@ -180,6 +186,7 @@ public class MusicScanner {
                             albumArt,
                             dateAdded);
                     audio.setFilePath(filePath);
+                    audio.setFileSize(fileSize);
                     audioList.add(audio);
                 } while (cursor.moveToNext());
             }
@@ -195,5 +202,9 @@ public class MusicScanner {
             return path.substring(dot + 1).toLowerCase();
         }
         return null;
+    }
+
+    private static boolean isMusicExtension(String ext) {
+        return "mp3".equals(ext) || "m4a".equals(ext);
     }
 }

@@ -13,6 +13,7 @@ public class Audio implements Parcelable {
     private String albumArt;
     private long dateAdded;
     private String filePath;
+    private long fileSize;
 
     public Audio(long id, String title, String artist, String album,
                  long duration, String uri, String albumArt, long dateAdded) {
@@ -25,6 +26,7 @@ public class Audio implements Parcelable {
         this.albumArt = albumArt;
         this.dateAdded = dateAdded;
         this.filePath = "";
+        this.fileSize = 0;
     }
 
     protected Audio(Parcel in) {
@@ -37,6 +39,7 @@ public class Audio implements Parcelable {
         albumArt = in.readString();
         dateAdded = in.readLong();
         filePath = in.readString();
+        fileSize = in.readLong();
     }
 
     public static final Creator<Audio> CREATOR = new Creator<Audio>() {
@@ -67,6 +70,7 @@ public class Audio implements Parcelable {
         dest.writeString(albumArt);
         dest.writeLong(dateAdded);
         dest.writeString(filePath);
+        dest.writeLong(fileSize);
     }
 
     public long getId() { return id; }
@@ -95,4 +99,7 @@ public class Audio implements Parcelable {
 
     public String getFilePath() { return filePath; }
     public void setFilePath(String filePath) { this.filePath = filePath; }
+
+    public long getFileSize() { return fileSize; }
+    public void setFileSize(long fileSize) { this.fileSize = fileSize; }
 }

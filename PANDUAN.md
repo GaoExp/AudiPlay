@@ -25,7 +25,7 @@ Aplikasi menggunakan **Navigation Drawer** (sidebar) yang bisa dibuka dengan:
 - Tap ikon hamburger (☰) di kiri atas
 - Swipe dari tepi kiri layar
 
-Drawer terdiri dari menu berikut:
+Drawer terdiri dari menu berikut (setiap menu menampilkan jumlah item):
 
 | Menu           | Ikon              | Fungsi                          |
 |----------------|-------------------|---------------------------------|
@@ -39,10 +39,18 @@ Drawer terdiri dari menu berikut:
 | System Picker  | Monitor           | Impor audio via system picker   |
 | Pengaturan     | Gear              | Pengaturan aplikasi             |
 
+Header drawer menampilkan total statistik perpustakaan: jumlah lagu, total durasi, dan total ukuran penyimpanan.
+
 ## Fitur
+
+### Statistik Perpustakaan
+- Setiap daftar (Lagu, Artis, Album, Folder, Playlist) menampilkan header dengan total item, total lagu, total durasi, dan total ukuran
+- Setiap item di Artis, Album, Folder, dan Playlist menampilkan jumlah lagu, total durasi, dan total ukuran
+- Navigation Drawer header menampilkan total statistik perpustakaan dan setiap menu menampilkan jumlah item
 
 ### Daftar Lagu (Songs)
 - Menampilkan semua lagu yang terdeteksi
+- Header statistik: total item, total lagu, total durasi, total ukuran
 - Cari lagu dengan kolom pencarian
 - Urutkan lagu (A-Z, Z-A, durasi, tanggal)
 - Tap lagu untuk memutar
@@ -59,6 +67,8 @@ Drawer terdiri dari menu berikut:
 - Hapus playlist
 - Tambah/hapus lagu dari playlist
 - Lihat detail isi playlist
+- Setiap playlist menampilkan total lagu, total durasi, dan total ukuran
+- Header statistik: total playlist, total lagu, total durasi, total ukuran
 - Export playlist (M3U per playlist / JSON semua playlist) — menu ⋮ di toolbar detail playlist
 - Import playlist (M3U / JSON) — long-press FAB `+` di daftar playlist
 - Auto-scan — file .m3u/.m3u8 di folder musik otomatis terdeteksi sebagai playlist

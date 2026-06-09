@@ -148,7 +148,7 @@ public class AudioRepository {
     }
 
     public List<FavoriteEntity> getFavoritesSync() {
-        return favoriteDao.getAllFavorites().getValue();
+        return favoriteDao.getAllFavoritesSync();
     }
 
     public LiveData<List<PlaylistEntity>> getPlaylists() {

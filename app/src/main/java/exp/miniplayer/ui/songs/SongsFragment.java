@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.appcompat.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,12 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import exp.miniplayer.MainActivity;
 import exp.miniplayer.R;
+import exp.miniplayer.adapter.GroupAdapter;
 import exp.miniplayer.adapter.SongAdapter;
 import exp.miniplayer.data.AudioRepository;
 import exp.miniplayer.database.PlaylistEntity;
 import exp.miniplayer.model.Audio;
 import exp.miniplayer.utils.PermissionHelper;
 import exp.miniplayer.utils.PreferencesManager;
+import exp.miniplayer.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,7 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
     private RecyclerView recyclerView;
     private SongAdapter adapter;
     private View emptyView;
+    private TextView sectionHeader;
     private SearchView searchView;
     private AudioRepository repository;
 
@@ -60,6 +64,7 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
 
         recyclerView = view.findViewById(R.id.songs_recycler_view);
         emptyView = view.findViewById(R.id.empty_view);
+        sectionHeader = view.findViewById(R.id.section_header);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         viewModel = new ViewModelProvider(this).get(SongsViewModel.class);
@@ -77,10 +82,24 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
             if (audioList == null || audioList.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
+                sectionHeader.setVisibility(View.GONE);
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyView.setVisibility(View.GONE);
                 adapter.updateData(audioList);
+
+                long totalDuration = 0;
+                long totalSize = 0;
+                for (Audio a : audioList) {
+                    totalDuration += a.getDuration();
+                    totalSize += a.getFileSize();
+                }
+                String header = getString(R.string.section_stats,
+                        audioList.size(), audioList.size(),
+                        TimeUtils.formatDuration(totalDuration),
+                        GroupAdapter.formatSize(totalSize));
+                sectionHeader.setText(header);
+                sectionHeader.setVisibility(View.VISIBLE);
             }
         });
 

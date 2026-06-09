@@ -14,6 +14,9 @@ public interface FavoriteDao {
     @Query("SELECT * FROM favorites ORDER BY addedAt DESC")
     LiveData<List<FavoriteEntity>> getAllFavorites();
 
+    @Query("SELECT * FROM favorites ORDER BY addedAt DESC")
+    List<FavoriteEntity> getAllFavoritesSync();
+
     @Query("SELECT * FROM favorites WHERE audioId = :audioId LIMIT 1")
     FavoriteEntity getFavorite(long audioId);
 

@@ -55,6 +55,7 @@ import exp.miniplayer.ui.playlist.PlaylistFragment;
 import exp.miniplayer.ui.settings.SettingsFragment;
 import exp.miniplayer.ui.songs.SongsFragment;
 import exp.miniplayer.ui.system_picker.SystemPickerFragment;
+import exp.miniplayer.adapter.GroupAdapter;
 import exp.miniplayer.utils.QueueHolder;
 import exp.miniplayer.utils.TimeUtils;
 
@@ -189,6 +190,8 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
 
         startService(new Intent(this, MusicService.class));
 
+        updateNavHeader();
+
         initBottomSheet();
     }
 
@@ -221,6 +224,85 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
     protected void onDestroy() {
         stopProgressUpdates();
         super.onDestroy();
+    }
+
+    private void updateNavHeader() {
+        new Thread(() -> {
+            List<Audio> allAudio = repository.getCachedAudio();
+
+            long totalDuration = 0;
+            long totalSize = 0;
+            for (Audio a : allAudio) {
+                totalDuration += a.getDuration();
+                totalSize += a.getFileSize();
+            }
+            final int songCount = allAudio.size();
+
+            int favCount = repository.isFavorite(-1) ? 0 : 0;
+            try { favCount = repository.getFavoritesSync() != null
+                    ? repository.getFavoritesSync().size() : 0; } catch (Exception ignored) {}
+
+            int playlistCount = repository.getPlaylistsSync() != null
+                    ? repository.getPlaylistsSync().size() : 0;
+
+            int artistCount = 0;
+            int albumCount = 0;
+            int folderCount = 0;
+            java.util.Set<String> artists = new java.util.HashSet<>();
+            java.util.Set<String> albums = new java.util.HashSet<>();
+            java.util.Set<String> folders = new java.util.HashSet<>();
+            for (Audio a : allAudio) {
+                artists.add(a.getArtist());
+                albums.add(a.getAlbum());
+                String path = a.getFilePath();
+                if (path != null && !path.isEmpty()) {
+                    int sep = path.lastIndexOf('/');
+                    folders.add(sep > 0 ? path.substring(0, sep) : "/");
+                }
+            }
+            artistCount = artists.size();
+            albumCount = albums.size();
+            folderCount = folders.size();
+
+            final int fFav = favCount;
+            final int fPlaylist = playlistCount;
+            final int fArtist = artistCount;
+            final int fAlbum = albumCount;
+            final int fFolder = folderCount;
+
+            final String stats = getString(R.string.nav_header_stats,
+                    songCount,
+                    TimeUtils.formatDuration(totalDuration),
+                    GroupAdapter.formatSize(totalSize));
+
+            runOnUiThread(() -> {
+                int statusBarHeight = 0;
+                int resId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+                if (resId > 0) statusBarHeight = getResources().getDimensionPixelSize(resId);
+                if (statusBarHeight <= 0) statusBarHeight = (int) (25 * getResources().getDisplayMetrics().density);
+                navigationView.setPadding(0, statusBarHeight, 0, 0);
+
+                View headerView = navigationView.getHeaderView(0);
+                if (headerView != null) {
+                    TextView statsText = headerView.findViewById(R.id.nav_header_stats);
+                    if (statsText != null) {
+                        statsText.setText(stats);
+                    }
+                }
+                navigationView.getMenu().findItem(R.id.nav_songs).setTitle(
+                        getString(R.string.nav_item_count, getString(R.string.songs), songCount));
+                navigationView.getMenu().findItem(R.id.nav_favorites).setTitle(
+                        getString(R.string.nav_item_count, getString(R.string.favorites), fFav));
+                navigationView.getMenu().findItem(R.id.nav_artists).setTitle(
+                        getString(R.string.nav_item_count, getString(R.string.artists), fArtist));
+                navigationView.getMenu().findItem(R.id.nav_albums).setTitle(
+                        getString(R.string.nav_item_count, getString(R.string.albums), fAlbum));
+                navigationView.getMenu().findItem(R.id.nav_playlists).setTitle(
+                        getString(R.string.nav_item_count, getString(R.string.playlists), fPlaylist));
+                navigationView.getMenu().findItem(R.id.nav_folders).setTitle(
+                        getString(R.string.nav_item_count, getString(R.string.folders), fFolder));
+            });
+        }).start();
     }
 
     private void checkPendingQueue() {

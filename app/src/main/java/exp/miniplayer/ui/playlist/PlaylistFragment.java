@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,15 +20,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import exp.miniplayer.R;
+import exp.miniplayer.adapter.GroupAdapter;
 import exp.miniplayer.adapter.PlaylistAdapter;
 import exp.miniplayer.data.AudioRepository;
 import exp.miniplayer.database.PlaylistEntity;
+import exp.miniplayer.database.PlaylistSongEntity;
+import exp.miniplayer.model.Audio;
 import exp.miniplayer.utils.PlaylistIO;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import exp.miniplayer.utils.TimeUtils;
 
 public class PlaylistFragment extends Fragment {
 
@@ -35,6 +41,7 @@ public class PlaylistFragment extends Fragment {
     private RecyclerView recyclerView;
     private PlaylistAdapter adapter;
     private View emptyView;
+    private TextView sectionHeader;
     private FloatingActionButton fab;
     private AudioRepository importRepo;
 
@@ -51,6 +58,7 @@ public class PlaylistFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.playlist_recycler_view);
         emptyView = view.findViewById(R.id.empty_view);
+        sectionHeader = view.findViewById(R.id.section_header);
         fab = view.findViewById(R.id.fab_create_playlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
@@ -61,15 +69,54 @@ public class PlaylistFragment extends Fragment {
             if (playlists == null || playlists.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
+                sectionHeader.setVisibility(View.GONE);
             } else {
                 recyclerView.setVisibility(View.VISIBLE);
                 emptyView.setVisibility(View.GONE);
                 adapter = new PlaylistAdapter(requireContext(), playlists);
+
                 Map<Integer, Integer> counts = new HashMap<>();
-                for (PlaylistEntity p : playlists) {
-                    counts.put(p.getId(), importRepo.getPlaylistSongCount(p.getId()));
+                Map<Integer, String> stats = new HashMap<>();
+                List<Audio> allAudio = importRepo.getCachedAudio();
+                Map<Long, Long> fileSizeMap = new HashMap<>();
+                for (Audio audio : allAudio) {
+                    fileSizeMap.put(audio.getId(), audio.getFileSize());
                 }
+
+                long grandDuration = 0;
+                long grandSize = 0;
+                int grandCount = 0;
+
+                for (PlaylistEntity p : playlists) {
+                    int count = importRepo.getPlaylistSongCount(p.getId());
+                    counts.put(p.getId(), count);
+
+                    long pDur = 0;
+                    long pSize = 0;
+                    List<PlaylistSongEntity> songs = importRepo.getPlaylistSongsSync(p.getId());
+                    for (PlaylistSongEntity song : songs) {
+                        pDur += song.getDuration();
+                        Long sz = fileSizeMap.get(song.getAudioId());
+                        if (sz != null) pSize += sz;
+                    }
+                    grandDuration += pDur;
+                    grandSize += pSize;
+                    grandCount += count;
+
+                    String durStr = TimeUtils.formatDuration(pDur);
+                    String sizeStr = GroupAdapter.formatSize(pSize);
+                    stats.put(p.getId(), durStr + " \u00b7 " + sizeStr);
+                }
+
+                String header = getString(R.string.section_stats,
+                        playlists.size(), grandCount,
+                        TimeUtils.formatDuration(grandDuration),
+                        GroupAdapter.formatSize(grandSize));
+                sectionHeader.setText(header);
+                sectionHeader.setVisibility(View.VISIBLE);
+
                 adapter.setSongCounts(counts);
+                adapter.setPlaylistStats(stats);
                 adapter.setOnItemClickListener((playlist, position) -> {
                     Intent intent = new Intent(requireContext(), PlaylistDetailActivity.class);
                     intent.putExtra("playlist_id", playlist.getId());

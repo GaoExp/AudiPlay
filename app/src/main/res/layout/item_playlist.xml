@@ -44,4 +44,17 @@
         app:layout_constraintStart_toEndOf="@id/playlist_icon"
         app:layout_constraintTop_toBottomOf="@id/playlist_name" />
 
+    <TextView
+        android:id="@+id/playlist_stats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_small"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/playlist_icon"
+        app:layout_constraintTop_toBottomOf="@id/playlist_song_count" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

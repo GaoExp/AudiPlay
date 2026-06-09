@@ -1,5 +1,64 @@
+## [1.1.0.10.0] - 2026-06-09
+
+### ✨ Fitur Baru
+- Statistik per item di perpustakaan — total lagu, total durasi, dan ukuran penyimpanan di Folder, Artis, Album, Playlist
+- Header statistik di atas daftar — item count, total lagu, durasi, ukuran (Lagu, Artis, Album, Folder, Playlist, SongListActivity)
+- Navigation Drawer — header total perpustakaan + jumlah item di setiap menu
+
+### ♻️ Perubahan Fitur
+- Daftar lagu Artis & Album: dari `AlertDialog` jadi `SongListActivity` dengan RecyclerView + album art
+- `scanAllAudio()` filter by extension (.mp3/.m4a excluded) instead of IS_MUSIC flag — Audio Lainnya sekarang tampilkan .mp4, .mid, .midi, .amr, .3gp dll
+
+### 🔧 Optimasi & Penyesuaian
+- Setup signing config untuk release APK
+
+### 🐞 Bug Fixes
+- `ArtistsFragment` & `AlbumsFragment` — tambah `import exp.miniplayer.R` yang hilang
+- `SongsFragment` — tambah `import android.widget.TextView` yang hilang
+- `PlaylistFragment` — tambah `import android.widget.TextView` yang hilang
+- `FoldersFragment` — tambah `import exp.miniplayer.utils.TimeUtils` yang hilang
+- `AudioRepository.getFavoritesSync()` — ganti dari `.getValue()` ke query sync langsung
+
+### 🗒️ File Added
+- `keystore.properties` — konfigurasi signing release
+
+### ✏️ File Changed
+- `app/src/main/AndroidManifest.xml` — daftarkan SongListActivity
+- `app/src/main/java/exp/miniplayer/model/Audio.java` — tambah field `fileSize`
+- `app/src/main/java/exp/miniplayer/utils/MusicScanner.java` — simpan `SIZE` ke Audio; `scanAllAudio()` filter ekstensi bukan IS_MUSIC
+- `app/src/main/java/exp/miniplayer/adapter/GroupAdapter.java` — `GroupItem` + `totalDuration`, `totalSize`, `formatSize()`
+- `app/src/main/java/exp/miniplayer/adapter/PlaylistAdapter.java` — tambah `playlistStats` map, tampilkan stats
+- `app/src/main/java/exp/miniplayer/database/FavoriteDao.java` — tambah `getAllFavoritesSync()`
+- `app/src/main/java/exp/miniplayer/data/AudioRepository.java` — `getFavoritesSync()` pake query sync
+- `app/src/main/java/exp/miniplayer/ui/folders/FoldersFragment.java` — stats per folder + header total + import TimeUtils
+- `app/src/main/java/exp/miniplayer/ui/artists/ArtistsFragment.java` — ganti dialog ke intent + stats per artis + header total
+- `app/src/main/java/exp/miniplayer/ui/albums/AlbumsFragment.java` — ganti dialog ke intent + stats per album + header total
+- `app/src/main/java/exp/miniplayer/ui/playlist/PlaylistFragment.java` — stats per playlist + header total + import TextView
+- `app/src/main/java/exp/miniplayer/ui/songs/SongsFragment.java` — header total + import TextView
+- `app/src/main/java/exp/miniplayer/ui/songs/SongListActivity.java` — header total
+- `app/src/main/java/exp/miniplayer/MainActivity.java` — `updateNavHeader()` header drawer + item counts + padding status bar
+- `app/src/main/res/layout/item_group.xml` — tambah `group_stats`
+- `app/src/main/res/layout/item_playlist.xml` — tambah `playlist_stats`
+- `app/src/main/res/layout/fragment_folders.xml` — tambah `section_header` + FrameLayout wrapper
+- `app/src/main/res/layout/fragment_artists.xml` — tambah `section_header` + FrameLayout wrapper
+- `app/src/main/res/layout/fragment_albums.xml` — tambah `section_header` + FrameLayout wrapper
+- `app/src/main/res/layout/fragment_playlist.xml` — tambah `section_header`
+- `app/src/main/res/layout/fragment_songs.xml` — tambah `section_header`
+- `app/src/main/res/layout/activity_song_list.xml` — tambah `section_header`
+- `app/src/main/res/layout/nav_header.xml` — header drawer: background `colorPrimaryContainer`, icon app, nama, stats
+- `app/src/main/res/layout/activity_main.xml` — tambah `headerLayout` di NavigationView; hapus `fitsSystemWindows`, pake padding manual biar gak mentok status bar
+- `app/src/main/res/values/strings.xml` — tambah `folder_stats`, `section_stats`, `nav_header_stats`, `nav_item_count`
+- `app/build.gradle` — default storeFile ke keystore baru
+- `.gitignore` — ignore `*.jks` dan `keystore.properties`
+
+### 🔥 File Removed
+- Keystore lama — tidak terpakai
+
+### 🔢 Version
+- versionCode: 18
+- versionName: 1.1.0.10.0
 ---
-## [1.1.0.8.1] - 2026-06-09
+## [1.1.0.9.0] - 2026-06-09
 
 ### ✨ Fitur Baru
 - Real-time auto-scan .m3u — `PlaylistFileWatcher` pakai `FileObserver`:
@@ -26,7 +85,7 @@
 
 ### 🔢 Version
 - versionCode: 17
-- versionName: 1.1.0.8.1
+- versionName: 1.1.0.9.0
 ---
 ## [1.1.0.8.0] - 2026-06-09
 
@@ -100,7 +159,7 @@
 - CHANGELOG.md dobel entry — hapus body `1.1.0.7.0` yang terlanjur tertinggal saat merge entry
 
 ### 💡 Catatan
-- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1 yang sudah ada
+- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.0 yang sudah ada
 
 ### ✏️ File Changed
 - `app/build.gradle` — version bump
@@ -110,7 +169,7 @@
 - versionCode: 14
 - versionName: 1.1.0.7.2
 ---
-## [1.1.0.7.1] - 2026-06-08
+## [1.1.0.7.0] - 2026-06-08
 
 ### ✨ Fitur Baru
 - **Batasi Folder** — Pengaturan penyimpanan dirombak: toggle "Pindai Semua Audio" dan "Folder Disertakan" digabung menjadi satu toggle "Batasi Folder"
@@ -151,7 +210,7 @@
 
 ### 🔢 Version
 - versionCode: 13
-- versionName: 1.1.0.7.1
+- versionName: 1.1.0.7.0
 ---
 ## [1.1.0.6.1] - 2026-06-08
 

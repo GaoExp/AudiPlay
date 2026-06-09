@@ -1,4 +1,34 @@
-[1.1.0.8.1] - 2026-06-09
+[1.1.0.10.0] - 2026-06-09
+
+✨ Fitur Baru
+------------
+- Statistik per item di perpustakaan - total lagu, total durasi, dan ukuran penyimpanan di Folder, Artis, Album, Playlist
+- Header statistik di atas daftar - item count, total lagu, durasi, ukuran (Lagu, Artis, Album, Folder, Playlist, SongListActivity)
+- Navigation Drawer - header total perpustakaan + jumlah item di setiap menu
+
+♻️ Perubahan Fitur
+----------------
+- Daftar lagu Artis & Album: dari AlertDialog jadi SongListActivity dengan RecyclerView + album art
+- scanAllAudio() filter by extension (.mp3/.m4a excluded) instead of IS_MUSIC - Audio Lainnya tampilkan .mp4, .mid, .midi, .amr, .3gp dll
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Setup signing config untuk release APK
+
+🐞 Bug Fixes
+-----------
+- ArtistsFragment & AlbumsFragment - tambah import exp.miniplayer.R yang hilang
+- SongsFragment - tambah import android.widget.TextView yang hilang
+- PlaylistFragment - tambah import android.widget.TextView yang hilang
+- FoldersFragment - tambah import exp.miniplayer.utils.TimeUtils yang hilang
+- AudioRepository.getFavoritesSync() - ganti dari .getValue() ke query sync langsung
+
+🔢 VERSION
+----------
+versionCode: 18
+versionName: 1.1.0.10.0
+
+[1.1.0.9.0] - 2026-06-09
 
 ✨ Fitur Baru
 ----------
@@ -15,20 +45,10 @@
 - PlaylistScanner.importPlaylistFile(): ganti deleteAll+insertAll jadi update in-place pake REPLACE by ID
 - Toolbar header sekarang menampilkan judul perpustakaan yang aktif (Lagu, Playlist, Pengaturan, dll) bukan hanya judul aplikasi
 
-✏️ File Changed
---------------
-- app/src/main/java/exp/miniplayer/adapter/PlaylistAdapter.java - tampilkan jumlah lagu nyata dari getPlaylistSongCount()
-- app/src/main/java/exp/miniplayer/utils/PlaylistScanner.java - fallback title pakai nama file, normalize path, update in-place untuk playlist existing
-- app/src/main/java/exp/miniplayer/utils/PlaylistFileWatcher.java - FileObserver real-time untuk file .m3u baru
-- app/src/main/java/exp/miniplayer/MiniPlayerApp.java - inisialisasi PlaylistFileWatcher saat app start
-- app/src/main/java/exp/miniplayer/ui/playlist/PlaylistFragment.java - kirim songCounts ke adapter
-- app/src/main/res/values/strings.xml - tambah plural playlist_song_count
-- app/src/main/java/exp/miniplayer/MainActivity.java - set toolbar title dari menu item terpilih
-
 🔢 VERSION
 ----------
 versionCode: 17
-versionName: 1.1.0.8.1
+versionName: 1.1.0.9.0
 
 [1.1.0.8.0] - 2026-06-09
 
@@ -62,43 +82,6 @@ versionName: 1.1.0.8.1
 - Mini player menutupi item terbawah di semua daftar - tambah paddingBottom pd RecyclerView sebesar mini player peek height
 - Mini player menutupi opsi dokumentasi di Settings - tambah paddingBottom di ScrollView fragment_settings
 
-🗒️ File Added
---------------
-- app/src/main/res/layout/item_format_header.xml
-- app/src/main/res/layout/item_format_checkbox.xml
-- app/src/main/res/layout/activity_format_audio.xml
-- app/src/main/res/layout/activity_folder_settings.xml
-- app/src/main/java/exp/miniplayer/ui/audioformat/FormatAudioActivity.java
-- app/src/main/java/exp/miniplayer/ui/folders/FolderSettingsActivity.java
-- app/src/main/java/exp/miniplayer/utils/PlaylistIO.java
-- app/src/main/java/exp/miniplayer/utils/PlaylistScanner.java
-
-✏️ File Changed
---------------
-- app/src/main/java/exp/miniplayer/ui/songs/SongsFragment.java - import SearchView diganti ke androidx.appcompat.widget.SearchView
-- app/build.gradle - compileOptions Java 8 → 17 (tekan warning JDK 21)
-- app/src/main/res/values/dimens.xml - tambah mini_player_peek (80dp)
-- app/src/main/res/layout/fragment_songs.xml - paddingBottom mini_player_peek
-- app/src/main/res/layout/fragment_albums.xml - paddingBottom mini_player_peek
-- app/src/main/res/layout/fragment_artists.xml - paddingBottom mini_player_peek
-- app/src/main/res/layout/fragment_favorites.xml - paddingBottom mini_player_peek
-- app/src/main/res/layout/fragment_playlist.xml - paddingBottom mini_player_peek
-- app/src/main/res/layout/fragment_folders.xml - paddingBottom mini_player_peek
-- app/src/main/res/layout/fragment_other_audio.xml - paddingBottom mini_player_peek
-- app/src/main/res/layout/view_now_playing_sheet.xml - tambah mini_player_info di mini player
-- app/src/main/java/exp/miniplayer/MainActivity.java - update miniPlayerInfo dari metadata
-- app/src/main/res/layout/fragment_settings.xml - paddingBottom mini_player_peek
-- app/src/main/res/values/colors.xml - tambah orange, red
-- app/src/main/res/values/strings.xml - string export/import
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java - getFormatPlayability()
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - ganti dialog ke Activity
-- app/src/main/res/layout/dialog_audio_formats.xml - redesign layout
-- app/src/main/AndroidManifest.xml - daftarkan FormatAudioActivity & FolderSettingsActivity
-- app/src/main/java/exp/miniplayer/database/PlaylistDao.java - getAllPlaylistsSync(), findByName()
-- app/src/main/java/exp/miniplayer/data/AudioRepository.java - method sync + findPlaylistByName + integrasi PlaylistScanner
-- app/src/main/java/exp/miniplayer/ui/playlist/PlaylistFragment.java - import playlist lewat long-press FAB
-- app/src/main/java/exp/miniplayer/ui/playlist/PlaylistDetailActivity.java - export playlist
-
 🔢 VERSION
 ----------
 versionCode: 16
@@ -112,14 +95,14 @@ versionName: 1.1.0.8.0
 
 💡 Catatan
 ----------
-- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1
+- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.0
 
 🔢 VERSION
 ----------
 versionCode: 14
 versionName: 1.1.0.7.2
 
-[1.1.0.7.1] - 2026-06-08
+[1.1.0.7.0] - 2026-06-08
 
 ✨ Fitur Baru
 -------------
@@ -146,7 +129,7 @@ versionName: 1.1.0.7.2
 🔢 VERSION
 ----------
 versionCode: 13
-versionName: 1.1.0.7.1
+versionName: 1.1.0.7.0
 
 [1.1.0.6.1] - 2026-06-08
 

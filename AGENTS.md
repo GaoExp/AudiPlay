@@ -223,6 +223,10 @@ JANGAN:
 - menulis penjelasan panjang
 
 Ringkas, faktual, langsung ke perubahan.
+
+### Khusus CHANGELOG.txt (in-app)
+
+Section `🗒️ File Added`, `✏️ File Changed`, `🔥 File Removed` **PENCATATAN DIKECUALIKAN** — tidak relevan untuk dokumentasi di dalam aplikasi.
  
 --- 
  

@@ -16,6 +16,7 @@ AudiPlay/
 ├── gradle.properties                — Gradle properties: AndroidX, Jetifier, JVM args 2048m
 ├── gradlew                          — Gradle wrapper script (Unix/macOS)
 ├── gradlew.bat                      — Gradle wrapper script (Windows)
+├── keystore.properties              — Konfigurasi signing release (storeFile, keyAlias, password)
 ├── release.sh                       — Script GitHub release: ekstrak CHANGELOG, jalankan gh release create
 ├── settings.gradle                  — Settings Gradle: include module :app
 │
@@ -24,12 +25,12 @@ AudiPlay/
 │       └── gradle-wrapper.properties — Konfigurasi Gradle wrapper (Gradle 8.13)
 │
 └── app/
-    ├── build.gradle                 — Module app: applicationId exp.miniplayer, compileSdk 35, minSdk 26, ViewBinding, dependensi Room/Media3/Material3
+    ├── build.gradle                 — Module app: applicationId exp.miniplayer, compileSdk 35, minSdk 26, ViewBinding, signingConfigs, dependensi Room/Media3/Material3
     ├── proguard-rules.pro           — Aturan ProGuard (kosong, belum ada custom rules)
     ├── libs/                        — Direktori JAR libs (kosong)
     │
     └── src/main/
-        ├── AndroidManifest.xml      — Manifest: permissions audio/notifikasi/BT, 5 activity-alias ikon, 6 Activity, MusicService
+        ├── AndroidManifest.xml      — Manifest: permissions audio/notifikasi/BT, 5 activity-alias ikon, 7 Activity, MusicService
         │
         ├── assets/
         │   ├── CHANGELOG.txt        — Riwayat perubahan (plain text, untuk in-app viewer)
@@ -38,21 +39,21 @@ AudiPlay/
         │   └── STRUKTUR.txt         — Struktur project (plain text, untuk in-app viewer)
         │
         ├── java/exp/miniplayer/
-        │   ├── MainActivity.java            — Activity utama: DrawerLayout navigasi, BottomSheet now-playing, service binding, info strip, PopupMenu overflow
+        │   ├── MainActivity.java            — Activity utama: DrawerLayout navigasi, BottomSheet now-playing, service binding, info strip, PopupMenu overflow, updateNavHeader() stats drawer
         │   ├── MiniPlayerApp.java            — Application subclass: memaksa mode gelap, inisialisasi PlaylistFileWatcher
         │   │
         │   ├── adapter/
-        │   │   ├── GroupAdapter.java             — Adapter RecyclerView grup album/artis (nama + jumlah item)
-        │   │   ├── PlaylistAdapter.java          — Adapter RecyclerView daftar playlist (nama + jumlah lagu)
+        │   │   ├── GroupAdapter.java             — Adapter RecyclerView grup album/artis (nama, jumlah item, durasi, ukuran)
+        │   │   ├── PlaylistAdapter.java          — Adapter RecyclerView daftar playlist (nama, jumlah lagu, durasi, ukuran)
         │   │   ├── PlaylistDetailAdapter.java    — Adapter RecyclerView lagu dalam playlist
         │   │   └── SongAdapter.java              — Adapter RecyclerView item Audio (album art, judul, artis, durasi)
         │   │
         │   ├── data/
-        │   │   └── AudioRepository.java          — Repository: jembatan Room database, MusicScanner, PreferencesManager
+        │   │   └── AudioRepository.java          — Repository: jembatan Room database, MusicScanner, PreferencesManager; sync queries (getFavoritesSync)
         │   │
         │   ├── database/
         │   │   ├── AppDatabase.java              — Room database singleton (favorites, playlists, playlist_songs)
-        │   │   ├── FavoriteDao.java              — Room DAO CRUD tabel favorites
+        │   │   ├── FavoriteDao.java              — Room DAO CRUD tabel favorites + getAllFavoritesSync()
         │   │   ├── FavoriteEntity.java           — Room entity tabel favorit (audioId, title, artist, album, dll)
         │   │   ├── PlaylistDao.java              — Room DAO CRUD tabel playlists
         │   │   ├── PlaylistEntity.java           — Room entity tabel playlists (id autoGenerate, name, createdAt)
@@ -60,7 +61,7 @@ AudiPlay/
         │   │   └── PlaylistSongEntity.java       — Room entity tabel playlist_songs (audioId, sortOrder)
         │   │
         │   ├── model/
-        │   │   └── Audio.java                    — Model data Parcelable track audio (id, title, artist, album, durasi, uri, albumArt, dateAdded, filePath)
+        │   │   └── Audio.java                    — Model data Parcelable track audio (id, title, artist, album, durasi, uri, albumArt, dateAdded, filePath, fileSize)
         │   │
         │   ├── player/
         │   │   └── MusicPlayer.java              — Wrapper Media3 ExoPlayer: queue, shuffle, repeat, progress, error handling, MIDI extension renderer
@@ -70,9 +71,9 @@ AudiPlay/
         │   │
         │   ├── ui/
         │   │   ├── albums/
-        │   │   │   └── AlbumsFragment.java       — Fragment daftar album dari hasil scan (tap filter lagu per album)
+        │   │   │   └── AlbumsFragment.java       — Fragment daftar album dari hasil scan (tap buka SongListActivity, stats per album + header total)
         │   │   ├── artists/
-        │   │   │   └── ArtistsFragment.java      — Fragment daftar artis dari hasil scan (tap filter lagu per artis)
+        │   │   │   └── ArtistsFragment.java      — Fragment daftar artis dari hasil scan (tap buka SongListActivity, stats per artis + header total)
         │   │   ├── audioformat/
         │   │   │   └── FormatAudioActivity.java  — Activity pengaturan format audio dengan grup collapsible & indikator warna playability
         │   │   ├── documentation/
@@ -83,25 +84,26 @@ AudiPlay/
         │   │   ├── folders/
         │   │   │   ├── FolderListActivity.java   — Activity kelola folder audio: mode Kontrol (drag antar section Diizinkan/Dikecualikan/Belum Ditentukan) & mode Semua (daftar flat)
         │   │   │   ├── FolderSettingsActivity.java — Activity atur folder yang diizinkan & dikecualikan via SAF picker
-        │   │   │   └── FoldersFragment.java      — Fragment folder musik per direktori induk (tap putar semua lagu dalam folder)
+        │   │   │   └── FoldersFragment.java      — Fragment folder musik per direktori induk (tap putar semua lagu dalam folder, stats per folder + header total)
         │   │   ├── other_audio/
         │   │   │   └── OtherAudioFragment.java   — Fragment file audio non-musik (rekaman, dll)
         │   │   ├── playlist/
         │   │   │   ├── PlaylistDetailActivity.java  — Activity daftar lagu dalam playlist (tap putar, long-press hapus)
         │   │   │   ├── PlaylistDetailViewModel.java — ViewModel detail playlist via LiveData
-        │   │   │   ├── PlaylistFragment.java        — Fragment kelola playlist (buat/rename/hapus via FAB & long-press)
+        │   │   │   ├── PlaylistFragment.java        — Fragment kelola playlist (buat/rename/hapus via FAB & long-press, stats per playlist + header total)
         │   │   │   └── PlaylistViewModel.java       — ViewModel daftar playlist via LiveData
         │   │   ├── settings/
         │   │   │   ├── SettingsFragment.java     — Fragment pengaturan: screen-on, audio focus, batasi folder, format audio, ikon aplikasi, dokumentasi
         │   │   │   └── SettingsViewModel.java    — ViewModel state pengaturan & preferensi folder (limitFolders, audioFormats, dll)
-        │   │   ├── songs/
-        │   │   │   ├── SongsFragment.java        — Fragment semua lagu: search, sort, tap putar, long-press favorit/playlist
-        │   │   │   └── SongsViewModel.java       — ViewModel daftar lagu dengan filter, sorting, scan-once logic
+│   │   ├── songs/
+│   │   │   ├── SongsFragment.java        — Fragment semua lagu: search, sort, tap putar, long-press favorit/playlist, header total stats
+│   │   │   ├── SongsViewModel.java       — ViewModel daftar lagu dengan filter, sorting, scan-once logic
+│   │   │   └── SongListActivity.java     — Activity daftar lagu dari artis/album tertentu (RecyclerView + album art + header stats)
         │   │   └── system_picker/
         │   │       └── SystemPickerFragment.java — Fragment impor audio via system file picker (SAF)
         │   │
         │   └── utils/
-        │       ├── MusicScanner.java             — Pindai MediaStore dengan filter folder (include/exclude) & filter format audio
+        │       ├── MusicScanner.java             — Pindai MediaStore dengan filter folder (include/exclude), filter format audio, filter by extension (bukan IS_MUSIC)
         │       ├── PermissionHelper.java         — Handler izin runtime audio/storage & notifikasi
         │       ├── PlaylistIO.java               — Export/import playlist (M3U extended + JSON) via SAF
         │       ├── PlaylistFileWatcher.java      — FileObserver real-time: deteksi file .m3u baru dan trigger auto-scan
@@ -155,26 +157,28 @@ AudiPlay/
             │   ├── activity_folder_list.xml       — Layout folder list (toolbar, toggle Kontrol/Semua, RecyclerView, ItemTouchHelper)
             │   ├── activity_folder_settings.xml   — Layout atur folder diizinkan/dikecualikan (RecyclerView + FAB)
             │   ├── activity_format_audio.xml      — Layout pengaturan format audio (RecyclerView grup + checkbox)
-            │   ├── activity_main.xml              — Layout utama (DrawerLayout, CoordinatorLayout, toolbar, fragment container, now-playing sheet, NavigationView)
+            │   ├── activity_main.xml              — Layout utama (DrawerLayout, CoordinatorLayout, toolbar, fragment container, now-playing sheet, NavigationView + headerLayout nav_header)
             │   ├── activity_playlist_detail.xml   — Layout detail playlist (toolbar nama playlist, RecyclerView lagu)
+            │   ├── activity_song_list.xml         — Layout daftar lagu dari artis/album (toolbar + section_header stats + RecyclerView)
+            │   ├── nav_header.xml                 — Header Navigation Drawer (icon app, nama, stats total perpustakaan, background colorPrimaryContainer)
             │   ├── dialog_audio_formats.xml       — Dialog format audio (ScrollView + LinearLayout container untuk checkbox)
             │   ├── dialog_folder_input.xml        — Dialog input folder (EditText path folder)
             │   ├── dialog_folder_list.xml         — Dialog daftar folder (list + empty state)
-            │   ├── fragment_albums.xml            — Layout daftar album (RecyclerView + empty state)
-            │   ├── fragment_artists.xml           — Layout daftar artis (RecyclerView + empty state)
+            │   ├── fragment_albums.xml            — Layout daftar album (LinearLayout root + section_header stats + FrameLayout wrapper + RecyclerView + empty state)
+            │   ├── fragment_artists.xml           — Layout daftar artis (LinearLayout root + section_header stats + FrameLayout wrapper + RecyclerView + empty state)
             │   ├── fragment_favorites.xml         — Layout favorit (RecyclerView + empty state)
-            │   ├── fragment_folders.xml           — Layout folder (RecyclerView + empty state)
+            │   ├── fragment_folders.xml           — Layout folder (LinearLayout root + section_header stats + FrameLayout wrapper + RecyclerView + empty state)
             │   ├── fragment_other_audio.xml       — Layout audio lain (RecyclerView + empty state)
-            │   ├── fragment_playlist.xml          — Layout playlist (RecyclerView + FAB + empty state)
+            │   ├── fragment_playlist.xml          — Layout playlist (ConstraintLayout + section_header stats + RecyclerView + FAB + empty state)
             │   ├── fragment_settings.xml          — Layout settings (ScrollView, card: Playback, Storage, Appearance, Documentation)
-            │   ├── fragment_songs.xml             — Layout daftar lagu (RecyclerView + empty state)
+            │   ├── fragment_songs.xml             — Layout daftar lagu (ConstraintLayout + section_header stats + RecyclerView + empty state)
             │   ├── fragment_system_picker.xml     — Layout system picker (MaterialCardView tap target)
             │   ├── item_folder.xml                — Item folder (text path + tombol close)
             │   ├── item_folder_list.xml           — Item folder list (path, jumlah file, emoji status)
             │   ├── item_format_checkbox.xml       — Item checkbox format audio dengan indikator warna playability
             │   ├── item_format_header.xml         — Item header grup format collapsible (⋁/⋀)
-            │   ├── item_group.xml                 — Item grup album/artis (nama grup + jumlah item, 64dp height)
-            │   ├── item_playlist.xml              — Item playlist (ikon queue, nama playlist, jumlah lagu)
+            │   ├── item_group.xml                 — Item grup album/artis (nama grup + stats durasi & ukuran, 64dp height)
+            │   ├── item_playlist.xml              — Item playlist (ikon queue, nama playlist, stats durasi & ukuran)
             │   ├── item_song.xml                  — Item lagu (album art, judul, artis, durasi)
             │   └── view_now_playing_sheet.xml     — Layout now-playing sheet (cover, info strip, seekbar, kontrol, favorit, overflow)
             │
@@ -201,7 +205,7 @@ AudiPlay/
             ├── values/
             │   ├── colors.xml                    — Definisi warna Material3 dark theme (primary #6750A4, surface #1C1B1F, green #4CAF50)
             │   ├── dimens.xml                    — Definisi dimensi (spacing 8/16/24/32dp, icon size, cover size, corner radius, elevation)
-            │   ├── strings.xml                   — Semua string UI Bahasa Indonesia (label, navigasi, settings, playback, dokumentasi, folder)
+            │   ├── strings.xml                   — Semua string UI Bahasa Indonesia (label, navigasi, settings, playback, dokumentasi, folder, stats: section_stats, folder_stats, nav_header_stats, nav_item_count)
             │   └── themes.xml                    — Theme AppTheme: Material3 Dark NoActionBar, kustom warna, status/nav bar transparan
             │
             └── xml/
