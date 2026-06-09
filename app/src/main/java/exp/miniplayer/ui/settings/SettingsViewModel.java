@@ -128,4 +128,26 @@ public class SettingsViewModel extends AndroidViewModel {
         groups.put("Stream", Arrays.asList("weba", "mks", "mxf"));
         return groups;
     }
+
+    public static final int PLAYABLE = 0;
+    public static final int MAYBE = 1;
+    public static final int NOT_PLAYABLE = 2;
+
+    public static int getFormatPlayability(String format) {
+        switch (format) {
+            case "mp3": case "aac": case "m4a": case "wav": case "flac":
+            case "ogg": case "opus": case "ac3": case "amr": case "alac":
+            case "pcm": case "mp2":
+            case "mid": case "midi": case "rmi": case "kar":
+                return PLAYABLE;
+            case "mp4": case "m4v": case "webm": case "mkv": case "3gp":
+            case "3g2": case "ts": case "mts": case "m2ts": case "mov":
+            case "avi": case "flv": case "f4v": case "ogv": case "vob":
+            case "mpeg": case "mpg": case "mpe": case "weba": case "mka":
+            case "3ga": case "dts":
+                return MAYBE;
+            default:
+                return NOT_PLAYABLE;
+        }
+    }
 }

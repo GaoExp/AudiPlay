@@ -141,4 +141,13 @@
     <string name="by_artist">Lagu oleh %s</string>
     <string name="by_album">Album %s</string>
     <string name="in_folder">Folder %s</string>
+
+    <string name="export_playlist">Ekspor Playlist</string>
+    <string name="export_as_m3u">Ekspor sebagai M3U</string>
+    <string name="export_as_json">Ekspor sebagai JSON</string>
+    <string name="import_playlist">Impor Playlist</string>
+    <string name="playlist_exported">Playlist berhasil diekspor</string>
+    <string name="playlist_imported">Playlist berhasil diimpor</string>
+    <string name="playlist_import_error">Gagal mengimpor playlist</string>
+    <string name="export_error">Gagal mengekspor playlist</string>
 </resources>

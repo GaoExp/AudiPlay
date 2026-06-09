@@ -29,7 +29,7 @@ AudiPlay/
     ├── libs/                        — Direktori JAR libs (kosong)
     │
     └── src/main/
-        ├── AndroidManifest.xml      — Manifest: permissions audio/notifikasi/BT, 5 activity-alias ikon, 4 Activity, MusicService
+        ├── AndroidManifest.xml      — Manifest: permissions audio/notifikasi/BT, 5 activity-alias ikon, 6 Activity, MusicService
         │
         ├── assets/
         │   ├── CHANGELOG.txt        — Riwayat perubahan (plain text, untuk in-app viewer)
@@ -73,6 +73,8 @@ AudiPlay/
         │   │   │   └── AlbumsFragment.java       — Fragment daftar album dari hasil scan (tap filter lagu per album)
         │   │   ├── artists/
         │   │   │   └── ArtistsFragment.java      — Fragment daftar artis dari hasil scan (tap filter lagu per artis)
+        │   │   ├── audioformat/
+        │   │   │   └── FormatAudioActivity.java  — Activity pengaturan format audio dengan grup collapsible & indikator warna playability
         │   │   ├── documentation/
         │   │   │   └── DocumentationActivity.java — Activity baca & tampilkan file .txt dari assets (README, PANDUAN, STRUKTUR, CHANGELOG)
         │   │   ├── favorites/
@@ -80,6 +82,7 @@ AudiPlay/
         │   │   │   └── FavoritesViewModel.java   — ViewModel data favorit via LiveData dari repository
         │   │   ├── folders/
         │   │   │   ├── FolderListActivity.java   — Activity kelola folder audio: mode Kontrol (drag antar section Diizinkan/Dikecualikan/Belum Ditentukan) & mode Semua (daftar flat)
+        │   │   │   ├── FolderSettingsActivity.java — Activity atur folder yang diizinkan & dikecualikan via SAF picker
         │   │   │   └── FoldersFragment.java      — Fragment folder musik per direktori induk (tap putar semua lagu dalam folder)
         │   │   ├── other_audio/
         │   │   │   └── OtherAudioFragment.java   — Fragment file audio non-musik (rekaman, dll)
@@ -100,6 +103,8 @@ AudiPlay/
         │   └── utils/
         │       ├── MusicScanner.java             — Pindai MediaStore dengan filter folder (include/exclude) & filter format audio
         │       ├── PermissionHelper.java         — Handler izin runtime audio/storage & notifikasi
+        │       ├── PlaylistIO.java               — Export/import playlist (M3U extended + JSON) via SAF
+        │       ├── PlaylistScanner.java          — Auto-scan file .m3u/.m3u8 dari folder musik, parse & import ke Room DB
         │       ├── PreferencesManager.java       — Wrapper SharedPreferences: screen-on, audio-focus, folder filter, format audio, last track, sort mode
         │       ├── QueueHolder.java              — Singleton statis antrean pemutaran (list Audio + starting index)
         │       └── TimeUtils.java                — Format milidetik ke string durasi (1:23 / 1:02:05)
@@ -147,6 +152,8 @@ AudiPlay/
             ├── layout/
             │   ├── activity_documentation.xml     — Layout daftar dokumentasi (toolbar, card list, ScrollView konten monospace)
             │   ├── activity_folder_list.xml       — Layout folder list (toolbar, toggle Kontrol/Semua, RecyclerView, ItemTouchHelper)
+            │   ├── activity_folder_settings.xml   — Layout atur folder diizinkan/dikecualikan (RecyclerView + FAB)
+            │   ├── activity_format_audio.xml      — Layout pengaturan format audio (RecyclerView grup + checkbox)
             │   ├── activity_main.xml              — Layout utama (DrawerLayout, CoordinatorLayout, toolbar, fragment container, now-playing sheet, NavigationView)
             │   ├── activity_playlist_detail.xml   — Layout detail playlist (toolbar nama playlist, RecyclerView lagu)
             │   ├── dialog_audio_formats.xml       — Dialog format audio (ScrollView + LinearLayout container untuk checkbox)
@@ -163,6 +170,8 @@ AudiPlay/
             │   ├── fragment_system_picker.xml     — Layout system picker (MaterialCardView tap target)
             │   ├── item_folder.xml                — Item folder (text path + tombol close)
             │   ├── item_folder_list.xml           — Item folder list (path, jumlah file, emoji status)
+            │   ├── item_format_checkbox.xml       — Item checkbox format audio dengan indikator warna playability
+            │   ├── item_format_header.xml         — Item header grup format collapsible (⋁/⋀)
             │   ├── item_group.xml                 — Item grup album/artis (nama grup + jumlah item, 64dp height)
             │   ├── item_playlist.xml              — Item playlist (ikon queue, nama playlist, jumlah lagu)
             │   ├── item_song.xml                  — Item lagu (album art, judul, artis, durasi)

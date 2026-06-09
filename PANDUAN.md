@@ -54,6 +54,9 @@ Drawer terdiri dari 4 menu:
 - Hapus playlist
 - Tambah/hapus lagu dari playlist
 - Lihat detail isi playlist
+- Export playlist (M3U per playlist / JSON semua playlist) — menu ⋮ di toolbar detail playlist
+- Import playlist (M3U / JSON) — long-press FAB `+` di daftar playlist
+- Auto-scan — file .m3u/.m3u8 di folder musik otomatis terdeteksi sebagai playlist
 
 ### Bottom Sheet Player
 - Mini player bar di bagian bawah saat lagu diputar (judul, artis, album art, play/pause)

@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
     private ImageButton miniPlayerPlayPause;
     private ImageButton miniPlayerPrev;
     private ImageButton miniPlayerNext;
+    private TextView miniPlayerInfo;
 
     private ImageView nowPlayingAlbumArt;
     private TextView nowPlayingTitle;
@@ -244,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         miniPlayerPlayPause = findViewById(R.id.mini_player_play_pause);
         miniPlayerPrev = findViewById(R.id.mini_player_prev);
         miniPlayerNext = findViewById(R.id.mini_player_next);
+        miniPlayerInfo = findViewById(R.id.mini_player_info);
 
         nowPlayingAlbumArt = findViewById(R.id.now_playing_album_art);
         nowPlayingTitle = findViewById(R.id.now_playing_title);
@@ -421,6 +423,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
             favoriteButton.setColorFilter(
                     ContextCompat.getColor(this, R.color.on_surface_variant));
             nowPlayingInfo.setVisibility(View.GONE);
+            miniPlayerInfo.setVisibility(View.GONE);
         }
     }
 
@@ -428,6 +431,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         String uri = audio.getUri();
         if (uri == null) {
             nowPlayingInfo.setVisibility(View.GONE);
+            miniPlayerInfo.setVisibility(View.GONE);
             return;
         }
         if (metadataCache.containsKey(uri)) {
@@ -435,8 +439,11 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
             if (!cached.isEmpty()) {
                 nowPlayingInfo.setText(cached);
                 nowPlayingInfo.setVisibility(View.VISIBLE);
+                miniPlayerInfo.setText(cached);
+                miniPlayerInfo.setVisibility(View.VISIBLE);
             } else {
                 nowPlayingInfo.setVisibility(View.GONE);
+                miniPlayerInfo.setVisibility(View.GONE);
             }
             return;
         }
@@ -476,8 +483,11 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
                         if (!result.isEmpty()) {
                             nowPlayingInfo.setText(result);
                             nowPlayingInfo.setVisibility(View.VISIBLE);
+                            miniPlayerInfo.setText(result);
+                            miniPlayerInfo.setVisibility(View.VISIBLE);
                         } else {
                             nowPlayingInfo.setVisibility(View.GONE);
+                            miniPlayerInfo.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -488,6 +498,7 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
                             musicService.getMusicPlayer().getCurrentAudio() : null;
                     if (cur != null && uri.equals(cur.getUri())) {
                         nowPlayingInfo.setVisibility(View.GONE);
+                        miniPlayerInfo.setVisibility(View.GONE);
                     }
                 });
             } finally {

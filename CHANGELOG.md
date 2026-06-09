@@ -1,5 +1,19 @@
 ---
-## [1.1.0.7.3] - 2026-06-08
+## [1.1.0.8.0] - 2026-06-09
+
+### ✨ Fitur Baru
+- Info teknis audio (bitrate, sample rate, codec) ditampilkan di mini player
+- Format audio berwarna (hijau/oranye/merah) berdasarkan playability ExoPlayer
+- Section collapsible ⋁/⋀ di tiap grup format (Audio, Rekaman, MIDI, Video, Stream)
+- `FormatAudioActivity` — Activity khusus untuk pengaturan format audio
+- `FolderSettingsActivity` — Activity untuk mengelola folder yang diizinkan/dikecualikan
+- Export playlist (M3U per playlist, JSON semua playlist) via SAF
+- Import playlist (M3U & JSON) via SAF — long-press FAB di daftar playlist
+- Auto-scan file .m3u/.m3u8 dari folder musik — playlist langsung terdeteksi tanpa import manual
+
+### ♻️ Perubahan Fitur
+- Dialog "Format Audio" diganti dengan `FormatAudioActivity`
+- Dialog "Folder Yang Diizinkan" dan "Folder Dikecualikan" diganti dengan `FolderSettingsActivity`
 
 ### 🔧 Optimasi & Penyesuaian
 - Urutan section changelog distandarisasi di semua entry CHANGELOG.md
@@ -8,9 +22,49 @@
 - AGENTS.md diperbarui — daftar urutan section changelog eksplisit
 - README.md / README.txt — section changelog table diurutkan ulang
 
+### 🐞 Bug Fixes
+- Search di SongsFragment tidak berfungsi — import `SearchView` pakai kelas platform (`android.widget.SearchView`) tidak cocok dengan instance `androidx.appcompat.widget.SearchView` dari menu XML
+- Mini player menutupi item terbawah di semua daftar — tambah `paddingBottom` pd RecyclerView sebesar mini player peek height
+- Mini player menutupi opsi "Lihat Dokumentasi" di Settings — tambah `paddingBottom` di ScrollView fragment_settings
+
+### 🗒️ File Added
+- `app/src/main/res/layout/item_format_header.xml` — header section dengan ⋁/⋀
+- `app/src/main/res/layout/item_format_checkbox.xml` — checkbox format
+- `app/src/main/res/layout/activity_format_audio.xml` — layout FormatAudioActivity
+- `app/src/main/res/layout/activity_folder_settings.xml` — layout FolderSettingsActivity
+- `app/src/main/java/exp/miniplayer/ui/audioformat/FormatAudioActivity.java`
+- `app/src/main/java/exp/miniplayer/ui/folders/FolderSettingsActivity.java`
+- `app/src/main/java/exp/miniplayer/utils/PlaylistIO.java` — export/import M3U + JSON
+- `app/src/main/java/exp/miniplayer/utils/PlaylistScanner.java` — auto-scan .m3u/.m3u8 dari folder musik
+
+### ✏️ File Changed
+- `app/src/main/java/exp/miniplayer/ui/songs/SongsFragment.java` — import SearchView diganti ke `androidx.appcompat.widget.SearchView`
+- `app/build.gradle` — compileOptions Java 8 → 17 (tekan warning JDK 21)
+- `app/src/main/res/values/dimens.xml` — tambah `mini_player_peek` (80dp)
+- `app/src/main/res/layout/fragment_songs.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/layout/fragment_albums.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/layout/fragment_artists.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/layout/fragment_favorites.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/layout/fragment_playlist.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/layout/fragment_folders.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/layout/fragment_other_audio.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/layout/view_now_playing_sheet.xml` — tambah `mini_player_info` di mini player
+- `app/src/main/java/exp/miniplayer/MainActivity.java` — update miniPlayerInfo dari metadata
+- `app/src/main/res/layout/fragment_settings.xml` — paddingBottom mini_player_peek
+- `app/src/main/res/values/colors.xml` — tambah `orange`, `red`
+- `app/src/main/res/values/strings.xml` — string export/import
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java` — method `getFormatPlayability()`, constants `PLAYABLE/MAYBE/NOT_PLAYABLE`
+- `app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java` — ganti dialog ke Activity, hapus kode dialog yang tidak dipakai
+- `app/src/main/res/layout/dialog_audio_formats.xml` — redesign layout
+- `app/src/main/AndroidManifest.xml` — daftarkan FormatAudioActivity & FolderSettingsActivity
+- `app/src/main/java/exp/miniplayer/database/PlaylistDao.java` — tambah `getAllPlaylistsSync()`, `findByName()`
+- `app/src/main/java/exp/miniplayer/data/AudioRepository.java` — method sync + getPlaylistSongDao + findPlaylistByName + integrasi PlaylistScanner
+- `app/src/main/java/exp/miniplayer/ui/playlist/PlaylistFragment.java` — import playlist lewat long-press FAB
+- `app/src/main/java/exp/miniplayer/ui/playlist/PlaylistDetailActivity.java` — export playlist via menu toolbar
+
 ### 🔢 Version
-- versionCode: 15
-- versionName: 1.1.0.7.3
+- versionCode: 16
+- versionName: 1.1.0.8.0
 ---
 ## [1.1.0.7.2] - 2026-06-08
 

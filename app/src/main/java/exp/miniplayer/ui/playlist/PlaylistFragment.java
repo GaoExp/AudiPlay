@@ -1,6 +1,7 @@
 package exp.miniplayer.ui.playlist;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import exp.miniplayer.R;
 import exp.miniplayer.adapter.PlaylistAdapter;
+import exp.miniplayer.data.AudioRepository;
 import exp.miniplayer.database.PlaylistEntity;
+import exp.miniplayer.utils.PlaylistIO;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,7 @@ public class PlaylistFragment extends Fragment {
     private PlaylistAdapter adapter;
     private View emptyView;
     private FloatingActionButton fab;
+    private AudioRepository importRepo;
 
     @Nullable
     @Override
@@ -48,6 +52,7 @@ public class PlaylistFragment extends Fragment {
         fab = view.findViewById(R.id.fab_create_playlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+        importRepo = new AudioRepository(requireContext());
         viewModel = new ViewModelProvider(this).get(PlaylistViewModel.class);
 
         viewModel.getPlaylists().observe(getViewLifecycleOwner(), playlists -> {
@@ -73,7 +78,48 @@ public class PlaylistFragment extends Fragment {
         });
 
         fab.setOnClickListener(v -> showCreatePlaylistDialog());
+        fab.setOnLongClickListener(v -> {
+            showImportDialog();
+            return true;
+        });
     }
+
+    private void showImportDialog() {
+        String[] options = {"M3U", "JSON"};
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.import_playlist)
+                .setItems(options, (dialog, which) -> {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    if (which == 0) {
+                        intent.setType("audio/x-mpegurl");
+                    } else {
+                        intent.setType("application/json");
+                    }
+                    importLauncher.launch(intent);
+                })
+                .show();
+    }
+
+    private final androidx.activity.result.ActivityResultLauncher<Intent> importLauncher =
+            registerForActivityResult(
+                    new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getData() == null || result.getData().getData() == null) return;
+                        Uri uri = result.getData().getData();
+                        String type = result.getData().getType();
+                        try {
+                            if (type != null && type.contains("json")) {
+                                PlaylistIO.importJSON(requireContext(), importRepo, uri);
+                            } else {
+                                PlaylistIO.importM3U(requireContext(), importRepo, uri, null);
+                            }
+                            Toast.makeText(requireContext(), R.string.playlist_imported, Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(requireContext(), R.string.playlist_import_error, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
     private void showCreatePlaylistDialog() {
         android.widget.EditText input = new android.widget.EditText(requireContext());

@@ -1,44 +1,93 @@
-[1.1.0.7.3] - 2026-06-08
+[1.1.0.8.0] - 2026-06-09
 
-🔢 VERSION
+✨ Fitur Baru
 ----------
-versionCode: 15
-versionName: 1.1.0.7.3
+- Info teknis audio (bitrate, sample rate, codec) ditampilkan di mini player
+- Format audio berwarna (hijau/oranye/merah) berdasarkan playability ExoPlayer
+- Section collapsible ⋁/⋀ di tiap grup format (Audio, Rekaman, MIDI, Video, Stream)
+- FormatAudioActivity - Activity khusus untuk pengaturan format audio
+- FolderSettingsActivity - Activity untuk mengelola folder yang diizinkan/dikecualikan
+- Export playlist (M3U per playlist, JSON semua playlist) via SAF
+- Import playlist (M3U & JSON) via SAF - long-press FAB di daftar playlist
+- Auto-scan file .m3u/.m3u8 dari folder musik - playlist langsung terdeteksi tanpa import manual
+
+♻️ Perubahan Fitur
+------------------
+- Dialog Format Audio diganti dengan FormatAudioActivity
+- Dialog Folder Yang Diizinkan dan Folder Dikecualikan diganti dengan FolderSettingsActivity
 
 🔧 Optimasi & Penyesuaian
 -------------------------
 - Urutan section changelog distandarisasi di semua entry CHANGELOG.md
-- Klasifikasi ulang entry antara Perubahan Fitur dan Optimasi & Penyesuaian
-- Section non-standar (UX, Dokumentasi) digabung ke section standar
+- Klasifikasi ulang entry antara ♻️ Perubahan Fitur dan 🔧 Optimasi & Penyesuaian
+- Section non-standar (🎨 UX, 📚 Dokumentasi) digabung ke section standar
 - AGENTS.md diperbarui - daftar urutan section changelog eksplisit
 - README.md / README.txt - section changelog table diurutkan ulang
 
+🐞 Bug Fixes
+-----------
+- Search di SongsFragment tidak berfungsi - import SearchView pakai kelas platform (android.widget.SearchView) tidak cocok dengan instance androidx.appcompat.widget.SearchView dari menu XML
+- Mini player menutupi item terbawah di semua daftar - tambah paddingBottom pd RecyclerView sebesar mini player peek height
+- Mini player menutupi opsi dokumentasi di Settings - tambah paddingBottom di ScrollView fragment_settings
+
+🗒️ File Added
+--------------
+- app/src/main/res/layout/item_format_header.xml
+- app/src/main/res/layout/item_format_checkbox.xml
+- app/src/main/res/layout/activity_format_audio.xml
+- app/src/main/res/layout/activity_folder_settings.xml
+- app/src/main/java/exp/miniplayer/ui/audioformat/FormatAudioActivity.java
+- app/src/main/java/exp/miniplayer/ui/folders/FolderSettingsActivity.java
+- app/src/main/java/exp/miniplayer/utils/PlaylistIO.java
+- app/src/main/java/exp/miniplayer/utils/PlaylistScanner.java
+
+✏️ File Changed
+--------------
+- app/src/main/java/exp/miniplayer/ui/songs/SongsFragment.java - import SearchView diganti ke androidx.appcompat.widget.SearchView
+- app/build.gradle - compileOptions Java 8 → 17 (tekan warning JDK 21)
+- app/src/main/res/values/dimens.xml - tambah mini_player_peek (80dp)
+- app/src/main/res/layout/fragment_songs.xml - paddingBottom mini_player_peek
+- app/src/main/res/layout/fragment_albums.xml - paddingBottom mini_player_peek
+- app/src/main/res/layout/fragment_artists.xml - paddingBottom mini_player_peek
+- app/src/main/res/layout/fragment_favorites.xml - paddingBottom mini_player_peek
+- app/src/main/res/layout/fragment_playlist.xml - paddingBottom mini_player_peek
+- app/src/main/res/layout/fragment_folders.xml - paddingBottom mini_player_peek
+- app/src/main/res/layout/fragment_other_audio.xml - paddingBottom mini_player_peek
+- app/src/main/res/layout/view_now_playing_sheet.xml - tambah mini_player_info di mini player
+- app/src/main/java/exp/miniplayer/MainActivity.java - update miniPlayerInfo dari metadata
+- app/src/main/res/layout/fragment_settings.xml - paddingBottom mini_player_peek
+- app/src/main/res/values/colors.xml - tambah orange, red
+- app/src/main/res/values/strings.xml - string export/import
+- app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java - getFormatPlayability()
+- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - ganti dialog ke Activity
+- app/src/main/res/layout/dialog_audio_formats.xml - redesign layout
+- app/src/main/AndroidManifest.xml - daftarkan FormatAudioActivity & FolderSettingsActivity
+- app/src/main/java/exp/miniplayer/database/PlaylistDao.java - getAllPlaylistsSync(), findByName()
+- app/src/main/java/exp/miniplayer/data/AudioRepository.java - method sync + findPlaylistByName + integrasi PlaylistScanner
+- app/src/main/java/exp/miniplayer/ui/playlist/PlaylistFragment.java - import playlist
+- app/src/main/java/exp/miniplayer/ui/playlist/PlaylistDetailActivity.java - export playlist
+
+🔢 VERSION
+----------
+versionCode: 16
+versionName: 1.1.0.8.0
+
 [1.1.0.7.2] - 2026-06-08
+
+🐞 Bug Fixes
+-----------
+- CHANGELOG.md dobel entry - hapus body 1.1.0.7.0 yang terlanjur tertinggal saat merge entry
+
+💡 Catatan
+----------
+- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1
 
 🔢 VERSION
 ----------
 versionCode: 14
 versionName: 1.1.0.7.2
 
-🐞 Bug Fixes
-------------
-- CHANGELOG.md dobel entry - hapus body 1.1.0.7.0 yang terlanjur tertinggal saat merge entry
-
-✏️ File Changed
----------------
-- app/build.gradle - version bump
-- CHANGELOG.md - hapus duplikasi entry 1.1.0.7.0
-
-💡 Catatan
-----------
-- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.1
-
 [1.1.0.7.1] - 2026-06-08
-
-🔢 VERSION
-----------
-versionCode: 13
-versionName: 1.1.0.7.1
 
 ✨ Fitur Baru
 -------------
@@ -54,101 +103,31 @@ versionName: 1.1.0.7.1
 - Rename string - "Batasi Folder" -> "Batasi Pemindaian"; subtitle baru untuk setiap item folder (included/excluded)
 - Folder Diizinkan redup - Saat Batasi Pemindaian off, "Folder yang Diizinkan" dan subtitlenya diredupkan (alpha 0.5)
 - excludedFolders selalu diterapkan - MusicScanner.scanAudio() membaca excludedFolders tanpa tergantung limitFolders toggle
-
-🎨 UX Drag Ditingkatkan
------------------------
 - Padding item folder diperbesar (8dp -> 16dp vertical)
 - Teks folder diperbesar (bodyMedium -> bodyLarge)
 - Elevasi saat drag: setTranslationZ(16f) saat drag start, setTranslationZ(0f) saat selesai
 
-📚 Dokumentasi
---------------
+💡 Catatan
+----------
 - Deskripsi semua file dilengkapi di STRUKTUR.md dan STRUKTUR.txt (anim, drawable, layout, menu, mipmap, values, xml, root files, assets, manifes, dsb.)
-
-✏️ File Changed
----------------
-- app/build.gradle - version bump
-- app/src/main/java/exp/miniplayer/utils/PreferencesManager.java - DEFAULT_AUDIO_FORMATS, +limit_folders
-- app/src/main/java/exp/miniplayer/utils/MusicScanner.java - scanAudio pakai isLimitFolders
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java - scanAllAudio ke limitFolders
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - UI Batasi Folder + Lihat Folder Audio
-- app/src/main/res/layout/fragment_settings.xml - layout storage dirombak
-- app/src/main/res/layout/activity_folder_list.xml - layout baru
-- app/src/main/res/layout/item_folder_list.xml - layout baru
-- app/src/main/res/values/strings.xml - +diizinkan, belum_ditentukan, kontrol, semua; rename "Batasi Folder" -> "Batasi Pemindaian"; +subtitle baru
-- app/src/main/AndroidManifest.xml - +FolderListActivity
-- app/src/main/java/exp/miniplayer/ui/folders/FolderListActivity.java - file baru, +ItemTouchHelper drag antar section, +setTranslationZ drag elevation
-- app/src/main/res/values/colors.xml - +green
-- PANDUAN.md - sinkron deskripsi fitur folder
-- app/src/main/assets/PANDUAN.txt - sinkron deskripsi fitur folder
-- STRUKTUR.md - deskripsi lengkap semua file
-- app/src/main/assets/STRUKTUR.txt - deskripsi lengkap semua file
 
 🔢 VERSION
 ----------
-versionCode: 12
-versionName: 1.1.0.7.0
+versionCode: 13
+versionName: 1.1.0.7.1
 
-✨ Fitur Baru
--------------
-- Batasi Folder - Pengaturan penyimpanan dirombak: toggle "Pindai Semua Audio" dan "Folder Disertakan" digabung menjadi satu toggle "Batasi Folder"
-- Lihat Folder Audio - Opsi baru di Pengaturan untuk melihat semua folder yang berisi file audio
-- FolderListActivity - Activity baru dengan dua mode tampilan: Kontrol (dikelompokkan per status Diizinkan/Dikecualikan/Belum Ditentukan, bisa dibuka-tutup) dan Semua (daftar flat dengan tebal/coret/biasa)
-- Drag antar Section - Folder di mode Kontrol bisa di-long-press lalu drag ke section lain (Diizinkan/Dikecualikan/Belum Ditentukan); perubahan langsung tersimpan dan tersinkronisasi dengan pengaturan Folder
+[1.1.0.6.1] - 2026-06-08
 
 ♻️ Perubahan Fitur
 ------------------
-- Default audio format diubah - hanya mp3 dan m4a aktif secara default, format lain diaktifkan manual
-- Restrukturisasi Settings Storage - "Folder yang Diizinkan" dipisah menjadi item terpisah dari "Batasi Pemindaian"; urutan: Batasi Pemindaian → Folder Diizinkan → Folder Dikecualikan → Lihat Folder Audio → Format Audio
-- Rename string - "Batasi Folder" → "Batasi Pemindaian"; subtitle baru untuk setiap item folder (included/excluded)
-- Folder Diizinkan redup - Saat Batasi Pemindaian off, "Folder yang Diizinkan" dan subtitlenya diredupkan (alpha 0.5)
-- excludedFolders selalu diterapkan - MusicScanner.scanAudio() membaca excludedFolders tanpa tergantung limitFolders toggle
-
-🎨 UX Drag Ditingkatkan
------------------------
-- Padding item folder diperbesar (8dp → 16dp vertical)
-- Teks folder diperbesar (bodyMedium → bodyLarge)
-- Elevasi saat drag: setTranslationZ(16f) saat drag start, setTranslationZ(0f) saat selesai
-
-✏️ File Changed
----------------
-- app/build.gradle - version bump
-- app/src/main/java/exp/miniplayer/utils/PreferencesManager.java - DEFAULT_AUDIO_FORMATS, +limit_folders
-- app/src/main/java/exp/miniplayer/utils/MusicScanner.java - scanAudio pakai isLimitFolders
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java - scanAllAudio ke limitFolders
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - UI Batasi Folder + Lihat Folder Audio
-- app/src/main/res/layout/fragment_settings.xml - layout storage dirombak
-- app/src/main/res/layout/activity_folder_list.xml - layout baru
-- app/src/main/res/layout/item_folder_list.xml - layout baru
-- app/src/main/res/values/strings.xml - +diizinkan, belum_ditentukan, kontrol, semua; rename "Batasi Folder" → "Batasi Pemindaian"; +subtitle baru
-- app/src/main/AndroidManifest.xml - +FolderListActivity
-- app/src/main/java/exp/miniplayer/ui/folders/FolderListActivity.java - file baru, +ItemTouchHelper drag antar section, +setTranslationZ drag elevation
-- app/src/main/res/layout/item_folder_list.xml - paddingVertical 8dp→16dp, textAppearance bodyMedium→bodyLarge
-- app/src/main/res/layout/fragment_settings.xml - restrukturisasi storage card: +subtitle, +included/excluded folders row
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - +includedFolders dim alpha, +binding excluded/included
-- app/src/main/java/exp/miniplayer/utils/MusicScanner.java - excludedFolders selalu dibaca (tidak tergantung limitFolders)
-
-[1.1.0.6.1] - 2026-06-08
+- Default format audio aktif diubah - hanya mp3 dan m4a secara default, format lain harus diaktifkan manual di Pengaturan
 
 🔢 VERSION
 ----------
 versionCode: 11
 versionName: 1.1.0.6.1
 
-🔧 Optimasi & Penyesuaian
--------------------------
-- Default format audio aktif diubah - hanya mp3 dan m4a secara default, format lain harus diaktifkan manual di Pengaturan
-
-✏️ File Changed
---------------
-- app/src/main/java/exp/miniplayer/utils/PreferencesManager.java - DEFAULT_AUDIO_FORMATS hanya mp3, m4a
-
 [1.1.0.6.0] - 2026-06-07
-
-🔢 VERSION
-----------
-versionCode: 10
-versionName: 1.1.0.6.0
 
 ✨ Fitur Baru
 -------------
@@ -158,35 +137,23 @@ versionName: 1.1.0.6.0
 ------------------
 - Format MIDI (mid, midi, rmi, kar) aktif secara default di scanner audio
 
-✏️ File Changed
----------------
-- build.gradle - tambah JitPack repository untuk JSyn dependency
-- app/build.gradle - version bump, tambah media3-exoplayer-midi
-- app/src/main/java/exp/miniplayer/player/MusicPlayer.java - set extensionRendererMode PREFER
-- app/src/main/java/exp/miniplayer/utils/PreferencesManager.java - tambah mid, midi, rmi, kar ke DEFAULT_AUDIO_FORMATS
+🔢 VERSION
+----------
+versionCode: 10
+versionName: 1.1.0.6.0
 
 [1.1.0.5.1] - 2026-06-07
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Release workflow: release notes sekarang pakai CHANGELOG bukan auto-generate dari commit
 
 🔢 VERSION
 ---------
 versionCode: 9
 versionName: 1.1.0.5.1
 
-🔧 Optimasi & Penyesuaian
--------------------------
-- Release workflow: release notes sekarang pakai CHANGELOG bukan auto-generate dari commit
-
-✏️ File Changed
----------------
-- .github/workflows/release.yml - ganti generate_release_notes dengan ekstraksi section user-facing dari CHANGELOG.md
-- app/build.gradle - version bump
-
 [1.1.0.5.0] - 2026-06-07
-
-🔢 VERSION
----------
-versionCode: 8
-versionName: 1.1.0.5.0
 
 ✨ Fitur Baru
 -----------
@@ -194,35 +161,12 @@ versionName: 1.1.0.5.0
 - Three-dot menu di Now Playing - Tambah ke Playlist, Rincian, Bagikan, Hapus
 - Pilih Ikon Aplikasi - 5 ikon alternatif dari Pengaturan -> Tampilan -> Ikon Aplikasi
 
-🗒️ File Added
---------------
-- app/src/main/res/drawable/ic_overflow.xml
-- app/src/main/res/menu/now_playing_options_menu.xml
-- app/src/main/res/drawable/ic_bg_purple.xml
-- app/src/main/res/drawable/ic_bg_surface.xml
-- app/src/main/res/drawable/ic_fg_note.xml
-- app/src/main/res/drawable/ic_fg_play.xml
-- app/src/main/res/drawable/ic_fg_queue.xml
-- app/src/main/res/drawable/ic_fg_note_dark.xml
-- app/src/main/res/drawable/ic_fg_play_dark.xml
-- 10 file app/src/main/res/mipmap-anydpi-v26/ic_launcher_*.xml (5 ikon x normal + round)
-
-✏️ File Changed
----------------
-- app/build.gradle - version bump
-- app/src/main/res/layout/view_now_playing_sheet.xml - tambah TextView info strip + overflow button
-- app/src/main/java/exp/miniplayer/MainActivity.java - info strip metadata, PopupMenu overflow, 4 handler (playlist, details, share, delete)
-- app/src/main/res/values/strings.xml - tambah string untuk rincian dan menu
-- app/src/main/AndroidManifest.xml - 5 activity-alias untuk pemilih ikon
-- app/src/main/res/layout/fragment_settings.xml - tambah section Tampilan dengan row Ikon Aplikasi
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - tambah handler showIconDialog()
-
-[1.1.0.4.0] - 2026-06-06
-
 🔢 VERSION
 ---------
-versionCode: 7
-versionName: 1.1.0.4.0
+versionCode: 8
+versionName: 1.1.0.5.0
+
+[1.1.0.4.0] - 2026-06-06
 
 ✨ Fitur Baru
 -----------
@@ -237,163 +181,78 @@ versionName: 1.1.0.4.0
 - Tambah Current Release dan Last Updated di README
 - Sinkronisasi emoji di CHANGELOG.txt - semua section headers pakai emoji
 
-🗒️ File Added
--------------
-- release.sh - Script GitHub release dengan changelog otomatis
-- TENTANG.md - diformat ulang mengikuti gaya FTxT
-- app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java
-- app/src/main/res/layout/activity_documentation.xml
-- app/src/main/assets/README.txt
-- app/src/main/assets/PANDUAN.txt
-- app/src/main/assets/STRUKTUR.txt
-- app/src/main/assets/CHANGELOG.txt
-
-✏️ File Changed
----------------
-- README.md - digabung dengan DEVELOPMENT, tambah Current Release & Last Updated, tambah Tentang
-- README.txt - dari markdown ke plain text underline
-- AGENTS.md - hapus referensi DEVELOPMENT/TENTANG
-- STRUKTUR.md
-- app/src/main/assets/CHANGELOG.txt - tambah emoji di section headers
-- app/src/main/assets/STRUKTUR.txt
-- app/src/main/res/layout/fragment_settings.xml - tambah section Dokumentasi
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java - handler Lihat Dokumentasi
-- app/src/main/AndroidManifest.xml - daftarkan DocumentationActivity
-- app/src/main/res/values/strings.xml - tambah string dokumentasi
-- app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java - hapus TENTANG.txt dari daftar
-
-🔥 File Removed
----------------
-- DEVELOPMENT.md - konten digabung ke README
-- app/src/main/assets/TENTANG.txt - konten sudah di-merge ke README
+🔢 VERSION
+---------
+versionCode: 7
+versionName: 1.1.0.4.0
 
 [1.1.0.3.0] - 2026-06-06
 
-🔢 VERSION
----------
-versionCode: 6
-versionName: 1.1.0.3.0
-
 ✨ Fitur Baru
 ------------
-- Format Audio di Settings - filter file berdasarkan ekstensi format
+- Format Audio di Settings - filter file berdasarkan ekstensi format (Audio, Rekaman, MIDI, Video, Stream)
+
+🚮 Fitur Dihapus
+---------------
+- Opsi "Mode Ulang Default" di Pengaturan
 
 ♻️ Perubahan Fitur
 ------------------
-- mini player selalu tampil di bawah meski tidak ada lagu
-- tampilan kosong: judul "Mini Player", subjudul "Pilih lagu"
-- Scan All Audio diubah dari tombol klik jadi SwitchCompat - saat ON scan semua tanpa filter folder; Folder Disertakan otomatis dinonaktifkan saat ON
-- Hapus opsi Mode Ulang Default di Pengaturan
+- mini player selalu tampil di bawah meski tidak ada lagu diputar
+- tampilan kosong: judul "Mini Player", subjudul "Pilih lagu untuk diputar"
+- Scan All Audio diubah dari tombol klik jadi SwitchCompat - saat ON, semua audio dipindai tanpa filter folder; saat OFF, hanya folder yang disertakan dipindai
+- Folder Disertakan otomatis dinonaktifkan (disabled/greyed out) saat Scan All Audio aktif
 - Jaga Layar Tetap Nyala ditambahi informasi "Membatalkan batas waktu layar"
 - Tambah opsi Putar Audio Diatas Aplikasi Lain - toggle + informasi "Tidak ada gangguan pemutaran"; implementasi: skip audio focus request saat ON, abandon fokus, pause kalah fokus saat OFF
-- Tambah tombol panah bawah di Now Playing untuk tutup expanded player
+- Tambah tombol panah bawah (▼) di Now Playing untuk menutup expanded player
 - Icon favorit dirapikan - posisi, padding, hapus redundant android:tint
 - Navigasi ganti lagu: dari ketukan sisi (previous/next) jadi swipe kiri/kanan di album art
 - Tombol panah bawah & favorit di Now Playing tidak bisa ditekan - diperbaiki (mini_player_overlay disembunyikan saat expanded)
 
-🗒️ File Added
--------------
-- app/src/main/res/layout/dialog_audio_formats.xml
-
 🐞 Bug Fixes
 -----------
-- lagu berhenti saat keluar app - startForeground() dipanggil SEBELUM player mulai (hindari ForegroundServiceStartNotAllowedException)
-- lagu berhenti sendiri & now playing kosong (service restart) - simpan track ke SharedPreferences, pulihkan saat restart
-- file audio corrupt / codec error - ExoPlayer skip ke track berikutnya
-- queue habis (repeat off) - togglePlayPause restart dari awal
+- lagu berhenti saat keluar app - startForeground() dipanggil di playQueue() SEBELUM player mulai (hindari ForegroundServiceStartNotAllowedException di Android 12+)
+- lagu berhenti sendiri & now playing kosong (service restart) - simpan track terakhir ke SharedPreferences, pulihkan saat service restart
+- file audio corrupt/codec error - ExoPlayer skip ke track berikutnya (onPlayerError)
+- queue habis (repeat off) - togglePlayPause restart dari awal, bukan diam
 
-✏️ File Changed
----------------
-- app/src/main/java/exp/miniplayer/utils/PreferencesManager.java
-- app/src/main/java/exp/miniplayer/utils/MusicScanner.java
-- app/src/main/java/exp/miniplayer/player/MusicPlayer.java
-- app/src/main/java/exp/miniplayer/service/MusicService.java
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java
-- app/src/main/res/layout/fragment_settings.xml
-- app/src/main/res/values/strings.xml
-- app/src/main/res/layout/view_now_playing_sheet.xml
-- app/src/main/java/exp/miniplayer/MainActivity.java
-- app/src/main/res/drawable/ic_favorite.xml
-- app/src/main/res/drawable/ic_favorite_border.xml
-- app/src/main/res/values/arrays.xml
+🔢 VERSION
+----------
+versionCode: 6
+versionName: 1.1.0.3.0
 
 [1.0.0.2.0] - 2026-06-06
 
-🔢 VERSION
----------
-versionCode: 5
-versionName: 1.0.0.2.0
-
 ✨ Fitur Baru
 ------------
-- implementasi Scan All Audio (trigger re-scan manual)
-- implementasi Included Folders (filter folder scan)
-- implementasi Excluded Folders (folder dilewati scan)
+- implementasi Scan All Audio (trigger re-scan manual dari Settings)
+- implementasi Included Folders (filter folder yang dipindai)
+- implementasi Excluded Folders (folder yang dilewati saat scan)
 
 ♻️ Perubahan Fitur
 ------------------
-- semua string UI ke bahasa Indonesia
 - ikon tutup Now Playing dari x (close) jadi V (panah bawah)
-- judul & artis pindah ke toolbar Now Playing
-- tombol prev/next di mini player
-- swipe-down drag tutup Now Playing
-- Now Playing + mini player digabung jadi Bottom Sheet di MainActivity
-- kontrol pemutaran pindah ke MainActivity (shuffle, repeat, seekbar, favorit)
-- klik mini player buka expanded player (crossfade transform)
-- seret expanded player ke bawah collapse ke mini player
+- judul & artis lagu dipindah ke toolbar Now Playing (antara ikon tutup dan suka)
+- semua string UI diubah ke bahasa Indonesia
+- Scan All Audio, Included Folders, Excluded Folders kini berfungsi
+- tambah tombol prev/next di mini player bawah
+- swipe-down drag untuk tutup Now Playing (seret judul ke bawah)
+- Now Playing (Activity) + mini player digabung jadi Bottom Sheet tunggal di MainActivity
+- kontrol pemutaran (shuffle, repeat, seekbar, favorit, progress) pindah ke MainActivity
+- klik mini player buka expanded player (bukan Activity baru)
+- seret expanded player ke bawah untuk tutup (collapse ke mini player)
+- folder picker kini pakai SAF (file manager) bukan input teks manual
 
 🔧 Optimasi & Penyesuaian
 ------------------------
 - tambah izin WAKE_LOCK
-- folder picker pakai SAF (file manager)
-- Now Playing jadi overlay
-- Bottom Sheet crossfade transform
-
-🗒️ File Added
--------------
-- app/src/main/res/drawable/ic_arrow_down.xml
-- app/src/main/res/drawable/drag_handle_background.xml
-- app/src/main/res/layout/dialog_folder_list.xml
-- app/src/main/res/layout/item_folder.xml
-- app/src/main/res/layout/dialog_folder_input.xml
-- app/src/main/res/anim/slide_in_up.xml
-- app/src/main/res/anim/slide_out_down.xml
-- app/src/main/res/anim/stay.xml
-
-✏️ File Changed
----------------
-- app/src/main/AndroidManifest.xml
-- app/src/main/res/values/strings.xml
-- app/src/main/res/layout/fragment_settings.xml
-- app/src/main/res/layout/activity_main.xml
-- app/src/main/res/layout/view_now_playing_sheet.xml
-- app/src/main/res/values/themes.xml
-- app/src/main/res/values/dimens.xml
-- app/src/main/java/exp/miniplayer/utils/PreferencesManager.java
-- app/src/main/java/exp/miniplayer/utils/MusicScanner.java
-- app/src/main/java/exp/miniplayer/data/AudioRepository.java
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java
-- app/src/main/java/exp/miniplayer/ui/settings/SettingsFragment.java
-- app/src/main/java/exp/miniplayer/MainActivity.java
-- app/src/main/java/exp/miniplayer/service/MusicService.java
-- app/src/main/java/exp/miniplayer/ui/songs/SongsFragment.java
-- app/src/main/java/exp/miniplayer/ui/favorites/FavoritesFragment.java
-- app/src/main/java/exp/miniplayer/ui/playlist/PlaylistDetailActivity.java
-
-🔥 File Removed
----------------
-- app/src/main/java/exp/miniplayer/ui/nowplaying/NowPlayingActivity.java
-- app/src/main/java/exp/miniplayer/ui/nowplaying/NowPlayingViewModel.java
-- app/src/main/res/layout/activity_now_playing.xml
-- app/src/main/res/layout/view_mini_player.xml
-
-[1.0.0.1.0] - 2026-06-06
 
 🔢 VERSION
----------
-versionCode: 4
-versionName: 1.0.0.1.0
+----------
+versionCode: 5
+versionName: 1.0.0.2.0
+
+[1.0.0.1.0] - 2026-06-06
 
 ✨ Fitur Baru
 ------------
@@ -403,27 +262,17 @@ versionName: 1.0.0.1.0
 ♻️ Perubahan Fitur
 ------------------
 - warna diubah ke palet dark theme Material3 sepenuhnya
-- hapus folder values-night (tidak terpakai)
 
 🐞 Bug Fixes
 -----------
 - fix force close SongsFragment - cast SearchView pakai instanceof
 
-✏️ File Changed
----------------
-- MainActivity.java
-- SongsFragment.java
-- activity_main.xml
-- strings.xml
-- app/src/main/res/values/colors.xml - +green
-- STRUKTUR.md
+🔢 VERSION
+----------
+versionCode: 4
+versionName: 1.0.0.1.0
 
 [1.0.0.0.2] - 2026-06-06
-
-🔢 VERSION
----------
-versionCode: 3
-versionName: 1.0.0.0.2
 
 🐞 Bug Fixes
 -----------
@@ -432,40 +281,26 @@ versionName: 1.0.0.0.2
 - adapter song tidak dibuat ulang setiap data change
 - reset posisi dan durasi saat queue habis
 
-✏️ File Changed
----------------
-- AppDatabase.java
-- MusicPlayer.java
-- SongAdapter.java
-- SongsFragment.java
-- FavoritesFragment.java
-- NowPlayingViewModel.java
+🔢 VERSION
+---------
+versionCode: 3
+versionName: 1.0.0.0.2
 
 [1.0.0.0.1] - 2026-06-06
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- hapus aapt2FromMavenOverride dari gradle.properties untuk kompatibilitas CI
 
 🔢 VERSION
 ---------
 versionCode: 2
 versionName: 1.0.0.0.1
 
-🔧 Optimasi & Penyesuaian
-------------------------
-- hapus aapt2FromMavenOverride dari gradle.properties untuk kompatibilitas CI
-
-✏️ File Changed
----------------
-- gradle.properties
-- app/build.gradle
-
 [1.0.0.0.0] - 2026-06-06
 
-🔢 VERSION
----------
-versionCode: 1
-versionName: 1.0.0.0.0
-
 ✨ Fitur Baru
-------------
+-----------
 - inisialisasi project Mini Player
 - pemutaran audio dengan Media3 ExoPlayer
 - foreground service untuk background playback
@@ -481,6 +316,7 @@ versionName: 1.0.0.0.0
 - izin runtime untuk audio dan notifikasi
 - dukungan Bluetooth AVRCP
 
-🗒️ File Added
--------------
-- seluruh struktur project awal
+🔢 VERSION
+---------
+versionCode: 1
+versionName: 1.0.0.0.0

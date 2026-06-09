@@ -13,6 +13,7 @@ import exp.miniplayer.database.PlaylistSongDao;
 import exp.miniplayer.database.PlaylistSongEntity;
 import exp.miniplayer.model.Audio;
 import exp.miniplayer.utils.MusicScanner;
+import exp.miniplayer.utils.PlaylistScanner;
 import exp.miniplayer.utils.PreferencesManager;
 
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class AudioRepository {
         cachedAudioList = MusicScanner.scanAudio(context, prefs);
         sortAudioList(currentSortMode);
         forceRescan = false;
+        PlaylistScanner.scanPlaylists(context, this, cachedAudioList);
         return cachedAudioList;
     }
 
@@ -153,6 +155,10 @@ public class AudioRepository {
         return playlistDao.getAllPlaylists();
     }
 
+    public List<PlaylistEntity> getPlaylistsSync() {
+        return playlistDao.getAllPlaylistsSync();
+    }
+
     public long createPlaylist(String name) {
         PlaylistEntity entity = new PlaylistEntity(name, System.currentTimeMillis());
         return playlistDao.insert(entity);
@@ -169,6 +175,10 @@ public class AudioRepository {
 
     public PlaylistEntity getPlaylist(int id) {
         return playlistDao.getPlaylist(id);
+    }
+
+    public PlaylistEntity findPlaylistByName(String name) {
+        return playlistDao.findByName(name);
     }
 
     public boolean addToPlaylist(int playlistId, Audio audio) {
@@ -194,5 +204,13 @@ public class AudioRepository {
 
     public int getPlaylistSongCount(int playlistId) {
         return playlistSongDao.getSongCount(playlistId);
+    }
+
+    public List<PlaylistSongEntity> getPlaylistSongsSync(int playlistId) {
+        return playlistSongDao.getSongsForPlaylistSync(playlistId);
+    }
+
+    public PlaylistSongDao getPlaylistSongDao() {
+        return playlistSongDao;
     }
 }

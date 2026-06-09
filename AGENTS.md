@@ -192,15 +192,7 @@ File:
 - `CHANGELOG.md` (root) — markdown, untuk GitHub
 - `app/src/main/assets/CHANGELOG.txt` — plain text, untuk in-app
 
-Entry baru:
-
-WAJIB ditaruh di paling atas. 
-
-Format (.md):
-
-```md
-## [X.X.X.X.X] - YYYY-MM-DD 
-``` 
+Catat perubahan di **entry versi yang sedang berjalan** (bukan entry baru).
 
 Gunakan section sesuai kebutuhan. Urutan section WAJIB mengikuti urutan berikut:
 
@@ -218,142 +210,60 @@ Gunakan section sesuai kebutuhan. Urutan section WAJIB mengikuti urutan berikut:
 🔢 Version
 ```
 
-Daftar lengkap dengan deskripsi ada di **Section Changelog** README.md / README.txt.
-
 ### Aturan 
 
 WAJIB: 
-- semua file yang benar-benar diubah dicatat 
-- update versionCode dicatat 
-- update versionName dicatat 
-- khusus untuk build.gradle, changelog dan readme tidak perlu dicatat (dikecualikan)
-- section WAJIB ditulis sesuai urutan di atas
+- semua file yang diubah dicatat
+- section WAJIB sesuai urutan di atas
 
 JANGAN: 
-- menambah changelog untuk perubahan trivial 
-- menulis penjelasan terlalu panjang 
-- membuat subsection yang tidak perlu 
-- mengulang detail implementasi kecil 
+- membuat entry versi baru
+- menambah changelog untuk perubahan trivial
 - mengubah urutan section
+- menulis penjelasan panjang
 
-Ringkas, faktual, langsung ke perubahan. 
+Ringkas, faktual, langsung ke perubahan.
  
 --- 
  
-## 3. Dokumentasi (.md root ↔ .txt app/src/main/assets/)
+## 3. Dokumentasi
 
-Dokumentasi terdiri dari 4 pasang file yang harus disinkronkan secara manual (DEVELOPMENT digabung ke README, TENTANG digabung ke README):
+Dokumentasi hanya diupdate **saat diperintah user**, dan itu pun dilakukan **sebelum commit**.
 
-| Root (.md)          | Assets (.txt) (app/src/main/assets/) | Isi                              |
-|---------------------|--------------------------------------|----------------------------------|
-| README.md           | README.txt                           | Ringkasan fitur + development    |
-| STRUKTUR.md         | STRUKTUR.txt                         | Struktur project & deskripsi file|
-| PANDUAN.md          | PANDUAN.txt                          | Panduan penggunaan lengkap       |
-| CHANGELOG.md        | CHANGELOG.txt                        | Riwayat perubahan release        |
+Tidak perlu update dokumentasi setiap kali ada perubahan kode — bisa ditumpuk sekaligus nanti.
 
-### Format file
-
-- `.md` (root) — markdown, untuk dibaca di GitHub dengan rendered view
-- `.txt` (`app/src/main/assets/`) — plain text, untuk dibaca **di dalam aplikasi** via DocumentationActivity
-
-Kedua pasangan harus memiliki **isi yang sama**, hanya formatnya berbeda.
-
-### DocumentationActivity
-
-Aplikasi memiliki `DocumentationActivity` yang dapat diakses dari **Pengaturan → Lihat Dokumentasi**.
-Activity ini membaca file `.txt` dari `app/src/main/assets/` dan menampilkannya sebagai plain text.
-
-Saat menambah/menghapus file dokumentasi:
-1. update `DocumentationActivity.java` (array `DOCS`)
-2. update `strings.xml` (title + subtitle strings)
-3. update `fragment_settings.xml` jika subtitle perlu diubah
-
-### README / PANDUAN (Dokumentasi pengguna akhir)
-
-WAJIB update bila: 
-- ada fitur baru 
-- ada fitur dihapus 
-- ada fitur dipulihkan 
-- ada perubahan struktur project 
-- ada perubahan UI/UX besar 
-- Current Version berubah 
-- Last Updated berubah 
-
-Update hanya jika relevan: 
-- daftar fitur 
-- requirement 
-- permission 
-
-### STRUKTUR
-
-WAJIB update bila:
-- ada file/direktori baru
-- ada file/direktori dihapus
-- ada perubahan struktur package
-
-### CHANGELOG
-
-Update WAJIB setiap ada perubahan kode.
-Aturan penulisan ada di **Section 2 — CHANGELOG.txt** di atas.
- 
 --- 
  
-## 4. Workflow AI
+## 4. Workflow
 
-Siklus kerja: **setelah rilis → edit → rilis → edit → ...**
+### 1. Edit Biasa (looping)
 
-### Aturan Dasar
+1. update kode
+2. catat perubahan di `CHANGELOG.md` entry versi berjalan
+3. **JANGAN** commit / tag / push
+4. ulang sampai user perintah **commit & tag**
 
-- **JANGAN** commit atau tag kecuali diperintahkan secara eksplisit.
-- **JANGAN** membuat commit kosong atau tanpa perubahan kode.
+### 2. Pre-release (sebelum commit & tag)
 
-### 4.1 Setelah Rilis (commit & tag selesai)
+1. periksa semua dokumen (README, STRUKTUR, PANDUAN, CHANGELOG)
+2. update revisi / perbaiki jika ada yang tidak sinkron
+3. pastikan semua sudah sesuai
+4. beri tahu user bahwa siap di-commit & tag
 
-Setelah user memerintahkan rilis dan commit+tag sukses terbentuk, **versi saat ini dianggap final**.
+### 3. Rilis (hanya saat diperintahkan)
 
-Perubahan berikutnya WAJIB menggunakan **versi baru**:
+1. `git add -A && git commit`
+2. `git tag vX.X.X.X.X`
+3. **JANGAN** push — user yang akan push sendiri
+
+### 4. Setelah Push (entry versi baru)
+
+Saat user sudah push dan mulai mengerjakan perubahan baru:
 
 1. update versionCode (+1)
 2. update versionName sesuai Algoritma Increment (Section 1)
-3. buat entry baru di `CHANGELOG.md` + `app/src/main/assets/CHANGELOG.txt` di paling atas
-4. catat perubahan pada entry baru tersebut
-5. update pasangan dokumentasi yang relevan (.md root + `app/src/main/assets/`)
-6. jika ada file dokumentasi ditambah/dihapus, update `DocumentationActivity.java` (array `DOCS`) + `strings.xml`
-7. **JANGAN commit**
-8. **JANGAN tag**
-
-### 4.2 Edit Biasa (versi sudah ada)
-
-Jika sudah ada entry versi yang sedang dikerjakan (belum di-commit/tag):
-
-1. update kode
-2. catat perubahan di `CHANGELOG.md` + `app/src/main/assets/CHANGELOG.txt` pada **entry versi yang sedang dikerjakan**
-3. update pasangan dokumentasi yang relevan (.md root + `app/src/main/assets/`):
-   - `README.md` + `app/src/main/assets/README.txt`
-   - `STRUKTUR.md` + `app/src/main/assets/STRUKTUR.txt`
-   - `PANDUAN.md` + `app/src/main/assets/PANDUAN.txt`
-4. jika ada file dokumentasi ditambah/dihapus, update `DocumentationActivity.java` (array `DOCS`) + `strings.xml`
-5. **JANGAN** update versionCode / versionName (sudah diatur di langkah 4.1)
-6. **JANGAN** commit
-7. **JANGAN** tag
-
-### 4.3 Rilis (hanya saat diperintahkan)
-
-Saat user memerintahkan commit & tag:
-
-1. pastikan kode sudah lengkap
-2. **JIKA** versi sudah dibuat (langkah 4.1 sudah dijalankan sebelumnya):
-   - lewati update versionCode / versionName
-   - lewati update CHANGELOG (entry sudah ada)
-3. **JIKA** versi belum dibuat (lupa atau skip):
-   - update versionCode (+1)
-   - update versionName sesuai Algoritma Increment
-   - buat entry CHANGELOG baru
-4. update semua pasangan dokumentasi yang relevan — pastikan semuanya sinkron
-5. jika ada file dokumentasi ditambah/dihapus, update `DocumentationActivity.java` (array `DOCS`) + `strings.xml`
-6. `git add -A && git commit`
-7. `git tag vX.X.X.X.X`
-8. beri tahu user bahwa tinggal `git push`
+3. buat entry CHANGELOG baru (paling atas) dengan versi baru
+4. kembali ke **Edit Biasa**
  
 --- 
  

@@ -14,8 +14,14 @@ public interface PlaylistDao {
     @Query("SELECT * FROM playlists ORDER BY createdAt DESC")
     LiveData<List<PlaylistEntity>> getAllPlaylists();
 
+    @Query("SELECT * FROM playlists ORDER BY createdAt DESC")
+    List<PlaylistEntity> getAllPlaylistsSync();
+
     @Query("SELECT * FROM playlists WHERE id = :id LIMIT 1")
     PlaylistEntity getPlaylist(int id);
+
+    @Query("SELECT * FROM playlists WHERE name = :name LIMIT 1")
+    PlaylistEntity findByName(String name);
 
     @Insert
     long insert(PlaylistEntity playlist);
