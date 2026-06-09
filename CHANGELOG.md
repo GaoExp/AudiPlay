@@ -1,3 +1,20 @@
+## [1.1.0.11.0] - 2026-06-09
+
+### ✨ Fitur Baru
+- Slider ukuran teks di penampil dokumentasi — tombol −/+ untuk atur besar teks (12sp–24sp)
+
+### 🐞 Bug Fixes
+- CI: decode keystore gagal karena newline di base64 — tambah `tr -d '\n'` sebelum `base64 -d`
+
+### ✏️ File Changed
+- `app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java` — tambah slider ukuran teks, simpan preferensi ke SharedPreferences
+- `app/src/main/res/layout/activity_documentation.xml` — tambah `text_size_bar` (LinearLayout + SeekBar)
+- `.github/workflows/release.yml` — tambah `tr -d '\n'` di step decode keystore
+
+### 🔢 Version
+- versionCode: 21
+- versionName: 1.1.0.11.0
+---
 ## [1.1.0.10.2] - 2026-06-09
 
 ### ♻️ Perubahan Fitur

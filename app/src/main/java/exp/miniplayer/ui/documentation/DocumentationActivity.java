@@ -1,7 +1,9 @@
 package exp.miniplayer.ui.documentation;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,6 +27,14 @@ public class DocumentationActivity extends AppCompatActivity {
     private ScrollView docContent;
     private TextView docContentText;
     private TextView toolbarTitle;
+    private TextView textSizeValue;
+    private View textSizeBar;
+
+    private static final String PREFS_NAME = "doc_prefs";
+    private static final String KEY_TEXT_SIZE = "text_size";
+    private static final int MIN_TEXT_SIZE = 12;
+    private static final int MAX_TEXT_SIZE = 24;
+    private int currentTextSize;
 
     private static class DocItem {
         final int titleRes;
@@ -62,6 +72,31 @@ public class DocumentationActivity extends AppCompatActivity {
         docList = findViewById(R.id.doc_list);
         docContent = findViewById(R.id.doc_content);
         docContentText = findViewById(R.id.doc_content_text);
+        textSizeValue = findViewById(R.id.text_size_value);
+        textSizeBar = findViewById(R.id.text_size_bar);
+
+        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        currentTextSize = prefs.getInt(KEY_TEXT_SIZE, 16);
+        applyTextSize();
+
+        Button minusBtn = findViewById(R.id.text_size_minus);
+        Button plusBtn = findViewById(R.id.text_size_plus);
+
+        minusBtn.setOnClickListener(v -> {
+            if (currentTextSize > MIN_TEXT_SIZE) {
+                currentTextSize--;
+                applyTextSize();
+                prefs.edit().putInt(KEY_TEXT_SIZE, currentTextSize).apply();
+            }
+        });
+
+        plusBtn.setOnClickListener(v -> {
+            if (currentTextSize < MAX_TEXT_SIZE) {
+                currentTextSize++;
+                applyTextSize();
+                prefs.edit().putInt(KEY_TEXT_SIZE, currentTextSize).apply();
+            }
+        });
 
         buildDocList();
     }
@@ -115,6 +150,11 @@ public class DocumentationActivity extends AppCompatActivity {
         }
     }
 
+    private void applyTextSize() {
+        docContentText.setTextSize(currentTextSize);
+        textSizeValue.setText(String.valueOf(currentTextSize));
+    }
+
     private void showDocument(int index) {
         DocItem doc = DOCS[index];
         toolbarTitle.setText(doc.titleRes);
@@ -135,6 +175,7 @@ public class DocumentationActivity extends AppCompatActivity {
         }
 
         docList.setVisibility(View.GONE);
+        textSizeBar.setVisibility(View.VISIBLE);
         docContent.setVisibility(View.VISIBLE);
     }
 
@@ -142,6 +183,7 @@ public class DocumentationActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (docContent.getVisibility() == View.VISIBLE) {
             docContent.setVisibility(View.GONE);
+            textSizeBar.setVisibility(View.GONE);
             docList.setVisibility(View.VISIBLE);
             toolbarTitle.setText(R.string.documentation);
         } else {
