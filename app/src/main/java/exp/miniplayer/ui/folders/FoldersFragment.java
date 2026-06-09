@@ -1,6 +1,6 @@
 package exp.miniplayer.ui.folders;
 
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +18,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import exp.miniplayer.MainActivity;
 import exp.miniplayer.R;
+import exp.miniplayer.ui.songs.SongListActivity;
 import exp.miniplayer.adapter.GroupAdapter;
 import exp.miniplayer.data.AudioRepository;
 import exp.miniplayer.model.Audio;
@@ -127,20 +127,9 @@ public class FoldersFragment extends Fragment {
         FolderStats stats = folderMap.get(folderPath);
         if (stats == null || stats.songs.isEmpty() || getContext() == null) return;
 
-        List<Audio> songs = stats.songs;
-        String[] titles = new String[songs.size()];
-        for (int j = 0; j < songs.size(); j++) {
-            titles[j] = songs.get(j).getTitle();
-        }
-
-        new AlertDialog.Builder(requireContext())
-                .setTitle(folderPath)
-                .setItems(titles, (dialog, which) -> {
-                    if (requireActivity() instanceof MainActivity) {
-                        ((MainActivity) requireActivity()).playFromSongs(songs, which);
-                    }
-                })
-                .setPositiveButton(R.string.cancel, null)
-                .show();
+        Intent intent = new Intent(requireContext(), SongListActivity.class);
+        intent.putParcelableArrayListExtra(SongListActivity.EXTRA_SONGS, new ArrayList<>(stats.songs));
+        intent.putExtra(SongListActivity.EXTRA_TITLE, folderPath);
+        startActivity(intent);
     }
 }

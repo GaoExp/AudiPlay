@@ -1,3 +1,18 @@
+[1.1.0.10.2] - 2026-06-09
+
+♻️ Perubahan Fitur
+----------------
+- Daftar lagu Folder: dari AlertDialog jadi SongListActivity dengan RecyclerView + album art
+
+🐞 Bug Fixes
+-----------
+- Navigation Drawer header statistik menampilkan angka 0 saat pertama buka - updateNavHeader() tidak pernah dipanggil ulang setelah izin diberikan
+
+🔢 VERSION
+----------
+versionCode: 20
+versionName: 1.1.0.10.2
+
 [1.1.0.10.1] - 2026-06-09
 
 ✨ Fitur Baru

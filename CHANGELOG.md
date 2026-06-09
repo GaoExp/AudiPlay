@@ -1,3 +1,19 @@
+## [1.1.0.10.2] - 2026-06-09
+
+### ♻️ Perubahan Fitur
+- Daftar lagu Folder: dari `AlertDialog` jadi `SongListActivity` dengan RecyclerView + album art
+
+### 🐞 Bug Fixes
+- Navigation Drawer header statistik menampilkan angka 0 saat pertama buka — `updateNavHeader()` tidak pernah dipanggil ulang setelah izin diberikan
+
+### ✏️ File Changed
+- `app/src/main/java/exp/miniplayer/ui/folders/FoldersFragment.java` — ganti `AlertDialog` dengan Intent ke `SongListActivity`
+- `app/src/main/java/exp/miniplayer/MainActivity.java` — tambah `onRequestPermissionsResult()` panggil `updateNavHeader()` saat izin diberikan
+
+### 🔢 Version
+- versionCode: 20
+- versionName: 1.1.0.10.2
+---
 ## [1.1.0.10.1] - 2026-06-09
 
 ### ✨ Fitur Baru

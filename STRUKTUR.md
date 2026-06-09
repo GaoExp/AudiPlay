@@ -84,7 +84,7 @@ AudiPlay/
         │   │   ├── folders/
         │   │   │   ├── FolderListActivity.java   — Activity kelola folder audio: mode Kontrol (drag antar section Diizinkan/Dikecualikan/Belum Ditentukan) & mode Semua (daftar flat)
         │   │   │   ├── FolderSettingsActivity.java — Activity atur folder yang diizinkan & dikecualikan via SAF picker
-        │   │   │   └── FoldersFragment.java      — Fragment folder musik per direktori induk (tap putar semua lagu dalam folder, stats per folder + header total)
+        │   │   │   └── FoldersFragment.java      — Fragment folder musik per direktori induk (tap buka SongListActivity, stats per folder + header total)
         │   │   ├── other_audio/
         │   │   │   └── OtherAudioFragment.java   — Fragment file audio non-musik (rekaman, dll)
         │   │   ├── playlist/
@@ -98,7 +98,7 @@ AudiPlay/
 │   │   ├── songs/
 │   │   │   ├── SongsFragment.java        — Fragment semua lagu: search, sort, tap putar, long-press favorit/playlist, header total stats
 │   │   │   ├── SongsViewModel.java       — ViewModel daftar lagu dengan filter, sorting, scan-once logic
-│   │   │   └── SongListActivity.java     — Activity daftar lagu dari artis/album tertentu (RecyclerView + album art + header stats)
+        │   │   │   └── SongListActivity.java     — Activity daftar lagu dari artis/album/folder tertentu (RecyclerView + album art + header stats)
         │   │   └── system_picker/
         │   │       └── SystemPickerFragment.java — Fragment impor audio via system file picker (SAF)
         │   │
