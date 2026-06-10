@@ -37,15 +37,17 @@ jobs:
           $SDK_DIR/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
 
       - name: Decode Keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: |
           echo "Checking KEYSTORE_BASE64 secret availability"
-          if [ -z "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+          if [ -z "$KEYSTORE_BASE64" ]; then
             echo "Error: KEYSTORE_BASE64 secret is empty or not set"
             exit 1
           fi
 
           echo "Decoding keystore to app/release.jks (content suppressed)"
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | tr -d '\n' | base64 --decode > app/release.jks || { echo "Failed to decode KEYSTORE_BASE64"; exit 1; }
+          echo "$KEYSTORE_BASE64" | tr -d '\n' | base64 --decode > app/release.jks || { echo "Failed to decode KEYSTORE_BASE64"; exit 1; }
 
           echo "Keystore decoded. File info:"
           ls -l app/release.jks || true

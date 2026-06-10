@@ -1,3 +1,25 @@
+[1.1.0.11.5] - 2026-06-10
+
+🐞 Bug Fixes
+-----------
+- Perbaiki decode keystore di workflow: pindah secrets.KEYSTORE_BASE64 ke environment variable biar aman dari shell interpolation
+
+🔢 VERSION
+---------
+versionCode: 26
+versionName: 1.1.0.11.5
+
+[1.1.0.11.4] - 2026-06-10
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- Rapikan CHANGELOG.md: hapus catatan mubazir di File Changed (self-referencing entry changelog/readme, bump version build.gradle)
+
+🔢 VERSION
+---------
+versionCode: 25
+versionName: 1.1.0.11.4
+
 [1.1.0.11.3] - 2026-06-10
 
 🐞 Bug Fixes

@@ -1,3 +1,28 @@
+## [1.1.0.11.5] - 2026-06-10
+
+### 🐞 Bug Fixes
+- Perbaiki decode keystore di workflow: pindah `${{ secrets.KEYSTORE_BASE64 }}` ke environment variable biar aman dari shell interpolation multi-line/karakter khusus
+
+### ✏️ File Changed
+- `.github/workflows/release.yml` — decode keystore pakai env var, bukan interpolasi langsung
+
+### 🔢 Version
+- versionCode: 26
+- versionName: 1.1.0.11.5
+---
+## [1.1.0.11.4] - 2026-06-10
+
+### 🔧 Optimasi & Penyesuaian
+- Rapikan CHANGELOG.md: hapus catatan mubazir di `✏️ File Changed` (self-referencing entry changelog/readme, bump version build.gradle)
+
+### ✏️ File Changed
+- `CHANGELOG.md` — hapus entri mubazir di beberapa entry
+- `app/src/main/assets/CHANGELOG.txt` — sinkron entry 1.1.0.11.4
+
+### 🔢 Version
+- versionCode: 25
+- versionName: 1.1.0.11.4
+---
 ## [1.1.0.11.3] - 2026-06-10
 
 ### 🐞 Bug Fixes
@@ -6,10 +31,6 @@
 
 ### ✏️ File Changed
 - `.github/workflows/release.yml` — fix awk regex pakai `$0 ~` + string concat, fix VERSION strip prefix v
-- `CHANGELOG.md` — tambah entry 1.1.0.11.3
-- `README.md` — update Current Release & Last Updated
-- `app/build.gradle` — bump versionCode -> 24, versionName -> 1.1.0.11.3
-- `app/src/main/assets/CHANGELOG.txt` — sinkron entry 1.1.0.11.3
 
 ### 🔢 Version
 - versionCode: 24
@@ -20,12 +41,6 @@
 ### 🔧 Optimasi & Penyesuaian
 - Perbarui dokumentasi internal dan catatan rilis setelah perbaikan workflow rilis
 - Penyesuaian minor: klarifikasi langkah decode keystore dan ekstraksi release notes di `.github/workflows/release.yml`
-
-### ✏️ File Changed
-- `CHANGELOG.md` — tambah entry 1.1.0.11.2
-- `README.md` — update Current Release & Last Updated
-- `app/build.gradle` — bump versionCode -> 23, versionName -> 1.1.0.11.2
-- `app/src/main/assets/CHANGELOG.txt` — sinkron entry 1.1.0.11.2
 
 ### 🔢 Version
 - versionCode: 23
@@ -39,7 +54,6 @@
 
 ### ✏️ File Changed
 - `.github/workflows/release.yml` — perbaikan ekstraksi release notes, hardening decode keystore, diagnostik
-- `CHANGELOG.md` — tambah entry 1.1.0.11.1 (rincian di atas)
 
 ### 🔢 Version
 - versionCode: 22
@@ -275,7 +289,6 @@
 - Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.0 yang sudah ada
 
 ### ✏️ File Changed
-- `app/build.gradle` — version bump
 - `CHANGELOG.md` — hapus duplikasi entry 1.1.0.7.0
 
 ### 🔢 Version
@@ -304,7 +317,6 @@
 - Deskripsi semua file dilengkapi di STRUKTUR.md dan STRUKTUR.txt (anim, drawable, layout, menu, mipmap, values, xml, root files, assets, manifes, dsb.)
 
 ### ✏️ File Changed
-- `app/build.gradle` — version bump
 - `app/src/main/java/exp/miniplayer/utils/PreferencesManager.java` — DEFAULT_AUDIO_FORMATS, +limit_folders
 - `app/src/main/java/exp/miniplayer/utils/MusicScanner.java` — scanAudio pakai isLimitFolders
 - `app/src/main/java/exp/miniplayer/ui/settings/SettingsViewModel.java` — scanAllAudio → limitFolders
@@ -362,7 +374,6 @@
 
 ### ✏️ File Changed
 - `.github/workflows/release.yml` — ganti `generate_release_notes` dengan ekstraksi section user-facing dari CHANGELOG.md
-- `app/build.gradle` — version bump
 
 ### 🔢 Version
 - versionCode: 9
@@ -388,7 +399,6 @@
 - 10 file `app/src/main/res/mipmap-anydpi-v26/ic_launcher_*.xml` (5 ikon × normal + round)
 
 ### ✏️ File Changed
-- `app/build.gradle` — version bump
 - `app/src/main/res/layout/view_now_playing_sheet.xml` — tambah TextView info strip + overflow button
 - `app/src/main/java/exp/miniplayer/MainActivity.java` — info strip metadata, PopupMenu overflow, 4 handler (playlist, details, share, delete)
 - `app/src/main/res/values/strings.xml` — tambah string untuk rincian dan menu
