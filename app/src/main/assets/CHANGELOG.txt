@@ -1,0 +1,487 @@
+[1.1.0.11.7] - 2026-06-10 14:47
+
+♻️ Perubahan Fitur
+-----------------
+- Konsolidasi dokumentasi: pindah Struktur Project ke README, hapus STRUKTUR.md dan STRUKTUR.txt
+- Update README.md dan README.txt: hapus referensi STRUKTUR, tambah section Struktur Project
+- Hapus entri Struktur Project dari daftar dokumentasi in-app
+
+<<<<<<< HEAD
+=======
+🐞 Bug Fixes
+-----------
+- Tambah string text_size yang hilang di strings.xml (build release gagal)
+
+>>>>>>> v1.1.0.11.7: fix keystore decode, replace key, consolidate docs, fix missing text_size string
+🔢 VERSION
+---------
+versionCode: 28
+versionName: 1.1.0.11.7
+
+[1.1.0.11.6] - 2026-06-10
+
+🐞 Bug Fixes
+-----------
+- Perbaiki decode keystore: ganti echo ke printf, ganti tr -d '\n' ke tr -d '[:space:]'
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Ganti keystore baru di key/audiplay-release-key.jks
+- Hapus keystore.txt (security risk)
+- Update keystore.properties
+
+🔢 VERSION
+---------
+versionCode: 27
+versionName: 1.1.0.11.6
+
+[1.1.0.11.5] - 2026-06-10
+
+🐞 Bug Fixes
+-----------
+- Perbaiki decode keystore di workflow: pindah secrets.KEYSTORE_BASE64 ke environment variable biar aman dari shell interpolation
+
+🔢 VERSION
+---------
+versionCode: 26
+versionName: 1.1.0.11.5
+
+[1.1.0.11.4] - 2026-06-10
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- Rapikan CHANGELOG.md: hapus catatan mubazir di File Changed (self-referencing entry changelog/readme, bump version build.gradle)
+
+🔢 VERSION
+---------
+versionCode: 25
+versionName: 1.1.0.11.4
+
+[1.1.0.11.3] - 2026-06-10
+
+🐞 Bug Fixes
+-----------
+- Perbaiki ekstraksi release notes di workflow: AWK regex tidak menggunakan variable ver dengan benar
+- Perbaiki VERSION tidak di-strip prefix v - github.ref_name ngasih v1.x.x.x.x tapi CHANGELOG pakai format tanpa v
+
+🔢 VERSION
+---------
+versionCode: 24
+versionName: 1.1.0.11.3
+
+[1.1.0.11.2] - 2026-06-10
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- Penyesuaian minor: klarifikasi langkah decode keystore dan ekstraksi release notes di `.github/workflows/release.yml`
+
+🔢 VERSION
+---------
+versionCode: 23
+versionName: 1.1.0.11.2
+
+[1.1.0.11.1] - 2026-06-10
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- Perbaiki workflow GitHub Actions untuk rilis: harden langkah decode keystore (`tr -d '\n'` + `base64 --decode`), cek keberadaan secret, tampilkan diagnostik file setelah decode
+- Perbaiki ekstraksi catatan rilis dari CHANGELOG.md (awk) agar body release tidak kosong
+- Tambah 17 ikon alternatif launcher di assets/othericon/
+
+🔢 VERSION
+--------
+versionCode: 22
+versionName: 1.1.0.11.1
+
+[1.1.0.11.0] - 2026-06-09
+
+✨ Fitur Baru
+-------------
+- Slider ukuran teks di penampil dokumentasi - tombol -/+ untuk atur besar teks (12sp-24sp)
+
+🐞 Bug Fixes
+-----------
+- CI: decode keystore gagal karena newline di base64 - tambah tr -d '\n' sebelum base64 -d
+
+🔢 VERSION
+----------
+versionCode: 21
+versionName: 1.1.0.11.0
+
+[1.1.0.10.2] - 2026-06-09
+
+♻️ Perubahan Fitur
+----------------
+- Daftar lagu Folder: dari AlertDialog jadi SongListActivity dengan RecyclerView + album art
+
+🐞 Bug Fixes
+-----------
+- Navigation Drawer header statistik menampilkan angka 0 saat pertama buka - updateNavHeader() tidak pernah dipanggil ulang setelah izin diberikan
+
+🔢 VERSION
+----------
+versionCode: 20
+versionName: 1.1.0.10.2
+
+[1.1.0.10.1] - 2026-06-09
+
+✨ Fitur Baru
+------------
+- Izin READ_MEDIA_VIDEO dan READ_MEDIA_IMAGES untuk akses Berkas, Foto dan Video di Android 13+
+- Izin langsung diminta saat aplikasi pertama kali dibuka (dialog + requestAllPermissions)
+- Opsi "Kelola Izin" di Pengaturan - buka halaman izin sistem aplikasi
+
+♻️ Perubahan Fitur
+----------------
+- PermissionHelper: tambah requestAllPermissions() untuk minta semua izin (audio, video, images, notifikasi)
+- PreferencesManager: tambah isFirstRun() / setFirstRunDone() untuk deteksi pertama buka
+- MainActivity: deteksi first run, tampil dialog izin, panggil requestAllPermissions()
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Hapus aapt2FromMavenOverride di gradle.properties - fix CI build (aapt2 tidak ditemukan)
+- Tambah step decode keystore & buat keystore.properties di GitHub Actions - APK release sekarang tersign
+- Tambah REQUEST_IGNORE_BATTERY_OPTIMIZATIONS - tombol "Hemat Baterai" di pengaturan
+
+🔢 VERSION
+----------
+versionCode: 19
+versionName: 1.1.0.10.1
+
+[1.1.0.10.0] - 2026-06-09
+
+✨ Fitur Baru
+------------
+- Statistik per item di perpustakaan - total lagu, total durasi, dan ukuran penyimpanan di Folder, Artis, Album, Playlist
+- Header statistik di atas daftar - item count, total lagu, durasi, ukuran (Lagu, Artis, Album, Folder, Playlist, SongListActivity)
+- Navigation Drawer - header total perpustakaan + jumlah item di setiap menu
+
+♻️ Perubahan Fitur
+----------------
+- Daftar lagu Artis & Album: dari AlertDialog jadi SongListActivity dengan RecyclerView + album art
+- scanAllAudio() filter by extension (.mp3/.m4a excluded) instead of IS_MUSIC - Audio Lainnya tampilkan .mp4, .mid, .midi, .amr, .3gp dll
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Setup signing config untuk release APK
+
+🐞 Bug Fixes
+-----------
+- ArtistsFragment & AlbumsFragment - tambah import exp.miniplayer.R yang hilang
+- SongsFragment - tambah import android.widget.TextView yang hilang
+- PlaylistFragment - tambah import android.widget.TextView yang hilang
+- FoldersFragment - tambah import exp.miniplayer.utils.TimeUtils yang hilang
+- AudioRepository.getFavoritesSync() - ganti dari .getValue() ke query sync langsung
+
+🔢 VERSION
+----------
+versionCode: 18
+versionName: 1.1.0.10.0
+
+[1.1.0.9.0] - 2026-06-09
+
+✨ Fitur Baru
+----------
+- Real-time auto-scan .m3u - PlaylistFileWatcher pakai FileObserver: playlist baru terdeteksi langsung tanpa restart aplikasi
+
+🐞 Bug Fixes
+-----------
+- PlaylistAdapter selalu menampilkan "Playlist ini kosong" - tambah dukungan song count
+- Auto-scan .m3u: judul lagu "Unknown" saat file path tidak match scannedAudio - fallback ke nama file + normalize path biar matching akurat
+- Auto-scan .m3u: playlist lama yang sudah ada di DB dilewati - sekarang update title/artist lagu di tempat tanpa delete & re-insert
+
+♻️ Perubahan Fitur
+----------------
+- PlaylistScanner.importPlaylistFile(): ganti deleteAll+insertAll jadi update in-place pake REPLACE by ID
+- Toolbar header sekarang menampilkan judul perpustakaan yang aktif (Lagu, Playlist, Pengaturan, dll) bukan hanya judul aplikasi
+
+🔢 VERSION
+----------
+versionCode: 17
+versionName: 1.1.0.9.0
+
+[1.1.0.8.0] - 2026-06-09
+
+✨ Fitur Baru
+----------
+- Info teknis audio (bitrate, sample rate, codec) ditampilkan di mini player
+- Format audio berwarna (hijau/oranye/merah) berdasarkan playability ExoPlayer
+- Section collapsible ⋁/⋀ di tiap grup format (Audio, Rekaman, MIDI, Video, Stream)
+- FormatAudioActivity - Activity khusus untuk pengaturan format audio
+- FolderSettingsActivity - Activity untuk mengelola folder yang diizinkan/dikecualikan
+- Export playlist (M3U per playlist, JSON semua playlist) via SAF
+- Import playlist (M3U & JSON) via SAF - long-press FAB di daftar playlist
+- Auto-scan file .m3u/.m3u8 dari folder musik - playlist langsung terdeteksi tanpa import manual
+
+♻️ Perubahan Fitur
+------------------
+- Dialog Format Audio diganti dengan FormatAudioActivity
+- Dialog Folder Yang Diizinkan dan Folder Dikecualikan diganti dengan FolderSettingsActivity
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Urutan section changelog distandarisasi di semua entry CHANGELOG.md
+- Klasifikasi ulang entry antara ♻️ Perubahan Fitur dan 🔧 Optimasi & Penyesuaian
+- Section non-standar (🎨 UX, 📚 Dokumentasi) digabung ke section standar
+- AGENTS.md diperbarui - daftar urutan section changelog eksplisit
+- README.md / README.txt - section changelog table diurutkan ulang
+
+🐞 Bug Fixes
+-----------
+- Search di SongsFragment tidak berfungsi - import SearchView pakai kelas platform (android.widget.SearchView) tidak cocok dengan instance androidx.appcompat.widget.SearchView dari menu XML
+- Mini player menutupi item terbawah di semua daftar - tambah paddingBottom pd RecyclerView sebesar mini player peek height
+- Mini player menutupi opsi dokumentasi di Settings - tambah paddingBottom di ScrollView fragment_settings
+
+🔢 VERSION
+----------
+versionCode: 16
+versionName: 1.1.0.8.0
+
+[1.1.0.7.2] - 2026-06-08
+
+🐞 Bug Fixes
+-----------
+- CHANGELOG.md dobel entry - hapus body 1.1.0.7.0 yang terlanjur tertinggal saat merge entry
+
+💡 Catatan
+----------
+- Tidak perlu di-release terpisah; cukup amend/fix pada rilis 1.1.0.7.0
+
+🔢 VERSION
+----------
+versionCode: 14
+versionName: 1.1.0.7.2
+
+[1.1.0.7.0] - 2026-06-08
+
+✨ Fitur Baru
+-------------
+- Batasi Folder - Pengaturan penyimpanan dirombak: toggle "Pindai Semua Audio" dan "Folder Disertakan" digabung menjadi satu toggle "Batasi Folder"
+- Lihat Folder Audio - Opsi baru di Pengaturan untuk melihat semua folder yang berisi file audio
+- FolderListActivity - Activity baru dengan dua mode tampilan: Kontrol (dikelompokkan per status Diizinkan/Dikecualikan/Belum Ditentukan, bisa dibuka-tutup) dan Semua (daftar flat dengan tebal/coret/biasa)
+- Drag antar Section - Folder di mode Kontrol bisa di-long-press lalu drag ke section lain (Diizinkan/Dikecualikan/Belum Ditentukan); perubahan langsung tersimpan dan tersinkronisasi dengan pengaturan Folder
+
+♻️ Perubahan Fitur
+------------------
+- Default audio format diubah - hanya mp3 dan m4a aktif secara default, format lain diaktifkan manual
+- Restrukturisasi Settings Storage - "Folder yang Diizinkan" dipisah menjadi item terpisah dari "Batasi Pemindaian"; urutan: Batasi Pemindaian -> Folder Diizinkan -> Folder Dikecualikan -> Lihat Folder Audio -> Format Audio
+- Rename string - "Batasi Folder" -> "Batasi Pemindaian"; subtitle baru untuk setiap item folder (included/excluded)
+- Folder Diizinkan redup - Saat Batasi Pemindaian off, "Folder yang Diizinkan" dan subtitlenya diredupkan (alpha 0.5)
+- excludedFolders selalu diterapkan - MusicScanner.scanAudio() membaca excludedFolders tanpa tergantung limitFolders toggle
+- Padding item folder diperbesar (8dp -> 16dp vertical)
+- Teks folder diperbesar (bodyMedium -> bodyLarge)
+- Elevasi saat drag: setTranslationZ(16f) saat drag start, setTranslationZ(0f) saat selesai
+
+💡 Catatan
+----------
+- Deskripsi semua file dilengkapi di STRUKTUR.md dan STRUKTUR.txt (anim, drawable, layout, menu, mipmap, values, xml, root files, assets, manifes, dsb.)
+
+🔢 VERSION
+----------
+versionCode: 13
+versionName: 1.1.0.7.0
+
+[1.1.0.6.1] - 2026-06-08
+
+♻️ Perubahan Fitur
+------------------
+- Default format audio aktif diubah - hanya mp3 dan m4a secara default, format lain harus diaktifkan manual di Pengaturan
+
+🔢 VERSION
+----------
+versionCode: 11
+versionName: 1.1.0.6.1
+
+[1.1.0.6.0] - 2026-06-07
+
+✨ Fitur Baru
+-------------
+- MIDI playback support - putar file .mid/.midi/.rmi/.kar via ExoPlayer MidiRenderer + JSyn synthesizer
+
+♻️ Perubahan Fitur
+------------------
+- Format MIDI (mid, midi, rmi, kar) aktif secara default di scanner audio
+
+🔢 VERSION
+----------
+versionCode: 10
+versionName: 1.1.0.6.0
+
+[1.1.0.5.1] - 2026-06-07
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Release workflow: release notes sekarang pakai CHANGELOG bukan auto-generate dari commit
+
+🔢 VERSION
+---------
+versionCode: 9
+versionName: 1.1.0.5.1
+
+[1.1.0.5.0] - 2026-06-07
+
+✨ Fitur Baru
+-----------
+- Now Playing info strip - tampilkan sample rate, bitrate, dan format codec di expanded player
+- Three-dot menu di Now Playing - Tambah ke Playlist, Rincian, Bagikan, Hapus
+- Pilih Ikon Aplikasi - 5 ikon alternatif dari Pengaturan -> Tampilan -> Ikon Aplikasi
+
+🔢 VERSION
+---------
+versionCode: 8
+versionName: 1.1.0.5.0
+
+[1.1.0.4.0] - 2026-06-06
+
+✨ Fitur Baru
+-----------
+- DocumentationActivity - tampilan daftar dokumentasi, tap untuk baca isi dari assets (.txt)
+- In-app Documentation Viewer - lihat dokumentasi langsung dari dalam aplikasi via Pengaturan
+
+♻️ Perubahan Fitur
+------------------
+- README dan DEVELOPMENT digabung menjadi satu file - mengurangi jumlah file dokumentasi
+- TENTANG diformat ulang mengikuti gaya FTxT (Lisensi & Klarifikasi, Author, Support)
+- README.txt diubah dari markdown ke plain text underline, sama seperti PANDUAN.txt dan STRUKTUR.txt
+- Tambah Current Release dan Last Updated di README
+- Sinkronisasi emoji di CHANGELOG.txt - semua section headers pakai emoji
+
+🔢 VERSION
+---------
+versionCode: 7
+versionName: 1.1.0.4.0
+
+[1.1.0.3.0] - 2026-06-06
+
+✨ Fitur Baru
+------------
+- Format Audio di Settings - filter file berdasarkan ekstensi format (Audio, Rekaman, MIDI, Video, Stream)
+
+🚮 Fitur Dihapus
+---------------
+- Opsi "Mode Ulang Default" di Pengaturan
+
+♻️ Perubahan Fitur
+------------------
+- mini player selalu tampil di bawah meski tidak ada lagu diputar
+- tampilan kosong: judul "Mini Player", subjudul "Pilih lagu untuk diputar"
+- Scan All Audio diubah dari tombol klik jadi SwitchCompat - saat ON, semua audio dipindai tanpa filter folder; saat OFF, hanya folder yang disertakan dipindai
+- Folder Disertakan otomatis dinonaktifkan (disabled/greyed out) saat Scan All Audio aktif
+- Jaga Layar Tetap Nyala ditambahi informasi "Membatalkan batas waktu layar"
+- Tambah opsi Putar Audio Diatas Aplikasi Lain - toggle + informasi "Tidak ada gangguan pemutaran"; implementasi: skip audio focus request saat ON, abandon fokus, pause kalah fokus saat OFF
+- Tambah tombol panah bawah (▼) di Now Playing untuk menutup expanded player
+- Icon favorit dirapikan - posisi, padding, hapus redundant android:tint
+- Navigasi ganti lagu: dari ketukan sisi (previous/next) jadi swipe kiri/kanan di album art
+- Tombol panah bawah & favorit di Now Playing tidak bisa ditekan - diperbaiki (mini_player_overlay disembunyikan saat expanded)
+
+🐞 Bug Fixes
+-----------
+- lagu berhenti saat keluar app - startForeground() dipanggil di playQueue() SEBELUM player mulai (hindari ForegroundServiceStartNotAllowedException di Android 12+)
+- lagu berhenti sendiri & now playing kosong (service restart) - simpan track terakhir ke SharedPreferences, pulihkan saat service restart
+- file audio corrupt/codec error - ExoPlayer skip ke track berikutnya (onPlayerError)
+- queue habis (repeat off) - togglePlayPause restart dari awal, bukan diam
+
+🔢 VERSION
+----------
+versionCode: 6
+versionName: 1.1.0.3.0
+
+[1.0.0.2.0] - 2026-06-06
+
+✨ Fitur Baru
+------------
+- implementasi Scan All Audio (trigger re-scan manual dari Settings)
+- implementasi Included Folders (filter folder yang dipindai)
+- implementasi Excluded Folders (folder yang dilewati saat scan)
+
+♻️ Perubahan Fitur
+------------------
+- ikon tutup Now Playing dari x (close) jadi V (panah bawah)
+- judul & artis lagu dipindah ke toolbar Now Playing (antara ikon tutup dan suka)
+- semua string UI diubah ke bahasa Indonesia
+- Scan All Audio, Included Folders, Excluded Folders kini berfungsi
+- tambah tombol prev/next di mini player bawah
+- swipe-down drag untuk tutup Now Playing (seret judul ke bawah)
+- Now Playing (Activity) + mini player digabung jadi Bottom Sheet tunggal di MainActivity
+- kontrol pemutaran (shuffle, repeat, seekbar, favorit, progress) pindah ke MainActivity
+- klik mini player buka expanded player (bukan Activity baru)
+- seret expanded player ke bawah untuk tutup (collapse ke mini player)
+- folder picker kini pakai SAF (file manager) bukan input teks manual
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- tambah izin WAKE_LOCK
+
+🔢 VERSION
+----------
+versionCode: 5
+versionName: 1.0.0.2.0
+
+[1.0.0.1.0] - 2026-06-06
+
+✨ Fitur Baru
+------------
+- migrasi navigasi dari Bottom Navigation Bar ke Navigation Drawer (sidebar)
+- tambah Toolbar dengan hamburger icon
+
+♻️ Perubahan Fitur
+------------------
+- warna diubah ke palet dark theme Material3 sepenuhnya
+
+🐞 Bug Fixes
+-----------
+- fix force close SongsFragment - cast SearchView pakai instanceof
+
+🔢 VERSION
+----------
+versionCode: 4
+versionName: 1.0.0.1.0
+
+[1.0.0.0.2] - 2026-06-06
+
+🐞 Bug Fixes
+-----------
+- hapus fallbackToDestructiveMigration agar data tidak terhapus saat migrasi
+- previous() sekarang restart dari 10 detik, bukan langsung loncat lagu
+- adapter song tidak dibuat ulang setiap data change
+- reset posisi dan durasi saat queue habis
+
+🔢 VERSION
+---------
+versionCode: 3
+versionName: 1.0.0.0.2
+
+[1.0.0.0.1] - 2026-06-06
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- hapus aapt2FromMavenOverride dari gradle.properties untuk kompatibilitas CI
+
+🔢 VERSION
+---------
+versionCode: 2
+versionName: 1.0.0.0.1
+
+[1.0.0.0.0] - 2026-06-06
+
+✨ Fitur Baru
+-----------
+- inisialisasi project Mini Player
+- pemutaran audio dengan Media3 ExoPlayer
+- foreground service untuk background playback
+- daftar lagu dengan scanning audio lokal
+- pencarian dan pengurutan lagu
+- fitur favorit (Room database)
+- fitur playlist (buat, rename, hapus, kelola lagu)
+- now playing screen dengan kontrol pemutaran lengkap
+- mode shuffle, repeat all, repeat one
+- dark mode dan follow system theme
+- notifikasi pemutaran dengan kontrol
+- pengaturan aplikasi (tema, repeat default, folder scan)
+- izin runtime untuk audio dan notifikasi
+- dukungan Bluetooth AVRCP
+
+🔢 VERSION
+---------
+versionCode: 1
+versionName: 1.0.0.0.0
