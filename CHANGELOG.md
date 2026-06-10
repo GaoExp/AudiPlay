@@ -5,13 +5,23 @@
 - Hapus entri Struktur Project dari daftar dokumentasi in-app (DocumentationActivity)
 - Update subtitle dokumentasi: "Panduan, struktur, dan riwayat perubahan" → "Panduan dan riwayat perubahan"
 
+<<<<<<< HEAD
+=======
+### 🐞 Bug Fixes
+- Tambah string `text_size` yang hilang di strings.xml (referenced di activity_documentation.xml tapi tak pernah didefinisikan — menyebabkan build release gagal)
+
+>>>>>>> v1.1.0.11.7: fix keystore decode, replace key, consolidate docs, fix missing text_size string
 ### ✏️ File Changed
 - `STRUKTUR.md` — dihapus
 - `app/src/main/assets/STRUKTUR.txt` — dihapus
 - `README.md` — hapus referensi STRUKTUR.md, tambah section Struktur Project
 - `app/src/main/assets/README.txt` — hapus referensi STRUKTUR.txt, tambah section Struktur Project
 - `app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java` — hapus DocItem STRUKTUR.txt
+<<<<<<< HEAD
 - `app/src/main/res/values/strings.xml` — hapus doc_struktur, doc_struktur_subtitle, update documentation_subtitle
+=======
+- `app/src/main/res/values/strings.xml` — hapus doc_struktur, doc_struktur_subtitle, update documentation_subtitle, tambah text_size
+>>>>>>> v1.1.0.11.7: fix keystore decode, replace key, consolidate docs, fix missing text_size string
 
 ### 🔢 Version
 - versionCode: 28

@@ -120,6 +120,7 @@
 
     <string name="doc_changelog">Riwayat Perubahan</string>
     <string name="doc_changelog_subtitle">Catatan setiap release</string>
+    <string name="text_size">Ukuran Teks</string>
     <string name="doc_error">Gagal memuat dokumentasi</string>
 
     <string name="artists">Artis</string>

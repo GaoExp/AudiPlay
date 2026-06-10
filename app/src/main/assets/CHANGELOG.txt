@@ -1,4 +1,4 @@
-[1.1.0.11.7] - 2026-06-10
+[1.1.0.11.7] - 2026-06-10 14:47
 
 ♻️ Perubahan Fitur
 -----------------
@@ -6,6 +6,13 @@
 - Update README.md dan README.txt: hapus referensi STRUKTUR, tambah section Struktur Project
 - Hapus entri Struktur Project dari daftar dokumentasi in-app
 
+<<<<<<< HEAD
+=======
+🐞 Bug Fixes
+-----------
+- Tambah string text_size yang hilang di strings.xml (build release gagal)
+
+>>>>>>> v1.1.0.11.7: fix keystore decode, replace key, consolidate docs, fix missing text_size string
 🔢 VERSION
 ---------
 versionCode: 28
