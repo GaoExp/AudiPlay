@@ -1,88 +1,81 @@
 name: Build & Release APK
 
 on:
-  push:
-    tags:
-      - 'v*'
+push:
+tags:
+- 'v*'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+build:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+permissions:
+  contents: write
 
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+  - name: Setup Java 17
+    uses: actions/setup-java@v4
+    with:
+      distribution: temurin
+      java-version: 17
 
-      - name: Setup Android SDK
-        run: |
-          SDK_DIR="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
-          echo "sdk.dir=$SDK_DIR" > local.properties
-          echo "-> local.properties:"
-          cat local.properties
-          echo "-> ANDROID_HOME=$ANDROID_HOME"
-          echo "-> ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+  - name: Grant execute permission for gradlew
+    run: chmod +x gradlew
 
-      - name: Install SDK components & accept licenses
-        run: |
-          SDK_DIR="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
-          yes | $SDK_DIR/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
-          $SDK_DIR/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0" 2>/dev/null || true
+  - name: Setup Android SDK
+    run: |
+      SDK_DIR="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+      echo "sdk.dir=$SDK_DIR" > local.properties
 
-      - name: Decode keystore
-        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | tr -d '\n' | base64 -d > audiplay10000hari-key.jks
+  - name: Install SDK components
+    run: |
+      SDK_DIR="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+      yes | $SDK_DIR/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
+      $SDK_DIR/cmdline-tools/latest/bin/sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
 
-      - name: Create keystore.properties
-        run: |
-          cat > keystore.properties << EOF
-          storeFile=audiplay10000hari-key.jks
-          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
-          keyAlias=${{ secrets.KEY_ALIAS }}
-          keyPassword=${{ secrets.KEY_PASSWORD }}
-          EOF
+  - name: Decode Keystore
+    run: |
+      echo "${{ secrets.KEYSTORE_BASE64 }}" | tr -d '\n' | base64 -d > app/release.jks
 
-      - name: Build APK Release
-        run: ./gradlew assembleRelease --no-daemon
+  - name: Build Release APK
+    env:
+      KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+      KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+    run: |
+      ./gradlew assembleRelease --no-daemon
 
-      - name: Debug — Print APK locations
-        run: |
-          echo "=== Mencari semua file APK ==="
-          find . -type f -name "*.apk" 2>/dev/null
-          echo "=== Selesai ==="
+  - name: Debug APK Files
+    run: |
+      find . -type f -name "*.apk"
 
-      - name: Extract release notes from CHANGELOG
-        id: changelog
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          NOTES=$(awk -v ver="$VERSION" '
-            /^## \['"$VERSION"'\]/ { found=1; next }
-            found && /^## \[/ { exit }
-            found && /^### / {
-              if ($0 ~ /Fitur Baru|Fitur Dihapus|Fitur Dipulihkan|Perubahan Fitur|Optimasi|Bug Fixes|Catatan/) {
-                keep = 1
-              } else {
-                keep = 0
-              }
-            }
-            keep
-          ' CHANGELOG.md)
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "$NOTES" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+  - name: Extract Release Notes
+    id: changelog
+    run: |
+      VERSION="${GITHUB_REF_NAME#v}"
 
-      - name: Upload APK to Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            **/build/outputs/apk/release/*.apk
-          body: ${{ steps.changelog.outputs.notes }}
+      NOTES=$(awk -v ver="$VERSION" '
+        /^## / {
+          if ($0 ~ "\\[" ver "\") {
+            found=1
+            next
+          } else if (found) {
+            exit
+          }
+        }
+        found
+      ' CHANGELOG.md)
+
+      echo "notes<<EOF" >> $GITHUB_OUTPUT
+      echo "$NOTES" >> $GITHUB_OUTPUT
+      echo "EOF" >> $GITHUB_OUTPUT
+
+  - name: Upload APK to GitHub Release
+    uses: softprops/action-gh-release@v2
+    with:
+      files: |
+        **/build/outputs/apk/release/*.apk
+      body: ${{ steps.changelog.outputs.notes }}
