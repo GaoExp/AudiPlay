@@ -112,13 +112,11 @@
 
     <string name="documentation">Dokumentasi</string>
     <string name="view_documentation">Lihat Dokumentasi</string>
-    <string name="documentation_subtitle">Panduan, struktur, dan riwayat perubahan</string>
+    <string name="documentation_subtitle">Panduan dan riwayat perubahan</string>
     <string name="doc_readme">Tentang Aplikasi</string>
     <string name="doc_readme_subtitle">Ringkasan fitur, persyaratan, dan pengembangan</string>
     <string name="doc_panduan">Panduan Penggunaan</string>
     <string name="doc_panduan_subtitle">Cara menggunakan Mini Player lengkap</string>
-    <string name="doc_struktur">Struktur Project</string>
-    <string name="doc_struktur_subtitle">Penjelasan direktori dan package</string>
 
     <string name="doc_changelog">Riwayat Perubahan</string>
     <string name="doc_changelog_subtitle">Catatan setiap release</string>

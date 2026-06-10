@@ -1,3 +1,42 @@
+## [1.1.0.11.7] - 2026-06-10
+
+### ♻️ Perubahan Fitur
+- Konsolidasi dokumentasi: pindah Struktur Project ke README, hapus STRUKTUR.md dan STRUKTUR.txt
+- Hapus entri Struktur Project dari daftar dokumentasi in-app (DocumentationActivity)
+- Update subtitle dokumentasi: "Panduan, struktur, dan riwayat perubahan" → "Panduan dan riwayat perubahan"
+
+### ✏️ File Changed
+- `STRUKTUR.md` — dihapus
+- `app/src/main/assets/STRUKTUR.txt` — dihapus
+- `README.md` — hapus referensi STRUKTUR.md, tambah section Struktur Project
+- `app/src/main/assets/README.txt` — hapus referensi STRUKTUR.txt, tambah section Struktur Project
+- `app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java` — hapus DocItem STRUKTUR.txt
+- `app/src/main/res/values/strings.xml` — hapus doc_struktur, doc_struktur_subtitle, update documentation_subtitle
+
+### 🔢 Version
+- versionCode: 28
+- versionName: 1.1.0.11.7
+---
+## [1.1.0.11.6] - 2026-06-10
+
+### 🐞 Bug Fixes
+- Perbaiki decode keystore: ganti `echo` ke `printf '%s'` (hindari interpret escape sequences), ganti `tr -d '\n'` ke `tr -d '[:space:]'` (tangani `\r` dan whitespace lain)
+
+### 🔧 Optimasi & Penyesuaian
+- Ganti keystore baru di `key/audiplay-release-key.jks` dengan alias `alias-audiplay-key`
+- Hapus `keystore.txt` (berisi base64 keystore lama — security risk)
+- Update `.gitignore` — ignore folder `/key`
+- Update `keystore.properties` — path ke key baru, kosongkan password
+
+### ✏️ File Changed
+- `.github/workflows/release.yml` — decode keystore: printf + tr -d '[:space:]'
+- `.gitignore` — ignore `/key`
+- `keystore.properties` — path ke key baru, alias baru, password kosong
+
+### 🔢 Version
+- versionCode: 27
+- versionName: 1.1.0.11.6
+---
 ## [1.1.0.11.5] - 2026-06-10
 
 ### 🐞 Bug Fixes
@@ -51,6 +90,10 @@
 ### 🔧 Optimasi & Penyesuaian
 - Perbaiki workflow GitHub Actions untuk rilis: harden langkah decode keystore (`tr -d '\n'` + `base64 --decode`), cek keberadaan secret, tampilkan diagnostik file setelah decode
 - Perbaiki ekstraksi catatan rilis dari `CHANGELOG.md` (awk) agar body release tidak kosong
+- Tambah 17 ikon alternatif launcher di `assets/othericon/`
+
+### 🗒️ File Added
+- `app/src/main/assets/othericon/` — 17 file ikon launcher alternatif (ic_laucher001.png — ic_laucher017.png)
 
 ### ✏️ File Changed
 - `.github/workflows/release.yml` — perbaikan ekstraksi release notes, hardening decode keystore, diagnostik

@@ -1,3 +1,33 @@
+[1.1.0.11.7] - 2026-06-10
+
+♻️ Perubahan Fitur
+-----------------
+- Konsolidasi dokumentasi: pindah Struktur Project ke README, hapus STRUKTUR.md dan STRUKTUR.txt
+- Update README.md dan README.txt: hapus referensi STRUKTUR, tambah section Struktur Project
+- Hapus entri Struktur Project dari daftar dokumentasi in-app
+
+🔢 VERSION
+---------
+versionCode: 28
+versionName: 1.1.0.11.7
+
+[1.1.0.11.6] - 2026-06-10
+
+🐞 Bug Fixes
+-----------
+- Perbaiki decode keystore: ganti echo ke printf, ganti tr -d '\n' ke tr -d '[:space:]'
+
+🔧 Optimasi & Penyesuaian
+-------------------------
+- Ganti keystore baru di key/audiplay-release-key.jks
+- Hapus keystore.txt (security risk)
+- Update keystore.properties
+
+🔢 VERSION
+---------
+versionCode: 27
+versionName: 1.1.0.11.6
+
 [1.1.0.11.5] - 2026-06-10
 
 🐞 Bug Fixes
@@ -49,9 +79,10 @@ versionName: 1.1.0.11.2
 ------------------------
 - Perbaiki workflow GitHub Actions untuk rilis: harden langkah decode keystore (`tr -d '\n'` + `base64 --decode`), cek keberadaan secret, tampilkan diagnostik file setelah decode
 - Perbaiki ekstraksi catatan rilis dari CHANGELOG.md (awk) agar body release tidak kosong
+- Tambah 17 ikon alternatif launcher di assets/othericon/
 
 🔢 VERSION
----------
+--------
 versionCode: 22
 versionName: 1.1.0.11.1
 

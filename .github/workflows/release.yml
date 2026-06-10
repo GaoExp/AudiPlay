@@ -47,7 +47,7 @@ jobs:
           fi
 
           echo "Decoding keystore to app/release.jks (content suppressed)"
-          echo "$KEYSTORE_BASE64" | tr -d '\n' | base64 --decode > app/release.jks || { echo "Failed to decode KEYSTORE_BASE64"; exit 1; }
+          printf '%s' "$KEYSTORE_BASE64" | tr -d '[:space:]' | base64 --decode > app/release.jks || { echo "Failed to decode KEYSTORE_BASE64"; exit 1; }
 
           echo "Keystore decoded. File info:"
           ls -l app/release.jks || true

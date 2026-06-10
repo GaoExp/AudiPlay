@@ -51,8 +51,6 @@ public class DocumentationActivity extends AppCompatActivity {
     private static final DocItem[] DOCS = {
         new DocItem(R.string.doc_readme, R.string.doc_readme_subtitle, "README.txt"),
         new DocItem(R.string.doc_panduan, R.string.doc_panduan_subtitle, "PANDUAN.txt"),
-        new DocItem(R.string.doc_struktur, R.string.doc_struktur_subtitle, "STRUKTUR.txt"),
-
         new DocItem(R.string.doc_changelog, R.string.doc_changelog_subtitle, "CHANGELOG.txt"),
     };
 
