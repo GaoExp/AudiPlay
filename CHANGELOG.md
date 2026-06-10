@@ -1,3 +1,20 @@
+## [1.1.0.11.3] - 2026-06-10
+
+### 🐞 Bug Fixes
+- Perbaiki ekstraksi release notes di workflow: AWK regex tidak menggunakan variable `ver` dengan benar
+- Perbaiki `VERSION` tidak di-strip prefix `v` — `github.ref_name` ngasih `v1.x.x.x.x` tapi CHANGELOG pakai format tanpa `v`
+
+### ✏️ File Changed
+- `.github/workflows/release.yml` — fix awk regex pakai `$0 ~` + string concat, fix VERSION strip prefix v
+- `CHANGELOG.md` — tambah entry 1.1.0.11.3
+- `README.md` — update Current Release & Last Updated
+- `app/build.gradle` — bump versionCode -> 24, versionName -> 1.1.0.11.3
+- `app/src/main/assets/CHANGELOG.txt` — sinkron entry 1.1.0.11.3
+
+### 🔢 Version
+- versionCode: 24
+- versionName: 1.1.0.11.3
+---
 ## [1.1.0.11.2] - 2026-06-10
 
 ### 🔧 Optimasi & Penyesuaian

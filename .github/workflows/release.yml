@@ -68,10 +68,11 @@ jobs:
         env:
           VERSION: ${{ github.ref_name }}
         run: |
-          # VERSION provided via env from github.ref_name
+          # Strip "v" prefix from tag name (github.ref_name = v1.x.x.x.x)
+          VERSION="${VERSION#v}"
 
           NOTES=$(awk -v ver="$VERSION" '
-            /^## \[' ver '\]/ { found=1; next }
+            $0 ~ "^## \\[" ver "\\]" { found=1; next }
             found && /^## \[/ { exit }
             found { print }
           ' CHANGELOG.md)

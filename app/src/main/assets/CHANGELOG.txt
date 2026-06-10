@@ -1,16 +1,20 @@
+[1.1.0.11.3] - 2026-06-10
+
+🐞 Bug Fixes
+-----------
+- Perbaiki ekstraksi release notes di workflow: AWK regex tidak menggunakan variable ver dengan benar
+- Perbaiki VERSION tidak di-strip prefix v - github.ref_name ngasih v1.x.x.x.x tapi CHANGELOG pakai format tanpa v
+
+🔢 VERSION
+---------
+versionCode: 24
+versionName: 1.1.0.11.3
+
 [1.1.0.11.2] - 2026-06-10
 
 🔧 Optimasi & Penyesuaian
 ------------------------
-- Perbarui dokumentasi internal dan catatan rilis setelah perbaikan workflow rilis
 - Penyesuaian minor: klarifikasi langkah decode keystore dan ekstraksi release notes di `.github/workflows/release.yml`
-
-✏️ File Changed
--------------
-- CHANGELOG.md — tambah entry 1.1.0.11.2
-- README.md — update Current Release & Last Updated
-- app/build.gradle — bump versionCode -> 23, versionName -> 1.1.0.11.2
-- app/src/main/assets/CHANGELOG.txt — sinkron entry 1.1.0.11.2
 
 🔢 VERSION
 ---------
@@ -23,11 +27,6 @@ versionName: 1.1.0.11.2
 ------------------------
 - Perbaiki workflow GitHub Actions untuk rilis: harden langkah decode keystore (`tr -d '\n'` + `base64 --decode`), cek keberadaan secret, tampilkan diagnostik file setelah decode
 - Perbaiki ekstraksi catatan rilis dari CHANGELOG.md (awk) agar body release tidak kosong
-
-✏️ File Changed
--------------
-- .github/workflows/release.yml — perbaikan ekstraksi release notes, hardening decode keystore, diagnostik
-- CHANGELOG.md — tambah entry 1.1.0.11.1 (rincian di atas)
 
 🔢 VERSION
 ---------
