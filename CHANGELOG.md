@@ -1,3 +1,17 @@
+## [1.1.0.11.1] - 2026-06-10
+
+### 🔧 Optimasi & Penyesuaian
+- Perbaiki workflow GitHub Actions untuk rilis: harden langkah decode keystore (`tr -d '\n'` + `base64 --decode`), cek keberadaan secret, tampilkan diagnostik file setelah decode
+- Perbaiki ekstraksi catatan rilis dari `CHANGELOG.md` (awk) agar body release tidak kosong
+
+### ✏️ File Changed
+- `.github/workflows/release.yml` — perbaikan ekstraksi release notes, hardening decode keystore, diagnostik
+- `CHANGELOG.md` — tambah entry 1.1.0.11.1 (rincian di atas)
+
+### 🔢 Version
+- versionCode: 22
+- versionName: 1.1.0.11.1
+---
 ## [1.1.0.11.0] - 2026-06-09
 
 ### ✨ Fitur Baru
@@ -5,11 +19,12 @@
 
 ### 🐞 Bug Fixes
 - CI: decode keystore gagal karena newline di base64 — tambah `tr -d '\n'` sebelum `base64 -d`
+- CI: perbaiki ekstraksi catatan rilis dari `CHANGELOG.md` (awk) dan harden langkah decode keystore di workflow — gunakan `base64 --decode`, cek keberadaan secret, dan tampilkan info file (`ls -l`/`file`) untuk diagnostik tanpa mengekspos konten
 
 ### ✏️ File Changed
 - `app/src/main/java/exp/miniplayer/ui/documentation/DocumentationActivity.java` — tambah slider ukuran teks, simpan preferensi ke SharedPreferences
 - `app/src/main/res/layout/activity_documentation.xml` — tambah `text_size_bar` (LinearLayout + SeekBar)
-- `.github/workflows/release.yml` — tambah `tr -d '\n'` di step decode keystore
+- `.github/workflows/release.yml` — perbaiki ekstraksi release notes (awk), gunakan `base64 --decode`, tambahkan pengecekan secret dan diagnostik file setelah decode
 
 ### 🔢 Version
 - versionCode: 21

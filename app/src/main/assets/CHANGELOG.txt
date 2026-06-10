@@ -1,3 +1,20 @@
+[1.1.0.11.1] - 2026-06-10
+
+🔧 Optimasi & Penyesuaian
+------------------------
+- Perbaiki workflow GitHub Actions untuk rilis: harden langkah decode keystore (`tr -d '\n'` + `base64 --decode`), cek keberadaan secret, tampilkan diagnostik file setelah decode
+- Perbaiki ekstraksi catatan rilis dari CHANGELOG.md (awk) agar body release tidak kosong
+
+✏️ File Changed
+-------------
+- .github/workflows/release.yml — perbaikan ekstraksi release notes, hardening decode keystore, diagnostik
+- CHANGELOG.md — tambah entry 1.1.0.11.1 (rincian di atas)
+
+🔢 VERSION
+---------
+versionCode: 22
+versionName: 1.1.0.11.1
+
 [1.1.0.11.0] - 2026-06-09
 
 ✨ Fitur Baru
