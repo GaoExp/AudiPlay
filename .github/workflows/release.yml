@@ -65,9 +65,10 @@ jobs:
 
       - name: Extract Release Notes
         id: changelog
+        env:
+          VERSION: ${{ github.ref_name }}
         run: |
-          # GITHUB_REF_NAME contains the tag name when triggered by a tag push
-          VERSION="${GITHUB_REF_NAME#v}"
+          # VERSION provided via env from github.ref_name
 
           NOTES=$(awk -v ver="$VERSION" '
             /^## \[' ver '\]/ { found=1; next }

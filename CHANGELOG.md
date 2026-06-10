@@ -1,3 +1,19 @@
+## [1.1.0.11.2] - 2026-06-10
+
+### 🔧 Optimasi & Penyesuaian
+- Perbarui dokumentasi internal dan catatan rilis setelah perbaikan workflow rilis
+- Penyesuaian minor: klarifikasi langkah decode keystore dan ekstraksi release notes di `.github/workflows/release.yml`
+
+### ✏️ File Changed
+- `CHANGELOG.md` — tambah entry 1.1.0.11.2
+- `README.md` — update Current Release & Last Updated
+- `app/build.gradle` — bump versionCode -> 23, versionName -> 1.1.0.11.2
+- `app/src/main/assets/CHANGELOG.txt` — sinkron entry 1.1.0.11.2
+
+### 🔢 Version
+- versionCode: 23
+- versionName: 1.1.0.11.2
+---
 ## [1.1.0.11.1] - 2026-06-10
 
 ### 🔧 Optimasi & Penyesuaian
