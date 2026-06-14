@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -137,39 +140,67 @@ public class SettingsFragment extends Fragment {
 
     private void showIconDialog() {
         PackageManager pm = requireContext().getPackageManager();
+        String pkg = requireContext().getPackageName();
+
+        int[] iconResIds = {
+                R.drawable.ic_laucher016_fg, R.drawable.ic_fg_play,
+                R.drawable.ic_fg_note_dark, R.drawable.ic_fg_play_dark,
+                R.drawable.ic_fg_queue,
+                R.drawable.ic_laucher001_fg, R.drawable.ic_laucher002_fg,
+                R.drawable.ic_laucher003_fg, R.drawable.ic_laucher004_fg,
+                R.drawable.ic_laucher005_fg, R.drawable.ic_laucher006_fg,
+                R.drawable.ic_laucher007_fg, R.drawable.ic_laucher008_fg,
+                R.drawable.ic_laucher009_fg, R.drawable.ic_laucher010_fg,
+                R.drawable.ic_laucher011_fg, R.drawable.ic_laucher012_fg,
+                R.drawable.ic_laucher013_fg, R.drawable.ic_laucher014_fg,
+                R.drawable.ic_laucher015_fg, R.drawable.ic_laucher016_fg,
+                R.drawable.ic_laucher017_fg
+        };
 
         String[] iconSuffixes = {
                 "icon_note", "icon_play",
-                "icon_note_dark", "icon_play_dark", "icon_queue"
+                "icon_note_dark", "icon_play_dark", "icon_queue",
+                "icon_001", "icon_002", "icon_003", "icon_004", "icon_005",
+                "icon_006", "icon_007", "icon_008", "icon_009", "icon_010",
+                "icon_011", "icon_012", "icon_013", "icon_014", "icon_015",
+                "icon_016", "icon_017"
         };
 
-        String[] iconNames = {
-                getString(R.string.icon_name_note),
-                getString(R.string.icon_name_play),
-                getString(R.string.icon_name_note_dark),
-                getString(R.string.icon_name_play_dark),
-                getString(R.string.icon_name_queue)
-        };
-
-        ComponentName[] components = new ComponentName[iconSuffixes.length];
         final int[] checkedItem = {0};
         for (int i = 0; i < iconSuffixes.length; i++) {
-            String fullClass = requireContext().getPackageName() + "." + iconSuffixes[i];
-            components[i] = new ComponentName(requireContext(), fullClass);
-            if (pm.getComponentEnabledSetting(components[i])
+            ComponentName cn = new ComponentName(requireContext(), pkg + "." + iconSuffixes[i]);
+            if (pm.getComponentEnabledSetting(cn)
                     == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
                 checkedItem[0] = i;
             }
         }
 
+        View view = getLayoutInflater().inflate(R.layout.dialog_icon_picker, null);
+        GridView grid = view.findViewById(R.id.icon_grid);
+
+        IconPickerAdapter adapter = new IconPickerAdapter(iconResIds, checkedItem[0]);
+        grid.setAdapter(adapter);
+        grid.setOnItemClickListener((parent, v, pos, id) -> adapter.setSelected(pos));
+
+        grid.post(() -> {
+            int maxH = (int) (getResources().getDisplayMetrics().heightPixels * 0.55);
+            if (grid.getHeight() > maxH) {
+                ViewGroup.LayoutParams lp = grid.getLayoutParams();
+                lp.height = maxH;
+                grid.setLayoutParams(lp);
+            }
+        });
+
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.choose_app_icon)
-                .setSingleChoiceItems(iconNames, checkedItem[0], (dialog, which) -> checkedItem[0] = which)
+                .setView(view)
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    for (int i = 0; i < components.length; i++) {
+                    int sel = adapter.getSelectedPosition();
+                    for (int i = 0; i < iconSuffixes.length; i++) {
+                        ComponentName cn = new ComponentName(requireContext(), pkg + "." + iconSuffixes[i]);
                         pm.setComponentEnabledSetting(
-                                components[i],
-                                i == checkedItem[0]
+                                cn,
+                                i == sel
                                         ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED
                                         : PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                                 PackageManager.DONT_KILL_APP
@@ -178,6 +209,52 @@ public class SettingsFragment extends Fragment {
                 })
                 .setNegativeButton(R.string.cancel, null)
                 .show();
+    }
+
+    private static class IconPickerAdapter extends BaseAdapter {
+        private final int[] iconResIds;
+        private int selectedPosition;
+
+        IconPickerAdapter(int[] iconResIds, int selected) {
+            this.iconResIds = iconResIds;
+            this.selectedPosition = selected;
+        }
+
+        void setSelected(int pos) {
+            selectedPosition = pos;
+            notifyDataSetChanged();
+        }
+
+        int getSelectedPosition() {
+            return selectedPosition;
+        }
+
+        @Override
+        public int getCount() { return iconResIds.length; }
+
+        @Override
+        public Object getItem(int pos) { return iconResIds[pos]; }
+
+        @Override
+        public long getItemId(int pos) { return pos; }
+
+        @Override
+        public View getView(int pos, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.item_icon_picker, parent, false);
+            }
+
+            ImageView icon = convertView.findViewById(R.id.icon_image);
+            icon.setImageResource(iconResIds[pos]);
+
+            convertView.setBackgroundColor(
+                    pos == selectedPosition
+                            ? parent.getContext().getColor(R.color.primary_container)
+                            : parent.getContext().getColor(android.R.color.transparent));
+
+            return convertView;
+        }
     }
 
 }

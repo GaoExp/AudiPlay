@@ -1,197 +1,129 @@
 package exp.miniplayer.ui.documentation;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.card.MaterialCardView;
+import androidx.appcompat.widget.Toolbar;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.IOException;
+
+import io.noties.markwon.Markwon;
+import io.noties.markwon.ext.tables.TablePlugin;
+import io.noties.markwon.ext.tasklist.TaskListPlugin;
 
 import exp.miniplayer.R;
 
 public class DocumentationActivity extends AppCompatActivity {
 
+    private Markwon markwon;
     private LinearLayout docList;
-    private ScrollView docContent;
-    private TextView docContentText;
-    private TextView toolbarTitle;
-    private TextView textSizeValue;
-    private View textSizeBar;
-
-    private static final String PREFS_NAME = "doc_prefs";
-    private static final String KEY_TEXT_SIZE = "text_size";
-    private static final int MIN_TEXT_SIZE = 12;
-    private static final int MAX_TEXT_SIZE = 24;
-    private int currentTextSize;
-
-    private static class DocItem {
-        final int titleRes;
-        final int subtitleRes;
-        final String assetFile;
-
-        DocItem(int titleRes, int subtitleRes, String assetFile) {
-            this.titleRes = titleRes;
-            this.subtitleRes = subtitleRes;
-            this.assetFile = assetFile;
-        }
-    }
-
-    private static final DocItem[] DOCS = {
-        new DocItem(R.string.doc_readme, R.string.doc_readme_subtitle, "README.txt"),
-        new DocItem(R.string.doc_panduan, R.string.doc_panduan_subtitle, "PANDUAN.txt"),
-        new DocItem(R.string.doc_changelog, R.string.doc_changelog_subtitle, "CHANGELOG.txt"),
-    };
+    private LinearLayout docContent;
+    private com.google.android.material.appbar.MaterialToolbar toolbar;
+    private TextView docTextView;
+    private float currentDocTextSize = 14f;
+    private View zoomView;
+    private TextView zoomValue;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_documentation);
 
-        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        markwon = Markwon.builder(this)
+                .usePlugin(TablePlugin.create(this))
+                .usePlugin(TaskListPlugin.create(this))
+                .build();
+
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-
-        toolbarTitle = findViewById(R.id.toolbar_title);
-        docList = findViewById(R.id.doc_list);
-        docContent = findViewById(R.id.doc_content);
-        docContentText = findViewById(R.id.doc_content_text);
-        textSizeValue = findViewById(R.id.text_size_value);
-        textSizeBar = findViewById(R.id.text_size_bar);
-
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        currentTextSize = prefs.getInt(KEY_TEXT_SIZE, 16);
-        applyTextSize();
-
-        Button minusBtn = findViewById(R.id.text_size_minus);
-        Button plusBtn = findViewById(R.id.text_size_plus);
-
-        minusBtn.setOnClickListener(v -> {
-            if (currentTextSize > MIN_TEXT_SIZE) {
-                currentTextSize--;
-                applyTextSize();
-                prefs.edit().putInt(KEY_TEXT_SIZE, currentTextSize).apply();
+        toolbar.setNavigationOnClickListener(v -> {
+            if (docContent.getVisibility() == View.VISIBLE) {
+                showList();
+            } else {
+                finish();
             }
         });
 
-        plusBtn.setOnClickListener(v -> {
-            if (currentTextSize < MAX_TEXT_SIZE) {
-                currentTextSize++;
-                applyTextSize();
-                prefs.edit().putInt(KEY_TEXT_SIZE, currentTextSize).apply();
+        docList = findViewById(R.id.docList);
+        docContent = findViewById(R.id.docContent);
+        docTextView = findViewById(R.id.docTextView);
+
+        zoomView = getLayoutInflater().inflate(R.layout.toolbar_zoom, toolbar, false);
+        zoomValue = zoomView.findViewById(R.id.toolbarZoomValue);
+
+        zoomView.findViewById(R.id.toolbarZoomOut).setOnClickListener(v -> {
+            if (currentDocTextSize > 4) {
+                currentDocTextSize -= 2;
+                docTextView.setTextSize(currentDocTextSize);
+                zoomValue.setText(String.valueOf((int) currentDocTextSize));
             }
         });
 
-        buildDocList();
-    }
-
-    private void buildDocList() {
-        docList.removeAllViews();
-        int padding = (int) (getResources().getDisplayMetrics().density * 12);
-
-        for (int i = 0; i < DOCS.length; i++) {
-            DocItem doc = DOCS[i];
-            MaterialCardView card = new MaterialCardView(this);
-            card.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            card.setCardElevation(0f);
-            card.setStrokeWidth(1);
-            card.setStrokeColor(getColor(R.color.outline));
-            card.setClickable(true);
-            card.setFocusable(true);
-            card.setRadius(getResources().getDimensionPixelSize(R.dimen.corner_radius));
-
-            LinearLayout content = new LinearLayout(this);
-            content.setOrientation(LinearLayout.VERTICAL);
-            content.setPadding(padding, padding, padding, padding);
-
-            TextView titleView = new TextView(this);
-            titleView.setText(doc.titleRes);
-            titleView.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyLarge);
-
-            TextView subtitleView = new TextView(this);
-            subtitleView.setText(doc.subtitleRes);
-            subtitleView.setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodySmall);
-            subtitleView.setTextColor(getColor(R.color.on_surface_variant));
-
-            content.addView(titleView);
-            content.addView(subtitleView);
-            card.addView(content);
-
-            final int index = i;
-            card.setOnClickListener(v -> showDocument(index));
-
-            docList.addView(card);
-
-            if (i < DOCS.length - 1) {
-                android.view.View spacer = new android.view.View(this);
-                spacer.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        (int) (getResources().getDisplayMetrics().density * 8)));
-                docList.addView(spacer);
+        zoomView.findViewById(R.id.toolbarZoomIn).setOnClickListener(v -> {
+            if (currentDocTextSize < 60) {
+                currentDocTextSize += 2;
+                docTextView.setTextSize(currentDocTextSize);
+                zoomValue.setText(String.valueOf((int) currentDocTextSize));
             }
-        }
+        });
+
+        findViewById(R.id.docReadmeCard).setOnClickListener(v -> showDoc("README"));
+        findViewById(R.id.docPanduanCard).setOnClickListener(v -> showDoc("PANDUAN"));
+        findViewById(R.id.docChangelogCard).setOnClickListener(v -> showDoc("CHANGELOG"));
+        findViewById(R.id.docStrukturCard).setOnClickListener(v -> showDoc("STRUKTUR"));
     }
 
-    private void applyTextSize() {
-        docContentText.setTextSize(currentTextSize);
-        textSizeValue.setText(String.valueOf(currentTextSize));
+    private void showDoc(String name) {
+        String content = readAssetFile(name + ".md");
+        markwon.setMarkdown(docTextView, content);
+        docTextView.setTextSize(currentDocTextSize);
+        zoomValue.setText(String.valueOf((int) currentDocTextSize));
+        docList.setVisibility(View.GONE);
+        docContent.setVisibility(View.VISIBLE);
+        toolbar.setTitle(name);
+        toolbar.addView(zoomView, new Toolbar.LayoutParams(
+                Toolbar.LayoutParams.WRAP_CONTENT,
+                Toolbar.LayoutParams.MATCH_PARENT,
+                android.view.Gravity.END));
     }
 
-    private void showDocument(int index) {
-        DocItem doc = DOCS[index];
-        toolbarTitle.setText(doc.titleRes);
+    private void showList() {
+        docContent.setVisibility(View.GONE);
+        docList.setVisibility(View.VISIBLE);
+        toolbar.setTitle(getString(R.string.documentation));
+        toolbar.removeView(zoomView);
+    }
 
-        try {
-            InputStream is = getAssets().open(doc.assetFile);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            StringBuilder sb = new StringBuilder();
+    private String readAssetFile(String filename) {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(getAssets().open(filename)))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line).append("\n");
+                content.append(line).append("\n");
             }
-            reader.close();
-            docContentText.setText(sb.toString());
         } catch (IOException e) {
-            docContentText.setText(R.string.doc_error);
-            Toast.makeText(this, R.string.doc_error, Toast.LENGTH_SHORT).show();
+            content.append("Error reading file: ").append(e.getMessage());
         }
-
-        docList.setVisibility(View.GONE);
-        textSizeBar.setVisibility(View.VISIBLE);
-        docContent.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (docContent.getVisibility() == View.VISIBLE) {
-            docContent.setVisibility(View.GONE);
-            textSizeBar.setVisibility(View.GONE);
-            docList.setVisibility(View.VISIBLE);
-            toolbarTitle.setText(R.string.documentation);
-        } else {
-            super.onBackPressed();
-        }
+        return content.toString();
     }
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+        if (docContent.getVisibility() == View.VISIBLE) {
+            showList();
+            return true;
+        }
+        return super.onSupportNavigateUp();
     }
 }

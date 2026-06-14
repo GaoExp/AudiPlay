@@ -1,4 +1,6 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
 namespace "exp.miniplayer"
@@ -9,8 +11,8 @@ defaultConfig {
     minSdk 26
     targetSdk 35
 
-    versionCode 30
-    versionName "1.1.0.11.9"
+    versionCode 31
+    versionName "1.1.0.12.0"
 
     javaCompileOptions {
         annotationProcessorOptions {
@@ -48,6 +50,16 @@ buildFeatures {
     viewBinding true
 }
 
+// Rename APK output automatically
+applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+        def appName = "AudiPlay"
+        def version = variant.versionName
+
+        outputFileName = "${appName}-v${version}.apk"
+    }
+}
+
 }
 
 dependencies {
@@ -75,4 +87,8 @@ implementation 'androidx.core:core:1.15.0'
 implementation 'androidx.fragment:fragment:1.8.5'
 implementation 'androidx.media:media:1.7.0'
 
+implementation 'io.noties.markwon:core:4.6.2'
+implementation 'io.noties.markwon:ext-tables:4.6.2'
+implementation 'io.noties.markwon:ext-tasklist:4.6.2'
 }
+
