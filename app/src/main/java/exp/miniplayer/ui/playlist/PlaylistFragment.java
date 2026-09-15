@@ -70,11 +70,10 @@ public class PlaylistFragment extends Fragment {
                 recyclerView.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
                 sectionHeader.setVisibility(View.GONE);
-            } else {
-                recyclerView.setVisibility(View.VISIBLE);
-                emptyView.setVisibility(View.GONE);
-                adapter = new PlaylistAdapter(requireContext(), playlists);
-
+                return;
+            }
+            List<PlaylistEntity> playlistsSnapshot = new ArrayList<>(playlists);
+            new Thread(() -> {
                 Map<Integer, Integer> counts = new HashMap<>();
                 Map<Integer, String> stats = new HashMap<>();
                 List<Audio> allAudio = importRepo.getCachedAudio();
@@ -87,7 +86,7 @@ public class PlaylistFragment extends Fragment {
                 long grandSize = 0;
                 int grandCount = 0;
 
-                for (PlaylistEntity p : playlists) {
+                for (PlaylistEntity p : playlistsSnapshot) {
                     int count = importRepo.getPlaylistSongCount(p.getId());
                     counts.put(p.getId(), count);
 
@@ -109,26 +108,31 @@ public class PlaylistFragment extends Fragment {
                 }
 
                 String header = getString(R.string.section_stats,
-                        playlists.size(), grandCount,
+                        playlistsSnapshot.size(), grandCount,
                         TimeUtils.formatDuration(grandDuration),
                         GroupAdapter.formatSize(grandSize));
-                sectionHeader.setText(header);
-                sectionHeader.setVisibility(View.VISIBLE);
 
-                adapter.setSongCounts(counts);
-                adapter.setPlaylistStats(stats);
-                adapter.setOnItemClickListener((playlist, position) -> {
-                    Intent intent = new Intent(requireContext(), PlaylistDetailActivity.class);
-                    intent.putExtra("playlist_id", playlist.getId());
-                    intent.putExtra("playlist_name", playlist.getName());
-                    startActivity(intent);
+                requireActivity().runOnUiThread(() -> {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    emptyView.setVisibility(View.GONE);
+                    adapter = new PlaylistAdapter(requireContext(), playlistsSnapshot);
+                    adapter.setSongCounts(counts);
+                    adapter.setPlaylistStats(stats);
+                    adapter.setOnItemClickListener((playlist, position) -> {
+                        Intent intent = new Intent(requireContext(), PlaylistDetailActivity.class);
+                        intent.putExtra("playlist_id", playlist.getId());
+                        intent.putExtra("playlist_name", playlist.getName());
+                        startActivity(intent);
+                    });
+                    adapter.setOnItemLongClickListener((playlist, position) -> {
+                        showPlaylistOptions(playlist);
+                        return true;
+                    });
+                    recyclerView.setAdapter(adapter);
+                    sectionHeader.setText(header);
+                    sectionHeader.setVisibility(View.VISIBLE);
                 });
-                adapter.setOnItemLongClickListener((playlist, position) -> {
-                    showPlaylistOptions(playlist);
-                    return true;
-                });
-                recyclerView.setAdapter(adapter);
-            }
+            }).start();
         });
 
         fab.setOnClickListener(v -> showCreatePlaylistDialog());
@@ -162,17 +166,21 @@ public class PlaylistFragment extends Fragment {
                         if (result.getData() == null || result.getData().getData() == null) return;
                         Uri uri = result.getData().getData();
                         String type = result.getData().getType();
-                        try {
-                            if (type != null && type.contains("json")) {
-                                PlaylistIO.importJSON(requireContext(), importRepo, uri);
-                            } else {
-                                PlaylistIO.importM3U(requireContext(), importRepo, uri, null);
+                        new Thread(() -> {
+                            try {
+                                if (type != null && type.contains("json")) {
+                                    PlaylistIO.importJSON(requireContext(), importRepo, uri);
+                                } else {
+                                    PlaylistIO.importM3U(requireContext(), importRepo, uri, null);
+                                }
+                                requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(),
+                                        R.string.playlist_imported, Toast.LENGTH_SHORT).show());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(),
+                                        R.string.playlist_import_error, Toast.LENGTH_SHORT).show());
                             }
-                            Toast.makeText(requireContext(), R.string.playlist_imported, Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(requireContext(), R.string.playlist_import_error, Toast.LENGTH_SHORT).show();
-                        }
+                        }).start();
                     });
 
     private void showCreatePlaylistDialog() {
@@ -185,7 +193,7 @@ public class PlaylistFragment extends Fragment {
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     String name = input.getText().toString().trim();
                     if (!name.isEmpty()) {
-                        viewModel.createPlaylist(name);
+                        new Thread(() -> viewModel.createPlaylist(name)).start();
                         Toast.makeText(requireContext(), "Playlist created", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -222,7 +230,7 @@ public class PlaylistFragment extends Fragment {
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
                     String name = input.getText().toString().trim();
                     if (!name.isEmpty()) {
-                        viewModel.renamePlaylist(playlist.getId(), name);
+                        new Thread(() -> viewModel.renamePlaylist(playlist.getId(), name)).start();
                         Toast.makeText(requireContext(), "Playlist renamed", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -235,7 +243,7 @@ public class PlaylistFragment extends Fragment {
                 .setTitle(R.string.delete_playlist)
                 .setMessage(R.string.delete_playlist_confirm)
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    viewModel.deletePlaylist(playlist.getId());
+                    new Thread(() -> viewModel.deletePlaylist(playlist.getId())).start();
                     Toast.makeText(requireContext(), "Playlist deleted", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(R.string.cancel, null)

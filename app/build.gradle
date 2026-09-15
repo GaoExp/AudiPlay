@@ -11,8 +11,8 @@ defaultConfig {
     minSdk 26
     targetSdk 35
 
-    versionCode 31
-    versionName "1.1.0.12.0"
+    versionCode 36
+    versionName "1.1.1"
 
     javaCompileOptions {
         annotationProcessorOptions {

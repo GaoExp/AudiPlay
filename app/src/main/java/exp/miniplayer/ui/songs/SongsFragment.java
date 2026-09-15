@@ -155,7 +155,7 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
 
     @Override
     public void onItemClick(Audio audio, int position) {
-        List<Audio> queue = repository.getCachedAudio();
+        List<Audio> queue = adapter.getCurrentList();
         Activity activity = requireActivity();
         if (activity instanceof MainActivity) {
             ((MainActivity) activity).playFromSongs(queue, position);
@@ -166,17 +166,25 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
         PopupMenu popup = new PopupMenu(requireContext(), requireView());
         popup.getMenuInflater().inflate(R.menu.song_options_menu, popup.getMenu());
 
-        if (repository.isFavorite(audio.getId())) {
-            popup.getMenu().findItem(R.id.action_add_favorite)
-                    .setTitle(getString(R.string.remove_from_favorites));
-        }
+        new Thread(() -> {
+            boolean isFav = repository.isFavorite(audio.getId());
+            requireActivity().runOnUiThread(() -> {
+                if (isFav) {
+                    popup.getMenu().findItem(R.id.action_add_favorite)
+                            .setTitle(getString(R.string.remove_from_favorites));
+                }
+            });
+        }).start();
 
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_add_favorite) {
-                repository.toggleFavorite(audio);
-                String msg = repository.isFavorite(audio.getId()) ?
-                        "Added to favorites" : "Removed from favorites";
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                new Thread(() -> {
+                    repository.toggleFavorite(audio);
+                    boolean fav = repository.isFavorite(audio.getId());
+                    String msg = fav ? "Added to favorites" : "Removed from favorites";
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show());
+                }).start();
                 return true;
             } else if (item.getItemId() == R.id.action_add_to_playlist) {
                 showPlaylistDialog(audio);
@@ -201,14 +209,18 @@ public class SongsFragment extends Fragment implements SongAdapter.OnItemClickLi
                     .setTitle("Add to Playlist")
                     .setItems(names, (dialog, which) -> {
                         PlaylistEntity playlist = playlists.get(which);
-                        boolean added = repository.addToPlaylist(playlist.getId(), audio);
-                        if (added) {
-                            Toast.makeText(requireContext(), "Added to " + playlist.getName(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(requireContext(), "Already in playlist",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                        new Thread(() -> {
+                            boolean added = repository.addToPlaylist(playlist.getId(), audio);
+                            requireActivity().runOnUiThread(() -> {
+                                if (added) {
+                                    Toast.makeText(requireContext(), "Added to " + playlist.getName(),
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(requireContext(), "Already in playlist",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }).start();
                     })
                     .setNegativeButton("Cancel", null)
                     .show();

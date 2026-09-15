@@ -1,6 +1,7 @@
 package exp.miniplayer.utils;
 
 import android.content.Context;
+import android.os.Environment;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,25 +27,9 @@ public class PlaylistScanner {
 
     public static void scanPlaylists(Context context, AudioRepository repo,
                                       List<Audio> scannedAudio) {
-        PreferencesManager prefs = new PreferencesManager(context);
-        Set<String> included = prefs.getIncludedFolders();
-        Set<String> excluded = prefs.getExcludedFolders();
-        boolean limitFolders = prefs.isLimitFolders();
-
-        if (included == null) included = new HashSet<>();
+        Set<String> scanDirs = resolveScanDirs(context);
+        Set<String> excluded = new PreferencesManager(context).getExcludedFolders();
         if (excluded == null) excluded = new HashSet<>();
-
-        Set<String> scanDirs = new HashSet<>();
-        if (limitFolders) {
-            if (included.isEmpty()) return;
-            scanDirs.addAll(included);
-        } else {
-            scanDirs.addAll(included);
-            scanDirs.add("/storage/emulated/0/Music");
-            scanDirs.add("/storage/emulated/0/Download");
-            scanDirs.add("/storage/emulated/0/Playlists");
-        }
-        scanDirs.removeAll(excluded);
 
         List<File> playlistFiles = new ArrayList<>();
         for (String dir : scanDirs) {
@@ -57,6 +42,47 @@ public class PlaylistScanner {
         for (File file : playlistFiles) {
             importPlaylistFile(context, repo, file, scannedAudio);
         }
+    }
+
+    public static Set<String> resolveScanDirs(Context context) {
+        PreferencesManager prefs = new PreferencesManager(context);
+        Set<String> included = prefs.getIncludedFolders();
+        Set<String> excluded = prefs.getExcludedFolders();
+        boolean limitFolders = prefs.isLimitFolders();
+
+        if (included == null) included = new HashSet<>();
+        if (excluded == null) excluded = new HashSet<>();
+
+        Set<String> scanDirs = new HashSet<>();
+        if (limitFolders) {
+            if (included.isEmpty()) return scanDirs;
+            scanDirs.addAll(included);
+        } else {
+            scanDirs.addAll(included);
+            String base = Environment.getExternalStorageDirectory().getAbsolutePath();
+            scanDirs.add(base + "/Music");
+            scanDirs.add(base + "/Download");
+            scanDirs.add(base + "/Playlists");
+        }
+        scanDirs.removeAll(excluded);
+        return scanDirs;
+    }
+
+    public static Map<String, Long> snapshotPlaylistFiles(Context context) {
+        Map<String, Long> snapshot = new HashMap<>();
+        Set<String> excluded = new PreferencesManager(context).getExcludedFolders();
+        if (excluded == null) excluded = new HashSet<>();
+        List<File> playlistFiles = new ArrayList<>();
+        for (String dir : resolveScanDirs(context)) {
+            File folder = new File(dir);
+            if (folder.exists() && folder.isDirectory()) {
+                collectPlaylistFiles(folder, playlistFiles, excluded, 0);
+            }
+        }
+        for (File file : playlistFiles) {
+            snapshot.put(file.getAbsolutePath(), file.lastModified());
+        }
+        return snapshot;
     }
 
     private static void collectPlaylistFiles(File dir, List<File> results,

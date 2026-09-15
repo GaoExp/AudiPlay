@@ -29,8 +29,10 @@ public class SongsViewModel extends AndroidViewModel {
     public void scanAudio() {
         if (!scanned) {
             scanned = true;
-            List<Audio> audioList = repository.scanAudio();
-            songs.postValue(audioList);
+            new Thread(() -> {
+                List<Audio> audioList = repository.scanAudio();
+                songs.postValue(audioList);
+            }).start();
         }
     }
 
@@ -44,20 +46,24 @@ public class SongsViewModel extends AndroidViewModel {
     }
 
     public void search(String query) {
-        searchQuery.postValue(query);
-        List<Audio> results = repository.searchAudio(query);
-        songs.postValue(results);
+        new Thread(() -> {
+            searchQuery.postValue(query);
+            List<Audio> results = repository.searchAudio(query);
+            songs.postValue(results);
+        }).start();
     }
 
     public void sort(int sortMode) {
-        repository.sortAudioList(sortMode);
-        List<Audio> allAudio = repository.getCachedAudio();
-        String query = searchQuery.getValue();
-        if (query != null && !query.trim().isEmpty()) {
-            songs.postValue(repository.searchAudio(query));
-        } else {
-            songs.postValue(allAudio);
-        }
+        new Thread(() -> {
+            repository.sortAudioList(sortMode);
+            List<Audio> allAudio = repository.getCachedAudio();
+            String query = searchQuery.getValue();
+            if (query != null && !query.trim().isEmpty()) {
+                songs.postValue(repository.searchAudio(query));
+            } else {
+                songs.postValue(allAudio);
+            }
+        }).start();
     }
 
     public AudioRepository getRepository() {

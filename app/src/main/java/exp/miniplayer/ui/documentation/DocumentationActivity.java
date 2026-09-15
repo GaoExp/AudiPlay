@@ -80,6 +80,7 @@ public class DocumentationActivity extends AppCompatActivity {
         findViewById(R.id.docReadmeCard).setOnClickListener(v -> showDoc("README"));
         findViewById(R.id.docPanduanCard).setOnClickListener(v -> showDoc("PANDUAN"));
         findViewById(R.id.docChangelogCard).setOnClickListener(v -> showDoc("CHANGELOG"));
+        findViewById(R.id.docOldChangelogCard).setOnClickListener(v -> showDoc("old-CHANGELOG"));
         findViewById(R.id.docStrukturCard).setOnClickListener(v -> showDoc("STRUKTUR"));
     }
 

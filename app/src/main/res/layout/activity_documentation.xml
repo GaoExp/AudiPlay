@@ -152,6 +152,48 @@
                 android:layout_height="8dp"/>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/docOldChangelogCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline"
+                app:cardCornerRadius="@dimen/corner_radius"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_medium">
+
+                    <TextView
+                        android:id="@+id/docOldChangelogTitle"
+                        android:text="@string/doc_old_changelog"
+                        android:textAppearance="?attr/textAppearanceBodyLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/docOldChangelogSubtitle"
+                        android:text="@string/doc_old_changelog_subtitle"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"/>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp"/>
+
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/docStrukturCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -137,6 +137,8 @@
 
     <string name="doc_changelog">Riwayat Perubahan</string>
     <string name="doc_changelog_subtitle">Catatan setiap release</string>
+    <string name="doc_old_changelog">Riwayat Versi Lama</string>
+    <string name="doc_old_changelog_subtitle">Release dari versi sebelumnya</string>
     <string name="doc_struktur">Struktur Project</string>
     <string name="doc_struktur_subtitle">Diagram direktori dan statistik</string>
     <string name="text_size">Ukuran Teks</string>

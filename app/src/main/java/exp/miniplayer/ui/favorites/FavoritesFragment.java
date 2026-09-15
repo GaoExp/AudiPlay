@@ -64,7 +64,7 @@ public class FavoritesFragment extends Fragment {
                     .setTitle(getString(R.string.remove_from_favorites));
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.action_add_favorite) {
-                    viewModel.removeFavorite(audio.getId());
+                    new Thread(() -> viewModel.removeFavorite(audio.getId())).start();
                     Toast.makeText(requireContext(), "Removed from favorites",
                             Toast.LENGTH_SHORT).show();
                     return true;

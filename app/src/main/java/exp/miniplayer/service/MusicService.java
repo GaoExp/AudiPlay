@@ -8,7 +8,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
@@ -119,14 +118,10 @@ public class MusicService extends android.app.Service implements
 
     public void playQueue(List<Audio> queue, int startIndex) {
         if (!isForeground) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
-                    || checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-                    == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    startForeground(NOTIFICATION_ID, buildBasicNotification());
-                    isForeground = true;
-                } catch (Exception ignored) {}
-            }
+            try {
+                startForeground(NOTIFICATION_ID, buildBasicNotification());
+                isForeground = true;
+            } catch (Exception ignored) {}
         }
         requestAudioFocus();
         musicPlayer.setQueue(queue, startIndex);
@@ -241,11 +236,6 @@ public class MusicService extends android.app.Service implements
                     .addAction(R.drawable.ic_skip_next, "Next", nextPending)
                     .build();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                    && checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
             startForeground(NOTIFICATION_ID, notification);
             isForeground = true;
         } catch (Exception e) {
@@ -313,11 +303,6 @@ public class MusicService extends android.app.Service implements
     public void onPlayStateChanged(boolean isPlaying) {
         if (isPlaying) {
             if (!isForeground) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
-                        && checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
                 try {
                     startForeground(NOTIFICATION_ID, buildBasicNotification());
                     isForeground = true;

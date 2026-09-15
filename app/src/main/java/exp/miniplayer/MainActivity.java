@@ -670,16 +670,20 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
                         .setTitle(R.string.add_to_playlist)
                         .setItems(names, (dialog, which) -> {
                             PlaylistEntity playlist = playlists.get(which);
-                            boolean added = repository.addToPlaylist(playlist.getId(), audio);
-                            if (added) {
-                                Toast.makeText(MainActivity.this,
-                                        getString(R.string.added_to_playlist, playlist.getName()),
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(MainActivity.this,
-                                        R.string.already_in_playlist,
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                            new Thread(() -> {
+                                boolean added = repository.addToPlaylist(playlist.getId(), audio);
+                                runOnUiThread(() -> {
+                                    if (added) {
+                                        Toast.makeText(MainActivity.this,
+                                                getString(R.string.added_to_playlist, playlist.getName()),
+                                                Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(MainActivity.this,
+                                                R.string.already_in_playlist,
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }).start();
                         })
                         .setNegativeButton(R.string.cancel, null)
                         .show();
@@ -744,16 +748,20 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
                     ContentResolver cr = getContentResolver();
                     int deleted = cr.delete(Uri.parse(audio.getUri()), null, null);
                     if (deleted > 0) {
-                        if (repository.isFavorite(audio.getId())) {
-                            repository.toggleFavorite(audio);
-                        }
-                        Toast.makeText(MainActivity.this, R.string.audio_deleted,
-                                Toast.LENGTH_SHORT).show();
-                        Audio current = musicService != null ?
-                                musicService.getMusicPlayer().getCurrentAudio() : null;
-                        if (current != null && current.getId() == audio.getId()) {
-                            next();
-                        }
+                        new Thread(() -> {
+                            if (repository.isFavorite(audio.getId())) {
+                                repository.toggleFavorite(audio);
+                            }
+                            runOnUiThread(() -> {
+                                Toast.makeText(MainActivity.this, R.string.audio_deleted,
+                                        Toast.LENGTH_SHORT).show();
+                                Audio current = musicService != null ?
+                                        musicService.getMusicPlayer().getCurrentAudio() : null;
+                                if (current != null && current.getId() == audio.getId()) {
+                                    next();
+                                }
+                            });
+                        }).start();
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
@@ -795,8 +803,12 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
         Audio current = musicService != null ?
                 musicService.getMusicPlayer().getCurrentAudio() : null;
         if (current != null) {
-            repository.toggleFavorite(current);
-            updateFavorite(current.getId());
+            long id = current.getId();
+            new Thread(() -> {
+                repository.toggleFavorite(current);
+                boolean isFav = repository.isFavorite(id);
+                runOnUiThread(() -> updateFavoriteIcon(isFav));
+            }).start();
         }
     }
 
@@ -827,7 +839,13 @@ public class MainActivity extends AppCompatActivity implements MusicPlayer.Playe
     }
 
     private void updateFavorite(long audioId) {
-        boolean isFav = repository.isFavorite(audioId);
+        new Thread(() -> {
+            boolean isFav = repository.isFavorite(audioId);
+            runOnUiThread(() -> updateFavoriteIcon(isFav));
+        }).start();
+    }
+
+    private void updateFavoriteIcon(boolean isFav) {
         if (isFav) {
             favoriteButton.setImageResource(R.drawable.ic_favorite);
             favoriteButton.setColorFilter(

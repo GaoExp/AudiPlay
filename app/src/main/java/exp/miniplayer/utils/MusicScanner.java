@@ -47,10 +47,18 @@ public class MusicScanner {
 
                 do {
                     String filePath = dataCol >= 0 ? cursor.getString(dataCol) : null;
-                    if (filePath == null) continue;
-
+                    String mimeType = mimeCol >= 0 ? cursor.getString(mimeCol) : null;
                     String ext = getFileExtension(filePath);
-                    if (ext != null && isMusicExtension(ext)) continue;
+
+                    if ((ext != null && isMusicExtension(ext))
+                            || isMusicMimeType(mimeType)) {
+                        continue;
+                    }
+                    boolean isAudioByMime = mimeType != null
+                            && mimeType.toLowerCase().startsWith("audio/");
+                    if (!isAudioByMime && ext == null) {
+                        continue;
+                    }
 
                     long id = idCol >= 0 ? cursor.getLong(idCol) : 0;
                     String title = titleCol >= 0 ? cursor.getString(titleCol) : null;
@@ -198,6 +206,7 @@ public class MusicScanner {
     }
 
     private static String getFileExtension(String path) {
+        if (path == null) return null;
         int dot = path.lastIndexOf('.');
         if (dot >= 0 && dot < path.length() - 1) {
             return path.substring(dot + 1).toLowerCase();
@@ -206,6 +215,14 @@ public class MusicScanner {
     }
 
     private static boolean isMusicExtension(String ext) {
-        return "mp3".equals(ext) || "m4a".equals(ext);
+        return "mp3".equals(ext) || "m4a".equals(ext) || "mp4".equals(ext);
+    }
+
+    private static boolean isMusicMimeType(String mime) {
+        if (mime == null) return false;
+        String m = mime.toLowerCase();
+        return "audio/mpeg".equals(m) || "audio/mp3".equals(m)
+                || "audio/x-m4a".equals(m) || "audio/mp4".equals(m)
+                || "audio/aac".equals(m) || "audio/acc".equals(m);
     }
 }

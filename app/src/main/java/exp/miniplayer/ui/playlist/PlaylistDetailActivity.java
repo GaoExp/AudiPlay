@@ -94,7 +94,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                     new AlertDialog.Builder(this)
                             .setTitle("Remove from playlist?")
                             .setPositiveButton("Remove", (dialog, which) -> {
-                                viewModel.removeFromPlaylist(playlistId, song.getAudioId());
+                                new Thread(() -> viewModel.removeFromPlaylist(playlistId, song.getAudioId())).start();
                                 Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show();
                             })
                             .setNegativeButton("Cancel", null)
@@ -156,23 +156,28 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                     result -> {
                         if (result.getData() == null || result.getData().getData() == null) return;
                         Uri uri = result.getData().getData();
-                        try {
-                            OutputStream output = getContentResolver().openOutputStream(uri);
-                            if (output == null) return;
-                            if ("m3u".equals(pendingExportFormat)) {
-                                PlaylistEntity playlist = exportRepo.getPlaylist(playlistId);
-                                if (playlist != null) {
-                                    PlaylistIO.exportAsM3U(this, exportRepo, playlist, output);
+                        String format = pendingExportFormat;
+                        new Thread(() -> {
+                            try {
+                                OutputStream output = getContentResolver().openOutputStream(uri);
+                                if (output == null) return;
+                                if ("m3u".equals(format)) {
+                                    PlaylistEntity playlist = exportRepo.getPlaylist(playlistId);
+                                    if (playlist != null) {
+                                        PlaylistIO.exportAsM3U(this, exportRepo, playlist, output);
+                                    }
+                                } else if ("json".equals(format)) {
+                                    PlaylistIO.exportAllAsJSON(this, exportRepo, output);
                                 }
-                            } else if ("json".equals(pendingExportFormat)) {
-                                PlaylistIO.exportAllAsJSON(this, exportRepo, output);
+                                output.close();
+                                runOnUiThread(() -> Toast.makeText(this,
+                                        R.string.playlist_exported, Toast.LENGTH_SHORT).show());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                runOnUiThread(() -> Toast.makeText(this,
+                                        R.string.export_error, Toast.LENGTH_SHORT).show());
                             }
-                            output.close();
-                            Toast.makeText(this, R.string.playlist_exported, Toast.LENGTH_SHORT).show();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(this, R.string.export_error, Toast.LENGTH_SHORT).show();
-                        }
+                        }).start();
                     });
 
     @Override
